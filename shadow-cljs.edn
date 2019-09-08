@@ -1,9 +1,16 @@
-{:lein         true
- :source-paths ["src"]
- :builds       {:app {:target     :browser
-                      :output-dir "resources/public/js"
-                      :asset-path "/js"
-                      :modules    {:app {:entries [mftickets-web.core]}}
-                      :devtools   {:after-load mftickets-web.core/mount-root}}}
- :dev-http     {3000 {:root    "resources/public"
-                      :handler mftickets-web.handler/app}}}
+{:source-paths ["src/cljs"]
+ :dependencies
+ [[reagent "0.8.1"]
+  [reagent-utils "0.3.3"]
+  [metosin/reitit "0.3.7"]
+  [pez/clerk "1.0.0"]
+  [venantius/accountant "0.2.4" :exclusions [org.clojure/tools.reader]]
+  [cider/cider-nrepl "0.21.0"]]
+ 
+ :builds {:app {:target     :browser
+                :output-dir "resources/public/js"
+                :asset-path "/js"
+                :modules    {:app {:entries [mftickets-web.core]}}
+                :devtools   {:after-load mftickets-web.core/mount-root}}}
+
+ :dev-http {4000 {:root "resources/public"}}}
