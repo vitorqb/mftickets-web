@@ -1,3 +1,4 @@
+/resources/public/js/*
 /target
 /classes
 /checkouts
@@ -13,3 +14,5 @@ pom.xml.asc
 *.log
 /.env
 /.sass-cache
+/.shadow-cljs
+node_modules

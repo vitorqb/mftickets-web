@@ -24,7 +24,7 @@
    [:body {:class "body-container"}
     mount-target
     (include-js "/js/app.js")
-    [:script "mftickets-web.core.init_BANG_()"]]))
+    [:script "mftickets_web.core.init_BANG_()"]]))
 
 
 (defn index-handler
