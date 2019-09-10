@@ -1,4 +1,4 @@
-{:source-paths ["src/cljs"]
+{:source-paths ["src/cljs" "test/cljs"]
  :dependencies
  [[reagent "0.8.1"]
   [reagent-utils "0.3.3"]
@@ -13,6 +13,8 @@
                 :output-dir "resources/public/js"
                 :asset-path "/js"
                 :modules    {:app {:entries [mftickets-web.core]}}
-                :devtools   {:after-load mftickets-web.core/mount-root}}}
+                :devtools   {:after-load mftickets-web.core/mount-root}}
+          :test {:target     :karma
+                 :output-to  "resources/public/test-build/js/karma-test-build.js"}}
 
  :dev-http {4000 {:root "resources/public"}}}
