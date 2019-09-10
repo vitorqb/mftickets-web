@@ -4,7 +4,8 @@
    [reagent.session :as session]
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+   [accountant.core :as accountant]
+   [mftickets-web.instances.login-page :as instances.login-page]))
 
 ;; -------------------------
 ;; Routes
@@ -25,14 +26,13 @@
 (path-for :about)
 ;; -------------------------
 ;; Page components
+(defonce app-state (atom {}))
 
 (defn home-page []
   (fn []
     [:span.main
      [:h1 "Welcome to mftickets-web"]
-     [:ul
-      [:li [:a {:href (path-for :items)} "Items of mftickets-web"]]
-      [:li [:a {:href "/broken/link"} "Broken link"]]]]))
+     [instances.login-page/login-page-instance {:app-state app-state}]]))
 
 
 
