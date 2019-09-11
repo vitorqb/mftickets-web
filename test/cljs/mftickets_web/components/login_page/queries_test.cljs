@@ -51,3 +51,14 @@
           state {:email-submission {:current-state current-state}}
           queried (sut/email-submission-current-state state)]
       (is (= queried :ongoing)))))
+
+
+(deftest test-key-submission-current-state
+
+  (testing "Nil -> idle"
+    (let [state {}]
+      (is (= :idle (sut/key-submission-current-state state)))))
+
+  (testing "Not nil"
+    (let [state {:key-submission {:current-state :ongoing}}]
+      (is (= :ongoing (sut/key-submission-current-state state))))))

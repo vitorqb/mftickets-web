@@ -15,5 +15,14 @@
 
 (defn key-submit
   "handler to submit the key."
-  [{:keys []}]
-  nil)
+  [{:keys [state reduce! http send-message!]}]
+  (let [get-token! (:get-token http)
+        key (-> state queries/key-input-state :value)
+        email (-> state queries/email-input-state :value)
+        params {:keyValue key :email email}]
+    (fn []
+      (reduce! (reducers/before-key-submit))
+      (async/go
+        (let [response (-> params get-token! async/<!)]
+          (-> response reducers/after-key-submit reduce!)
+          (->> response :body :token (send-message! :update-token)))))))

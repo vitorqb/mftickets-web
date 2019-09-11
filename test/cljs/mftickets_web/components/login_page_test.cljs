@@ -58,6 +58,20 @@
       (is (= {:value "FOO"}
              (queries/key-input-state new-state))))))
 
+(deftest test-get-form-submit-handler
+
+  (testing "Returns an key-submit handler if email submited successfully."
+    (let [state (-> {} ((reducers/after-email-submit {:status 204})))
+          handler (sut/get-form-submit-handler {:state state})
+          is-key-submit-handler? (-> handler meta ::sut/key-submit)]
+      (is (true? (queries/email-has-been-submited-sucessfully? state)))
+      (is (true? is-key-submit-handler?))))
+
+  (testing "Returns an email-submit handler if email not submited successfully."
+    (let [state (-> {} ((reducers/after-email-submit {:status 500})))
+          handler (sut/get-form-submit-handler {:state state})
+          is-email-submit-handler? (-> handler meta ::sut/email-submit)]
+      (is (true? is-email-submit-handler?)))))
 
 (deftest test-form
 

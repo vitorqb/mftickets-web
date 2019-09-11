@@ -19,3 +19,23 @@
   #(-> %
        (assoc-in [:email-submission :current-state] :idle)
        (assoc-in [:email-submission :response] response)))
+
+(defn set-key-submit-response [x]
+  #(assoc-in % [:key-submission :response] x))
+
+(defn set-key-submission-state [x]
+  #(assoc-in % [:key-submission :current-state] x))
+
+(defn before-key-submit
+  "Reduces the state before key is submited."
+  []
+  #(-> %
+       ((set-key-submit-response nil))
+       ((set-key-submission-state :ongoing))))
+
+(defn after-key-submit
+  "Reduces the state after key is submited."
+  [response]
+  #(-> %
+       ((set-key-submit-response response))
+       ((set-key-submission-state :idle))))

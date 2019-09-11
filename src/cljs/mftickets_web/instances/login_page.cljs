@@ -6,8 +6,9 @@
 (defn- mk-reduce [app-state] #(swap! app-state update ::state %))
 
 (defn login-page-instance
-  [{:keys [app-state http]}]
+  [{:keys [app-state http send-message!]}]
   [components.login-page/login-page
    {:state   (get-state app-state)
     :reduce! (mk-reduce app-state)
-    :http    http}])
+    :http    http
+    :send-message! send-message!}])

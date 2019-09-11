@@ -6,7 +6,8 @@
    [clerk.core :as clerk]
    [accountant.core :as accountant]
    [mftickets-web.instances.login-page :as instances.login-page]
-   [mftickets-web.http :as http]))
+   [mftickets-web.http :as http]
+   [mftickets-web.messages :as messages]))
 
 ;; -------------------------
 ;; Routes
@@ -27,15 +28,25 @@
 (path-for :about)
 ;; -------------------------
 ;; Page components
-(defonce app-state (atom {}))
-(def http {:send-key http/send-key})
+(defonce app-state
+  (atom {}))
+
+(def http
+  {:send-key http/send-key
+   :get-token http/get-token})
+
+(def message-handler
+  (messages/message-handler {:app-state app-state}))
+
+(def injections
+  {:app-state app-state :http http :send-message! message-handler})
 
 (defn home-page []
   (fn []
     [:div.main
-     [instances.login-page/login-page-instance
-      {:app-state app-state
-       :http http}]]))
+     (if-let [token (:token @app-state)]
+       [:div "You are logged in!"]
+       [instances.login-page/login-page-instance injections])]))
 
 (defn items-page []
   (fn []

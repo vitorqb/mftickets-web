@@ -8,5 +8,15 @@
   (http/post
    "http://127.0.0.1:3000/api/login/send-key"
    {:with-credentials? false
-    :json-params params}))
+    :edn-params params
+    :accept "application/edn"}))
+
+(defn get-token
+  "Makes a post request for retrieving a token"
+  [params]
+  (http/post
+   "http://127.0.0.1:3000/api/login/get-token"
+   {:with-credentials? false
+    :edn-params params
+    :accept "application/edn"}))
 
