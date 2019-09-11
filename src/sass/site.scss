@@ -3,10 +3,16 @@
 // (import path can include _ but it is not needed)
 
 // @import 'profile';
+@import 'typography';
+@import 'components/input-wrapper';
 
 // You can use any sass features, like variables, for instance:
 $font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-$base-font-size: 1.125em;
+$base-font-size: 1.5em;
+
+html {
+    font-size: 62.5%;
+}
 
 .body-container {
   font-family: $font-stack;
