@@ -4,11 +4,15 @@
 
 (def base-request
   {:with-credentials? false
-   :accept "application/edn"})
+   :accept "application/json"})
+
+(defn wrap-auth
+  [request token]
+  (assoc-in request [:headers "authorization"] (str "Bearer " token)))
 
 (defn send-key
   "Makes a post request for sending a key to the email."
-  [{:keys [token]}]
+  [_]
   (fn i-send-key [params]
     (http/post
      "http://127.0.0.1:3000/api/login/send-key"
@@ -16,11 +20,19 @@
 
 (defn get-token
   "Makes a post request for retrieving a token"
-  [{:keys [token]}]
+  [_]
   (fn i-get-token [params]
     (http/post
      "http://127.0.0.1:3000/api/login/get-token"
      (assoc base-request :edn-params params))))
+
+(defn ping
+  "Makes a ping post request"
+  [{:keys [token]}]
+  (fn i-ping []
+    (http/get
+     "http://127.0.0.1:3000/api/ping"
+     (-> base-request (wrap-auth token)))))
 
 (defn http-getter
   "Prepares a lookable object for http functions.

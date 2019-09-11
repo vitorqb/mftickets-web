@@ -1,6 +1,7 @@
 (ns mftickets-web.components.life-prober
   (:require
-   [mftickets-web.components.life-prober.queries :as queries]))
+   [mftickets-web.components.life-prober.queries :as queries]
+   [mftickets-web.components.life-prober.handlers :as handlers]))
 
 (def base-class "life-prober")
 (def label-class (str base-class "__label"))
@@ -29,12 +30,15 @@
 
 (defn ping-button
   "A button for the action of checking if we are alive."
-  [_]
-  [:button {:class button-class} "Probe Life"])
+  [props]
+  [:button
+   {:class button-class
+    :on-click (handlers/ping props)}
+   "Probe Life"])
 
 (defn life-prober
   "A small component used to ping the server and check we are alive."
-  [{:keys [state update! http]}]
+  [{:keys [state reduce! http] :as props}]
   [:div {:class [base-class]}
-   [ping-button]
-   [status-displayer]])
+   [ping-button props]
+   [status-displayer props]])

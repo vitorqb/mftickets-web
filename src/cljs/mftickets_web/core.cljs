@@ -35,7 +35,8 @@
 (def http
   (http/http-getter
    {:send-key http/send-key
-    :get-token http/get-token}
+    :get-token http/get-token
+    :ping http/ping}
    app-state))
 
 (def message-handler
