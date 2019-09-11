@@ -4,6 +4,13 @@
 (def base-html-input-class "input-wrapper__input")
 (def base-input-wrapper-label-class "input-wrapper__label")
 
+(defn- on-change-handler
+  "Returns a handler for a change on the input value."
+  [{:keys [on-change]}]
+  (fn [event]
+    (when on-change
+      (-> event .-target .-value on-change))))
+
 (defn label-span
   "A span with the label, if any."
   [label]
