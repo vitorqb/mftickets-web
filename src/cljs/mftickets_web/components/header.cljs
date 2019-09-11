@@ -1,4 +1,6 @@
-(ns mftickets-web.components.header)
+(ns mftickets-web.components.header
+  (:require
+   [mftickets-web.components.life-prober :as components.life-prober]))
 
 (def base-class "header")
 
@@ -6,4 +8,4 @@
   "The header of the app."
   [_]
   [:header {:class [base-class]}
-   [:span "Header!"]])
+   [components.life-prober/life-prober {}]])

@@ -1,0 +1,27 @@
+.life-prober {
+
+    &__button {
+
+    }
+
+    &__status-displayer-wrapper {
+        display: inline-block;
+    }
+    
+    &__status-displayer {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        border-radius: 1000px;
+        margin: 0px 10px;
+        &--live {
+            background-color: green;
+        }
+        &--dead {
+            background-color: red;
+        }
+        &--unknown {
+            background-color: black;
+        }
+    }
+}
