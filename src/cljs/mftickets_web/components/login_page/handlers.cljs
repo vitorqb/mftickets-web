@@ -12,3 +12,8 @@
     (fn []
       (reduce! (reducers/before-email-submit))
       (async/go (-> {:email email} send-key! async/<! reducers/after-email-submit reduce!)))))
+
+(defn key-submit
+  "handler to submit the key."
+  [{:keys []}]
+  nil)

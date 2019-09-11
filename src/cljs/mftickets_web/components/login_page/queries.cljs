@@ -6,6 +6,10 @@
   [state]
   (some-> state :inputs :email))
 
+(defn key-input-state
+  [state]
+  (some-> state :inputs :key))
+
 (defn email-submission-response
   [state]
   (some-> state :email-submission :response))

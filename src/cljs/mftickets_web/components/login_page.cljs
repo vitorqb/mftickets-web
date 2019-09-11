@@ -2,6 +2,7 @@
   (:require
    [mftickets-web.components.login-page.queries :as queries]
    [mftickets-web.components.login-page.handlers :as handlers]
+   [mftickets-web.components.login-page.reducers :as reducers]
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.form :as components.form]))
 
@@ -11,14 +12,17 @@
   [components.input/input
    {:label "Email"
     :value (-> state queries/email-input-state :value)
-    :on-change (fn [x] (reduce! #(assoc-in % [:inputs :email :value] x)))
+    :on-change #(reduce! (reducers/set-email-value %))
     :disabled (queries/email-has-been-submited-sucessfully? state)}])
 
 (defn- key-input
   "And input for the key."
-  [{:keys [state]}]
+  [{:keys [state reduce!]}]
   (when (queries/email-has-been-submited-sucessfully? state)
-    [components.input/input {:label "Key"}]))
+    [components.input/input
+     {:label "Key"
+      :value (-> state queries/key-input-state :value)
+      :on-change #(reduce! (reducers/set-key-value %))}]))
 
 (defn- form
   "A form for the email and key inputs."

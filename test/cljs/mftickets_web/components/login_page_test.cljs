@@ -1,7 +1,8 @@
 (ns mftickets-web.components.login-page-test
   (:require [mftickets-web.components.login-page :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.components.login-page.queries :as queries]))
+            [mftickets-web.components.login-page.queries :as queries]
+            [mftickets-web.components.login-page.reducers :as reducers]))
 
 (deftest email-input
 
@@ -38,7 +39,24 @@
   (testing "Renders if email submited"
     (let [email-submit-response {:status 204}
           state {:email-submission {:response email-submit-response}}]
-      (is (not (nil? (sut/key-input {:state state})))))))
+      (is (not (nil? (sut/key-input {:state state}))))))
+
+  (testing "Passes email value"
+    (let [state (-> {}
+                    ((reducers/set-key-value "abc"))
+                    ((reducers/after-email-submit {:status 204})))
+          props {:state state}
+          key-value (-> props sut/key-input second :value)]
+      (is (= "abc" key-value))))
+
+  (testing "Sets email value at change"
+    (let [state (-> {} ((reducers/after-email-submit {:status 204})))
+          reduce! (fn [f] (f state))
+          props {:state state :reduce! reduce!}
+          on-change (-> props sut/key-input second :on-change)
+          new-state (on-change "FOO")]
+      (is (= {:value "FOO"}
+             (queries/key-input-state new-state))))))
 
 
 (deftest test-form

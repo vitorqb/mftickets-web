@@ -14,6 +14,18 @@
           queried (sut/email-input-state state)]
       (is (= input-state queried)))))
 
+(deftest key-email-input-state
+
+  (testing "Empty"
+    (let [state {}]
+      (is (nil? (sut/key-input-state state)))))
+
+  (testing "Not empty"
+    (let [input-state {:infractions [] :value "FOO"}
+          state {:inputs {:key input-state}}
+          queried (sut/key-input-state state)]
+      (is (= input-state queried)))))
+
 (deftest test-email-has-been-submited-sucessfully?
 
   (testing "No submission"
