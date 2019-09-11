@@ -18,3 +18,4 @@ pom.xml.asc
 node_modules
 /resources/public/test-build/
 /.dir-locals.el
+/resources/public/css/site.css
