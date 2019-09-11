@@ -32,8 +32,10 @@
   (atom {}))
 
 (def http
-  {:send-key http/send-key
-   :get-token http/get-token})
+  (http/http-getter
+   {:send-key http/send-key
+    :get-token http/get-token}
+   app-state))
 
 (def message-handler
   (messages/message-handler {:app-state app-state}))

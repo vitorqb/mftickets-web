@@ -1,4 +1,6 @@
-(ns mftickets-web.messages)
+(ns mftickets-web.messages
+  (:require
+   [cljs.pprint]))
 
 (defn message-handler
   "Returns a message handler given an application state."
