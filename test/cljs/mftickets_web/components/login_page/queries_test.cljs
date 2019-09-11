@@ -9,13 +9,21 @@
 
   (testing "404 response"
     (let [response {:status 404}
-          state {:email-submission-response response}
+          state {:email-submission {:response response}}
           queried (sut/email-has-been-submited-sucessfully? state)]
       (is (false? queried))))
 
   (testing "Correct response"
     (let [response {:status 204}
-          state {:email-submission-response response}
+          state {:email-submission {:response response}}
           queried (sut/email-has-been-submited-sucessfully? state)]
       (is (true? queried)))))
 
+
+(deftest test-email-submission-state
+
+  (testing "Base"
+    (let [current-state :ongoing
+          state {:email-submission {:current-state current-state}}
+          queried (sut/email-submission-current-state state)]
+      (is (= queried :ongoing)))))

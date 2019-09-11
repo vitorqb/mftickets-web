@@ -5,6 +5,7 @@
 // @import 'profile';
 @import 'typography';
 @import 'components/input-wrapper';
+@import 'components/form';
 
 // You can use any sass features, like variables, for instance:
 $font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
@@ -12,6 +13,11 @@ $base-font-size: 1.5em;
 
 html {
     font-size: 62.5%;
+}
+
+form {
+    padding: 0;
+    margin: 0;
 }
 
 .body-container {

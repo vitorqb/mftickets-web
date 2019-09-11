@@ -17,8 +17,10 @@
 
 (defn- form
   "A form for the email and key inputs."
-  [_ & children]
-  [components.form/form {} children])
+  [{:keys [state]} & children]
+  [components.form/form
+   {:is-loading? (-> state queries/email-submission-current-state #{:ongoing} boolean)}
+   children])
 
 (defn login-page
   "Initial page used for login."

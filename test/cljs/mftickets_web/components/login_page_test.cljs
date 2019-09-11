@@ -7,10 +7,18 @@
 
   (testing "Don't render if email not submited"
     (let [email-submit-response {:status 404}
-          state {:email-submission-response email-submit-response}]
+          state {:email-submission {:response email-submit-response}}]
       (is (nil? (sut/key-input {:state state})))))
 
   (testing "Renders if email submited"
     (let [email-submit-response {:status 204}
-          state {:email-submission-response email-submit-response}]
+          state {:email-submission {:response email-submit-response}}]
       (is (not (nil? (sut/key-input {:state state})))))))
+
+
+(deftest test-form
+
+  (testing "Is loading if state is ongoing"
+    (let [state {:email-submission {:current-state :ongoing}}
+          rendered (sut/form {:state state})]
+      (is (true? (-> rendered second :is-loading?))))))
