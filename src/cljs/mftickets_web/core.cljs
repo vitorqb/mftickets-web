@@ -6,6 +6,7 @@
    [clerk.core :as clerk]
    [accountant.core :as accountant]
    [mftickets-web.instances.login-page :as instances.login-page]
+   [mftickets-web.instances.header :as instances.header]
    [mftickets-web.http :as http]
    [mftickets-web.messages :as messages]))
 
@@ -46,6 +47,7 @@
 (defn home-page []
   (fn []
     [:div.main
+     [instances.header/header-instance injections]
      (if-let [token (:token @app-state)]
        [:div "You are logged in!"]
        [instances.login-page/login-page-instance injections])]))
