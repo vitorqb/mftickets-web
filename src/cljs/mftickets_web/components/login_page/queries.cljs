@@ -2,12 +2,17 @@
 
 (def email-submission-possible-current-state #{:idle :ongoing})
 
+(defn email-input-state
+  [state]
+  (some-> state :inputs :email))
+
 (defn email-has-been-submited-sucessfully?
-  [value]
-  (some-> value :email-submission :response :status (= 204)))
+  [state]
+  {:post [(or (nil? %) (boolean? %))]}
+  (some-> state :email-submission :response :status (= 204)))
 
 (defn email-submission-current-state
-  [value]
+  [state]
   {:post [(email-submission-possible-current-state %)]}
-  (or (some-> value :email-submission :current-state)
+  (or (some-> state :email-submission :current-state)
       :idle))

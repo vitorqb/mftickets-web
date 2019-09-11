@@ -20,12 +20,15 @@
 
 (defn html-input
   "An input html component."
-  []
-  [:input {:class base-html-input-class}])
+  [{:keys [value] :as props}]
+  [:input
+   {:class base-html-input-class
+    :on-change (on-change-handler props)
+    :value (or value "")}])
 
 (defn input
   "Wrapper for an input component."
-  [{:keys [label]}]
+  [{:keys [label] :as props}]
   [:div {:class base-input-wrapper-class}
    [label-span label]
-   [html-input]])
+   [html-input props]])

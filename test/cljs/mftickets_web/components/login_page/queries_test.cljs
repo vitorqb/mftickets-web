@@ -2,6 +2,18 @@
   (:require [mftickets-web.components.login-page.queries :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
+(deftest test-email-input-state
+
+  (testing "Empty"
+    (let [state {}]
+      (is (nil? (sut/email-input-state state)))))
+
+  (testing "Not empty"
+    (let [input-state {:infractions [] :value "FOO"}
+          state {:inputs {:email input-state}}
+          queried (sut/email-input-state state)]
+      (is (= input-state queried)))))
+
 (deftest test-email-has-been-submited-sucessfully?
 
   (testing "No submission"

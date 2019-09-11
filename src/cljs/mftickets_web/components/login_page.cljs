@@ -6,8 +6,11 @@
 
 (defn- email-input
   "An input for an email."
-  []
-  [components.input/input {:label "Email"}])
+  [{:keys [state reduce!]}]
+  [components.input/input
+   {:label "Email"
+    :value (-> state queries/email-input-state :value)
+    :on-change (fn [x] (reduce! #(assoc-in % [:inputs :email :value] x)))}])
 
 (defn- key-input
   "And input for the key."
@@ -29,5 +32,5 @@
   [:div.login-page
    [:h3.heading-tertiary "Log in"]
    [form props
-    ^{:key 1} [email-input]
-    ^{:key 2} [key-input]]])
+    ^{:key 1} [email-input props]
+    ^{:key 2} [key-input props]]])
