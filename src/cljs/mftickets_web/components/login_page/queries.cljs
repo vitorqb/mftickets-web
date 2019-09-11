@@ -6,10 +6,14 @@
   [state]
   (some-> state :inputs :email))
 
+(defn email-submission-response
+  [state]
+  (some-> state :email-submission :response))
+
 (defn email-has-been-submited-sucessfully?
   [state]
   {:post [(or (nil? %) (boolean? %))]}
-  (some-> state :email-submission :response :status (= 204)))
+  (some-> state email-submission-response :status (= 204)))
 
 (defn email-submission-current-state
   [state]

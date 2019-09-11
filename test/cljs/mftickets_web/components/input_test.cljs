@@ -31,4 +31,4 @@
 (deftest html-input
 
   (testing "Base"
-    (is (not (nil? (sut/html-input))))))
+    (is (not (nil? (sut/html-input {}))))))

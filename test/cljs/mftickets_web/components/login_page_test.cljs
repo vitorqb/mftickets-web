@@ -18,7 +18,15 @@
     (let [state {:inputs {:email {:value "Foo"}}}
           props {:state state}
           input-value (-> props sut/email-input second :value)]
-      (is (= "Foo" input-value)))))
+      (is (= "Foo" input-value))))
+
+  (testing "Passes disabled if email submit response is success."
+    (let [email-submit-response {:status 204}
+          state {:email-submission {:response email-submit-response}}
+          props {:state state}
+          input-disabled? (-> props sut/email-input second :disabled)]
+      (is (true? (queries/email-has-been-submited-sucessfully? state)))
+      (is (true? input-disabled?)))))
 
 (deftest test-key-input
 

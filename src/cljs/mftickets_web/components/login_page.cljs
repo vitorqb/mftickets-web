@@ -1,6 +1,7 @@
 (ns mftickets-web.components.login-page
   (:require
    [mftickets-web.components.login-page.queries :as queries]
+   [mftickets-web.components.login-page.handlers :as handlers]
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.form :as components.form]))
 
@@ -10,7 +11,8 @@
   [components.input/input
    {:label "Email"
     :value (-> state queries/email-input-state :value)
-    :on-change (fn [x] (reduce! #(assoc-in % [:inputs :email :value] x)))}])
+    :on-change (fn [x] (reduce! #(assoc-in % [:inputs :email :value] x)))
+    :disabled (queries/email-has-been-submited-sucessfully? state)}])
 
 (defn- key-input
   "And input for the key."
@@ -20,10 +22,11 @@
 
 (defn- form
   "A form for the email and key inputs."
-  [{:keys [state]} & children]
+  [{:keys [state] :as props} & children]
   [components.form/form
    {:is-loading? (-> state queries/email-submission-current-state #{:ongoing} boolean)
-    :button-text "Submit!"}
+    :button-text "Submit!"
+    :on-submit (handlers/email-submit props)}
    children])
 
 (defn login-page

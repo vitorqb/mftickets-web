@@ -5,7 +5,8 @@
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
    [accountant.core :as accountant]
-   [mftickets-web.instances.login-page :as instances.login-page]))
+   [mftickets-web.instances.login-page :as instances.login-page]
+   [mftickets-web.http :as http]))
 
 ;; -------------------------
 ;; Routes
@@ -27,11 +28,14 @@
 ;; -------------------------
 ;; Page components
 (defonce app-state (atom {}))
+(def http {:send-key http/send-key})
 
 (defn home-page []
   (fn []
     [:div.main
-     [instances.login-page/login-page-instance {:app-state app-state}]]))
+     [instances.login-page/login-page-instance
+      {:app-state app-state
+       :http http}]]))
 
 (defn items-page []
   (fn []
