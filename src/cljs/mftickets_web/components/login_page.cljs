@@ -19,15 +19,15 @@
   "A form for the email and key inputs."
   [{:keys [state]} & children]
   [components.form/form
-   {:is-loading? (-> state queries/email-submission-current-state #{:ongoing} boolean)}
+   {:is-loading? (-> state queries/email-submission-current-state #{:ongoing} boolean)
+    :button-text "Submit!"}
    children])
 
 (defn login-page
   "Initial page used for login."
   [{:keys [state reduce!] :as props}]
   [:div.login-page
-   [:h3.heading-tertiary
-    "Log in"]
+   [:h3.heading-tertiary "Log in"]
    [form props
     ^{:key 1} [email-input]
     ^{:key 2} [key-input]]])

@@ -14,3 +14,19 @@
     (let [props {:is-loading? true}]
       (is (= [sut/form-wrapper-loading-div-class]
              (sut/get-loading-div-class props))))))
+
+
+(deftest test-submit-handler
+
+  (testing "Calls preventDefault"
+    (let [called? (atom false)
+          event (clj->js {:preventDefault #(reset! called? true)})
+          handler (sut/on-submit-handler {})]
+      (handler event)
+      (is (= true @called?))))
+
+  (testing "Calls on-submit"
+    (let [on-submit (constantly ::foo)
+          event (clj->js {:preventDefault (constantly nil)})
+          handler (sut/on-submit-handler {:on-submit on-submit})]
+      (is (= ::foo (handler event))))))
