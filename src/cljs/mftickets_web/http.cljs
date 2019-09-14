@@ -26,6 +26,11 @@
      "/api/login/get-token"
      (assoc base-request :edn-params params))))
 
+(defn get-token-from-cookies
+  "Makes a get request for retrieving a token"
+  [_]
+  #(http/get "/api/login/get-token"))
+
 (defn ping
   "Makes a ping post request"
   [{:keys [token]}]

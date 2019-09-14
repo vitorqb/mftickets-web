@@ -5,6 +5,7 @@
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
    [accountant.core :as accountant]
+   [cljs.core.async :as async]
    [mftickets-web.instances.login-page :as instances.login-page]
    [mftickets-web.instances.header :as instances.header]
    [mftickets-web.http :as http]
@@ -99,7 +100,16 @@
 
 ;; -------------------------
 ;; Initialize app
+(defn maybe-try-to-set-token-from-cookies!
+  "Tries to set token from cookies, if token is not already set."
+  []
+  (when-not (:token @app-state)
+    (async/go
+      (if-let [token (some-> ((http/get-token-from-cookies {})) async/<! :body :token :value)]
+        (swap! app-state assoc :token token)))))
+
 (defn mount-root []
+  (maybe-try-to-set-token-from-cookies!)
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
