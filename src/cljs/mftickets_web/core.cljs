@@ -39,11 +39,13 @@
     :ping http/ping}
    app-state))
 
-(def message-handler
-  (messages/message-handler {:app-state app-state}))
+(def messages
+  (messages/messages-getter
+   {:update-token messages/m-update-token}
+   app-state))
 
 (def injections
-  {:app-state app-state :http http :send-message! message-handler})
+  {:app-state app-state :http http :messages messages})
 
 (defn home-page []
   (fn []
