@@ -3,7 +3,7 @@
    [cljs-http.client :as http]))
 
 (def base-request
-  {:with-credentials? false
+  {:with-credentials? true
    :accept "application/json"})
 
 (defn wrap-auth
@@ -15,7 +15,7 @@
   [_]
   (fn i-send-key [params]
     (http/post
-     "http://127.0.0.1:3000/api/login/send-key"
+     "/api/login/send-key"
      (assoc base-request :edn-params params))))
 
 (defn get-token
@@ -23,7 +23,7 @@
   [_]
   (fn i-get-token [params]
     (http/post
-     "http://127.0.0.1:3000/api/login/get-token"
+     "/api/login/get-token"
      (assoc base-request :edn-params params))))
 
 (defn ping
@@ -31,7 +31,7 @@
   [{:keys [token]}]
   (fn i-ping []
     (http/get
-     "http://127.0.0.1:3000/api/ping"
+     "/api/ping"
      (-> base-request (wrap-auth token)))))
 
 (defn http-getter
