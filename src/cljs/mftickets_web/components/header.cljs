@@ -1,6 +1,7 @@
 (ns mftickets-web.components.header
   (:require
-   [mftickets-web.components.life-prober :as components.life-prober]))
+   [mftickets-web.components.life-prober :as components.life-prober]
+   [mftickets-web.components.header.handlers :as handlers]))
 
 (def base-class "header")
 
@@ -12,8 +13,14 @@
     [components.life-prober/life-prober
      (assoc props :state -state :reduce! -reduce!)]))
 
+(defn- router-btn
+  "A button used to display the router dialog."
+  [props]
+  [:button {:on-click (handlers/display-router props)} "Router"])
+
 (defn header
   "The header of the app."
   [props]
   [:header {:class [base-class]}
-   [life-prober props]])
+   [life-prober props]
+   [router-btn props]])

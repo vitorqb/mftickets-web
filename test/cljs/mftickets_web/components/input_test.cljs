@@ -17,6 +17,18 @@
           event (clj->js {:target {:value "FOO"}})]
       (is (= "FOO" (handler event))))))
 
+(deftest test-on-key-up-handler
+
+  (testing "Nil if no `on-key-up`"
+    (let [handler (sut/on-key-up-handler {})]
+      (is (nil? (handler {})))))
+
+  (testing "Calls handler with key"
+    (let [key "ArrowUp"
+          event (clj->js {:key key})
+          handler (sut/on-key-up-handler {:on-key-up identity})]
+      (is (= "ArrowUp" (handler event))))))
+
 (deftest test-label-span
 
   (testing "With nil"

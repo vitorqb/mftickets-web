@@ -17,3 +17,11 @@
       (is (= {::sut/life-prober {::foo ::bar}}
              (life-prober-reduce! (constantly {::foo ::bar})))))))
 
+
+(deftest test-router-btn
+
+  (testing "Calls display-router-dialog."
+    (let [messages {:display-router-dialog (constantly ::foo)}
+          props {:messages messages}
+          on-click (-> props sut/router-btn second :on-click)]
+      (is (= ::foo (on-click))))))

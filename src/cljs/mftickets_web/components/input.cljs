@@ -11,6 +11,13 @@
     (when on-change
       (-> event .-target .-value on-change))))
 
+(defn- on-key-up-handler
+  "Returns a handler for `on-key-up`."
+  [{:keys [on-key-up]}]
+  (fn [event]
+    (when on-key-up
+      (-> event .-key on-key-up))))
+
 (defn label-span
   "A span with the label, if any."
   [label]
@@ -20,10 +27,11 @@
 
 (defn html-input
   "An input html component."
-  [{:keys [value disabled] :as props}]
+  [{:keys [value disabled id on-key-up] :as props}]
   [:input
    {:class base-html-input-class
     :on-change (on-change-handler props)
+    :on-key-up (on-key-up-handler props)
     :value (or value "")
     :disabled (or disabled false)}])
 

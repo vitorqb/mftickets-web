@@ -8,6 +8,7 @@
    [cljs.core.async :as async]
    [mftickets-web.instances.login-page :as instances.login-page]
    [mftickets-web.instances.header :as instances.header]
+   [mftickets-web.instances.router-dialog :as instances.router-dialog]
    [mftickets-web.http :as http]
    [mftickets-web.messages :as messages]))
 
@@ -42,7 +43,8 @@
 
 (def messages
   (messages/messages-getter
-   {:update-token messages/m-update-token}
+   {:update-token messages/m-update-token
+    :display-router-dialog messages/m-display-router-dialog}
    app-state))
 
 (def injections
@@ -51,7 +53,6 @@
 (defn home-page []
   (fn []
     [:div.main
-     [instances.header/header-instance injections]
      (if-let [token (:token @app-state)]
        [:div "You are logged in!"]
        [instances.login-page/login-page-instance injections])]))
@@ -94,7 +95,8 @@
   (fn []
     (let [page (:current-page (session/get :route))]
       [:div
-       [:header]
+       [instances.router-dialog/router-dialog-instance injections]
+       [:header [instances.header/header-instance injections]]
        [page]
        [:footer]])))
 
