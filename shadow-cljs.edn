@@ -8,7 +8,9 @@
   [cider/cider-nrepl "0.22.2"]
   [cider/piggieback "0.4.1"]
   [refactor-nrepl "2.5.0-SNAPSHOT"]
-  [cljs-http "0.1.46"]]
+  [cljs-http "0.1.46"]
+  [binaryage/devtools "0.9.10"]
+  [com.rpl/specter "1.1.2"]]
  
  :builds {:app {:target     :browser
                 :output-dir "resources/public/js"
