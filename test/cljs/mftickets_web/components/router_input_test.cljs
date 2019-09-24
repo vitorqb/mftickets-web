@@ -12,11 +12,12 @@
       (is (= "Foo" value))))
 
   (testing "Passes on-change"
-    (let [state (-> {} ((reducers/set-input-value "Foo")) atom)
+    (let [init-state (-> {} ((reducers/set-input-value "Foo")))
+          state (atom init-state)
           props {:state state}
-          on-change (-> props sut/input second :on-change)]
-      (is (= ((reducers/set-input-value "Bar") @state)
-             (on-change "Bar"))))))
+          on-change (-> props sut/input second :events :on-change->)]
+      (on-change "Bar")
+      (is (= ((reducers/set-input-value "Bar") init-state) @state)))))
 
 (deftest option-el
 

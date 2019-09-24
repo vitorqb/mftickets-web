@@ -5,7 +5,8 @@
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.router-input.queries :as queries]
    [mftickets-web.components.router-input.reducers :as reducers]
-   [mftickets-web.components.router-input.handlers :as handlers]))
+   [mftickets-web.components.router-input.handlers :as handlers]
+   [mftickets-web.events :as events]))
 
 (def base-class "router-input")
 (def options-list-class (str base-class "__options-list"))
@@ -39,8 +40,9 @@
   [{:keys [state] :as props}]
   [components.input/input
    {:value (queries/input-value @state)
-    :on-change #(swap! state (reducers/set-input-value %))
-    :on-key-up (handlers/on-input-key-up props)}])
+    :events {:on-change-> #(->> % (handlers/on-input-change props) (events/react! props))
+             :on-key-up-> #(->> % (handlers/on-input-key-up props) (events/react! props))}
+    :parent-react! #(events/react! props %)}])
 
 (defn- option-el
   "An element representing an option inside an options list."

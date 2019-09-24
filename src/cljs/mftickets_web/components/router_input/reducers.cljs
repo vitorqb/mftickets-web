@@ -22,3 +22,10 @@
   "Updates history to select previous option."
   (fn [state]
     (update-selection-history state #(domain.selector/select-previous matching-options %))))
+
+(defn select-from-key [matching-options key]
+  "Selects next, previous or current from a pressed key."
+  (case key
+    "ArrowUp"   (select-previous matching-options)
+    "ArrowDown" (select-next matching-options)
+    identity))

@@ -1,8 +1,11 @@
 (ns mftickets-web.components.dialog.handlers
   (:require
-   [mftickets-web.components.dialog.reducers :as reducers]))
+   [mftickets-web.components.dialog.reducers :as reducers]
+   [mftickets-web.events :as events]
+   [mftickets-web.events.protocols :as events.protocols]))
 
 (defn close
-  "Handler for closing the router dialog."
-  [{:keys [state]}]
-  (fn [] (swap! state (reducers/set-disabled? true))))
+  "Event for closing the router dialog."
+  []
+  (reify events.protocols/PEvent
+    (reduce! [_] (reducers/set-disabled? true))))

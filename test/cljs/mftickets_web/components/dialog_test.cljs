@@ -22,5 +22,5 @@
     (let [state (atom {})
           props {:state state}
           on-click (-> props sut/close-btn second :on-click)]
-      (is (= ((reducers/set-disabled? true) {})
-             (on-click))))))
+      (on-click {})
+      (is (= ((reducers/set-disabled? true) {}) @state)))))

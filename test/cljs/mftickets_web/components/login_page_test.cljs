@@ -2,17 +2,19 @@
   (:require [mftickets-web.components.login-page :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.components.login-page.queries :as queries]
-            [mftickets-web.components.login-page.reducers :as reducers]))
+            [mftickets-web.components.login-page.reducers :as reducers]
+            [mftickets-web.events.protocols :as events.protocols]
+            [mftickets-web.events :as events]))
 
 (deftest email-input
 
   (testing "Set's state at change"
     (let [state (atom {})
           props {:state state}
-          on-change (-> props sut/email-input second :on-change)
-          new-state (on-change "vitorqb@gmail.com")]
+          on-change-> (-> props sut/email-input (get-in [1 :events :on-change->]))]
+      (events/react! {:state state} (on-change-> "vitorqb@gmail.com"))
       (is (= {:value "vitorqb@gmail.com"}
-             (queries/email-input-state new-state)))))
+             (queries/email-input-state @state)))))
 
   (testing "Passes value"
     (let [state (atom {:inputs {:email {:value "Foo"}}})

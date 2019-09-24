@@ -5,7 +5,8 @@
    [mftickets-web.components.login-page.reducers :as reducers]
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.form :as components.form]
-   [mftickets-web.components.message-box :as components.message-box]))
+   [mftickets-web.components.message-box :as components.message-box]
+   [mftickets-web.events :as events]))
 
 ;; Helpers
 (defn- get-form-submit-handler
@@ -18,11 +19,12 @@
 ;; Components
 (defn- email-input
   "An input for an email."
-  [{:keys [state]}]
+  [{:keys [state] :as props}]
   [components.input/input
    {:label "Email"
     :value (-> @state queries/email-input-state :value)
-    :on-change #(swap! state (reducers/set-email-value %))
+    :events {:on-change-> handlers/email-change}
+    :parent-react! #(events/react! props %)
     :disabled (queries/email-has-been-submited-sucessfully? @state)}])
 
 (defn- key-input
@@ -40,7 +42,7 @@
   [components.form/form
    {:is-loading? (-> @state queries/email-submission-current-state #{:ongoing} boolean)
     :button-text "Submit!"
-    :on-submit (get-form-submit-handler props)}
+    :on-submit #(->> (get-form-submit-handler props) (events/react! props))}
    children])
 
 (defn- msg-box

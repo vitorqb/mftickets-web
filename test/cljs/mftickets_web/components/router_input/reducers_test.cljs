@@ -25,3 +25,16 @@
         new-state (reducer state)]
     (is (= ["Foo" "Bar"]
            (queries/selection-history new-state)))))
+
+(deftest test-select-from-key
+
+  (testing "ArrowUp"
+    (with-redefs [sut/select-previous identity]
+      (is (= (sut/select-from-key ::foo "ArrowUp") ::foo))))
+
+  (testing "ArrowDown"
+    (with-redefs [sut/select-next identity]
+      (is (= (sut/select-from-key ::foo "ArrowDown") ::foo))))
+
+  (testing "None"
+    (is (= (sut/select-from-key ::foo "UNKOWN") identity))))

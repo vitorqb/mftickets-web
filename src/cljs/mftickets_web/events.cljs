@@ -7,7 +7,7 @@
   "Reacts to an event."
   [{:keys [state parent-react!] :as props} event]
   {:pre [(or (nil? event) (satisfies? p/PEvent event))
-         (satisfies? ISwap state)]}
+         (or (satisfies? IAtom state) (satisfies? ISwap state) (nil? state))]}
   (js/console.log "Received event:")
   (js/console.log event)
   (when event

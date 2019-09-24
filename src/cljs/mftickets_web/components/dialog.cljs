@@ -2,7 +2,8 @@
   (:require
    [mftickets-web.components.dialog.queries :as queries]
    [mftickets-web.components.dialog.reducers :as reducers]
-   [mftickets-web.components.dialog.handlers :as handlers]))
+   [mftickets-web.components.dialog.handlers :as handlers]
+   [mftickets-web.events :as events]))
 
 (def base-class "dialog")
 (def base-disabled-modifier (str base-class "--disabled"))
@@ -21,7 +22,9 @@
 (defn- close-btn
   "A button to close the dialog."
   [props]
-  [:button {:class close-btn-class :on-click (handlers/close props)} "X"])
+  [:button {:class close-btn-class
+            :on-click #(->> (handlers/close) (events/react! props))}
+   "X"])
 
 (defn dialog
   "A dialog component."
