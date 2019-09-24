@@ -20,12 +20,12 @@
 (defn- get-selected-el-index
   "Returns the index for the currently selected option."
   [{:router-input/keys [matching-options] :keys [state]}]
-  (->> state queries/selection-history (domain.selector/get-selected-el-index matching-options)))
+  (->> @state queries/selection-history (domain.selector/get-selected-el-index matching-options)))
 
 (defn- get-matching-options
   "Returns the matching options given the current value."
   [{:router-input/keys [options] :keys [state]}]
-  (->> state queries/input-value (matching-options options)))
+  (->> @state queries/input-value (matching-options options)))
 
 (defn- extend-props
   "Returns the props with the added values."
@@ -36,10 +36,10 @@
 
 (defn- input
   "A wrapper around an input, where the user types to select a route."
-  [{:keys [state reduce!] :as props}]
+  [{:keys [state] :as props}]
   [components.input/input
-   {:value (queries/input-value state)
-    :on-change #(reduce! (reducers/set-input-value %))
+   {:value (queries/input-value @state)
+    :on-change #(swap! state (reducers/set-input-value %))
     :on-key-up (handlers/on-input-key-up props)}])
 
 (defn- option-el
@@ -50,7 +50,7 @@
 
 (defn- options-list
   "A div with a list of options that matches the current input."
-  [{:router-input/keys [matching-options selected-el-index] :keys [state] :as props}]
+  [{:router-input/keys [matching-options selected-el-index] :as props}]
   [:div {:class options-list-class}
    (for [[option i] (map vector matching-options (range))
          :let [props {::selected? (= i selected-el-index) ::option option}]]

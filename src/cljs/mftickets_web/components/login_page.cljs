@@ -11,34 +11,34 @@
 (defn- get-form-submit-handler
   "Returns a handler for the form submit depending on current props."
   [{:keys [state] :as props}]
-  (if (queries/email-has-been-submited-sucessfully? state)
+  (if (queries/email-has-been-submited-sucessfully? @state)
     (with-meta (handlers/key-submit props) {::key-submit true})
     (with-meta (handlers/email-submit props) {::email-submit true})))
 
 ;; Components
 (defn- email-input
   "An input for an email."
-  [{:keys [state reduce!]}]
+  [{:keys [state]}]
   [components.input/input
    {:label "Email"
-    :value (-> state queries/email-input-state :value)
-    :on-change #(reduce! (reducers/set-email-value %))
-    :disabled (queries/email-has-been-submited-sucessfully? state)}])
+    :value (-> @state queries/email-input-state :value)
+    :on-change #(swap! state (reducers/set-email-value %))
+    :disabled (queries/email-has-been-submited-sucessfully? @state)}])
 
 (defn- key-input
   "And input for the key."
-  [{:keys [state reduce!]}]
-  (when (queries/email-has-been-submited-sucessfully? state)
+  [{:keys [state]}]
+  (when (queries/email-has-been-submited-sucessfully? @state)
     [components.input/input
      {:label "Key"
-      :value (-> state queries/key-input-state :value)
-      :on-change #(reduce! (reducers/set-key-value %))}]))
+      :value (-> @state queries/key-input-state :value)
+      :on-change #(swap! state (reducers/set-key-value %))}]))
 
 (defn- form
   "A form for the email and key inputs."
   [{:keys [state] :as props} & children]
   [components.form/form
-   {:is-loading? (-> state queries/email-submission-current-state #{:ongoing} boolean)
+   {:is-loading? (-> @state queries/email-submission-current-state #{:ongoing} boolean)
     :button-text "Submit!"
     :on-submit (get-form-submit-handler props)}
    children])
@@ -46,7 +46,7 @@
 (defn- msg-box
   "A message box with information for the user."
   [{:keys [state]}]
-  (if-let [message (queries/user-message state)]
+  (if-let [message (queries/user-message @state)]
     [components.message-box/message-box
      {:message message}]))
 

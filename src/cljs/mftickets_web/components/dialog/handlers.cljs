@@ -4,5 +4,5 @@
 
 (defn close
   "Handler for closing the router dialog."
-  [{:keys [reduce!]}]
-  (fn [] (reduce! (reducers/set-disabled? true))))
+  [{:keys [state]}]
+  (fn [] (swap! state (reducers/set-disabled? true))))

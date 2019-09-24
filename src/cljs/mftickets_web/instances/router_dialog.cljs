@@ -2,10 +2,8 @@
   (:require
    [mftickets-web.components.router-dialog :as components.router-dialog]
    [mftickets-web.components.dialog :as components.dialog]
-   [mftickets-web.components.router-input :as components.router-input]))
-
-(defn- get-state [app-state] (get @app-state ::state))
-(defn- mk-reduce [app-state] #(swap! app-state update ::state %))
+   [mftickets-web.components.router-input :as components.router-input]
+   [mftickets-web.state :as state]))
 
 ;; !!!! TODO -> Give real options
 (def options
@@ -20,8 +18,7 @@
   [{:keys [app-state http messages]}]
   [components.router-dialog/router-dialog
    {:router-dialog/options options
-    :state      (get-state app-state)
-    :reduce!    (mk-reduce app-state)
+    :state      (state/->FocusedAtom app-state [::state])
     :http       http
     :messages   messages
     :components {:dialog components.dialog/dialog

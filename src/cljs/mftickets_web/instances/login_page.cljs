@@ -1,14 +1,11 @@
 (ns mftickets-web.instances.login-page
   (:require
-   [mftickets-web.components.login-page :as components.login-page]))
-
-(defn- get-state [app-state] (get @app-state ::state))
-(defn- mk-reduce [app-state] #(swap! app-state update ::state %))
+   [mftickets-web.components.login-page :as components.login-page]
+   [mftickets-web.state :as state]))
 
 (defn login-page-instance
   [{:keys [app-state http messages]}]
   [components.login-page/login-page
-   {:state   (get-state app-state)
-    :reduce! (mk-reduce app-state)
+   {:state   (state/->FocusedAtom app-state [::state])
     :http    http
     :messages messages}])

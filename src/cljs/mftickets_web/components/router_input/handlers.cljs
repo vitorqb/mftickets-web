@@ -5,9 +5,9 @@
 
 (defn on-input-key-up
   "A handler for a key press when the input is selected."
-  [{:keys [reduce!] :router-input/keys [matching-options]}]
+  [{:keys [state] :router-input/keys [matching-options]}]
   (fn [key]
     (case key
-      "ArrowDown" (reduce! (reducers/select-next matching-options))
-      "ArrowUp"   (reduce! (reducers/select-previous matching-options))
+      "ArrowDown" (swap! state (reducers/select-next matching-options))
+      "ArrowUp"   (swap! state (reducers/select-previous matching-options))
       nil)))

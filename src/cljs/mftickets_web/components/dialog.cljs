@@ -14,13 +14,13 @@
 (defn- get-class
   "Returns the class for a dialog given it's props."
   [{:keys [state]}]
-  (let [disabled? (queries/disabled? state)]
+  (let [disabled? (queries/disabled? @state)]
     (cond-> [base-class]
       disabled? (conj base-disabled-modifier))))
 
 (defn- close-btn
   "A button to close the dialog."
-  [{:keys [state] :as props}]
+  [props]
   [:button {:class close-btn-class :on-click (handlers/close props)} "X"])
 
 (defn dialog

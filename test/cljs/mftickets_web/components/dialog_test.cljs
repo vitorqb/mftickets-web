@@ -7,11 +7,11 @@
 (deftest test-get-class
 
   (testing "Not disabled"
-    (let [state (-> {} ((reducers/set-disabled? false)))]
+    (let [state (-> {} ((reducers/set-disabled? false)) atom)]
       (is (= [sut/base-class] (sut/get-class {:state state})))))
 
   (testing "Disabled"
-    (let [state (-> {} ((reducers/set-disabled? true)))]
+    (let [state (-> {} ((reducers/set-disabled? true)) atom)]
       (is (= [sut/base-class sut/base-disabled-modifier]
              (sut/get-class {:state state}))))))
 
@@ -19,9 +19,8 @@
 (deftest close-btn
 
   (testing "Set's disabled on click."
-    (let [state {}
-          reduce! (fn [f] (f state))
-          props {:state state :reduce! reduce!}
+    (let [state (atom {})
+          props {:state state}
           on-click (-> props sut/close-btn second :on-click)]
       (is (= ((reducers/set-disabled? true) {})
              (on-click))))))

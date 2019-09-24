@@ -6,17 +6,16 @@
 (deftest test-input
 
   (testing "Passes value"
-    (let [state (-> {} ((reducers/set-input-value "Foo")))
+    (let [state (-> {} ((reducers/set-input-value "Foo")) atom)
           props {:state state}
           value (-> props sut/input second :value)]
       (is (= "Foo" value))))
 
   (testing "Passes on-change"
-    (let [state (-> {} ((reducers/set-input-value "Foo")))
-          reduce! (fn [f] (f state))
-          props {:state state :reduce! reduce!}
+    (let [state (-> {} ((reducers/set-input-value "Foo")) atom)
+          props {:state state}
           on-change (-> props sut/input second :on-change)]
-      (is (= ((reducers/set-input-value "Bar") state)
+      (is (= ((reducers/set-input-value "Bar") @state)
              (on-change "Bar"))))))
 
 (deftest option-el

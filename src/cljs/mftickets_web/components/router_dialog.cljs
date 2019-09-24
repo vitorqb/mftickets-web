@@ -1,14 +1,15 @@
-(ns mftickets-web.components.router-dialog)
+(ns mftickets-web.components.router-dialog
+  (:require
+   [mftickets-web.state :as state]))
 
 (def body-base-class "router-dialog")
 
 (defn- router-input
   "A wrapper around a router input component."
-  [{:router-dialog/keys [options] :keys [components state reduce!] :as props}]
+  [{:router-dialog/keys [options] :keys [components state] :as props}]
   (let [router-input (:router-input components)
-        -state (::router-input state)
-        -reduce! (fn [reducer] (reduce! #(update % ::router-input reducer)))]
-    [router-input (assoc props :router-input/options options :state -state :reduce! -reduce!)]))
+        -state        (state/->FocusedAtom state [::router-input])]
+    [router-input (assoc props :router-input/options options :state -state)]))
 
 (defn- body
   "The body component for the router dialog."
@@ -18,8 +19,7 @@
 
 (defn router-dialog
   "Provides a dialog for user routing."
-  [{:keys [components state reduce!] :as props}]
+  [{:keys [components state] :as props}]
   (let [dialog   (:dialog components)
-        -state   (::dialog state)
-        -reduce! (fn [reducer] (reduce! #(update % ::dialog reducer)))]
-    [dialog (assoc props :dialog/body-component [body props] :state -state :reduce! -reduce!)]))
+        -state   (state/->FocusedAtom state [::dialog])]
+    [dialog (assoc props :dialog/body-component [body props] :state -state)]))
