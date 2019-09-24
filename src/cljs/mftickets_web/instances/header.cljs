@@ -6,11 +6,10 @@
    [mftickets-web.app.handlers :as handlers]))
 
 (defn header-instance
-  [{:keys [app-state http messages]}]
+  [{:keys [app-state http]}]
   [components.header/header
    {:state   (state/->FocusedAtom app-state [::state])
     :http    http
-    :messages messages
     :events {:display-router-dialog-> handlers/display-router-dialog}
     :parent-react! #(events/react! {:state app-state} %)}])
 

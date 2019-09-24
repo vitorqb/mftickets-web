@@ -9,8 +9,7 @@
    [mftickets-web.instances.login-page :as instances.login-page]
    [mftickets-web.instances.header :as instances.header]
    [mftickets-web.instances.router-dialog :as instances.router-dialog]
-   [mftickets-web.http :as http]
-   [mftickets-web.messages :as messages]))
+   [mftickets-web.http :as http]))
 
 ;; -------------------------
 ;; Routes
@@ -41,14 +40,8 @@
     :ping http/ping}
    app-state))
 
-(def messages
-  (messages/messages-getter
-   {:update-token messages/m-update-token
-    :display-router-dialog messages/m-display-router-dialog}
-   app-state))
-
 (def injections
-  {:app-state app-state :http http :messages messages})
+  {:app-state app-state :http http})
 
 (defn home-page []
   (fn []

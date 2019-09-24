@@ -42,7 +42,7 @@
           state (atom {:email-submission {:response email-submit-response}})]
       (is (not (nil? (sut/key-input {:state state}))))))
 
-  (testing "Passes email value"
+  (testing "Passes key value"
     (let [state (-> {}
                     ((reducers/set-key-value "abc"))
                     ((reducers/after-email-submit {:status 204}))
@@ -54,8 +54,9 @@
   (testing "Sets email value at change"
     (let [state (-> {} ((reducers/after-email-submit {:status 204})) atom)
           props {:state state}
-          on-change (-> props sut/key-input second :on-change)
-          new-state (on-change "FOO")]
+          on-change (-> props sut/key-input second :events :on-change-> (apply ["FOO"]))
+          reducer (events.protocols/reduce! on-change)
+          new-state (reducer @state)]
       (is (= {:value "FOO"}
              (queries/key-input-state new-state))))))
 

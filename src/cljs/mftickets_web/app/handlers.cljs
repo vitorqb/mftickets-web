@@ -9,3 +9,9 @@
   []
   (reify events.protocols/PEvent
     (reduce! [_] (reducers/display-router-dialog))))
+
+(defn update-token
+  "An event to update the current token."
+  [new-token]
+  (reify events.protocols/PEvent
+    (reduce! [_] (reducers/set-token new-token))))

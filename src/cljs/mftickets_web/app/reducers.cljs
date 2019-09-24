@@ -13,3 +13,8 @@
      [::instances.router-dialog/state ::components.router-dialog/dialog]
      (components.dialog.reducers/set-disabled? false)
      state)))
+
+(defn set-token
+  "Set's the current token."
+  [new-token]
+  #(assoc % :token new-token))

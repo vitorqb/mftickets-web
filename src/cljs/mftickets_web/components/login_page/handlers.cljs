@@ -28,15 +28,20 @@
       (run-effects! [_]
         (async/go [(->> {:email email} send-key async/<! email-submit--after)])))))
 
+(defn key-change
+  "Handler for changing the key value."
+  [new-value]
+  (reify events.protocols/PEvent
+    (reduce! [_] (reducers/set-key-value new-value))))
+
 (defn key-submit--after
-  [{{:keys [update-token-msg]} :messages} response]
+  [{{:keys [update-token->]} :events} response]
 
   (reify events.protocols/PEvent
 
     (reduce! [_] (reducers/after-key-submit response))
 
-    (run-effects! [_] (do (-> response :body :value update-token-msg)
-                          nil))))
+    (propagate! [_] [(-> response :body :token update-token->)])))
 
 (defn key-submit
   "Handler to submit a key."

@@ -15,11 +15,10 @@
    {:label "Some crazy router here" :ref "#"}])
 
 (defn router-dialog-instance
-  [{:keys [app-state http messages]}]
+  [{:keys [app-state http]}]
   [components.router-dialog/router-dialog
    {:router-dialog/options options
     :state      (state/->FocusedAtom app-state [::state])
     :http       http
-    :messages   messages
     :components {:dialog components.dialog/dialog
                  :router-input components.router-input/router-input}}])
