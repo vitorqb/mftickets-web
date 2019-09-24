@@ -1,7 +1,9 @@
 (ns mftickets-web.components.life-prober
   (:require
    [mftickets-web.components.life-prober.queries :as queries]
-   [mftickets-web.components.life-prober.handlers :as handlers]))
+   [mftickets-web.components.life-prober.handlers :as handlers]
+   [mftickets-web.events :as events]
+   [mftickets-web.events.protocols :as events.protocols]))
 
 (def base-class "life-prober")
 (def label-class (str base-class "__label"))
@@ -32,7 +34,7 @@
   [props]
   [:button
    {:class button-class
-    :on-click (handlers/ping props)}
+    :on-click #(->> (handlers/ping props) (events/react! props))}
    "Probe Life"])
 
 (defn life-prober
