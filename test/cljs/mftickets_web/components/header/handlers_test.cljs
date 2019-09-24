@@ -4,9 +4,6 @@
             [mftickets-web.events.protocols :as events.protocols]))
 
 (deftest test-display-router
-  (let [call-count (atom 0)
-        display-router-dialog #(swap! call-count inc)
-        props {:messages {:display-router-dialog display-router-dialog}}
+  (let [props {:events {:display-router-dialog-> (constantly ::foo)}}
         event (sut/display-router props)]
-    (is (nil? (events.protocols/run-effects! event)))
-    (is (= 1 @call-count))))
+    (is (= [::foo] (events.protocols/propagate! event)))))

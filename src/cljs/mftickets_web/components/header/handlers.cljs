@@ -3,7 +3,7 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defn display-router [{{:keys [display-router-dialog]} :messages}]
+(defn display-router [{{:keys [display-router-dialog->]} :events}]
   (reify events.protocols/PEvent
-    (run-effects! [_] (do (display-router-dialog) nil))))
+    (propagate! [_] [(display-router-dialog->)])))
 
