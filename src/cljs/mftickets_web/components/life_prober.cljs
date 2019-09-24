@@ -8,7 +8,6 @@
 (def button-class (str base-class "__button"))
 (def status-displayer-wrapper-class (str base-class "__status-displayer-wrapper"))
 (def status-displayer-class (str base-class "__status-displayer"))
-
 (def status-displayer-class-live-modifier (str status-displayer-class "--live"))
 (def status-displayer-class-dead-modifier (str status-displayer-class "--dead"))
 (def status-displayer-class-unknown-modifier (str status-displayer-class "--unknown"))
@@ -17,7 +16,7 @@
   [{:keys [state]}]
   (conj
    [status-displayer-class]
-   (case (queries/status state)
+   (case (queries/status @state)
      :live status-displayer-class-live-modifier
      :dead status-displayer-class-dead-modifier
      :unknown status-displayer-class-unknown-modifier)))
@@ -38,7 +37,7 @@
 
 (defn life-prober
   "A small component used to ping the server and check we are alive."
-  [{:keys [state reduce! http] :as props}]
+  [props]
   [:div {:class [base-class]}
    [ping-button props]
    [status-displayer props]])

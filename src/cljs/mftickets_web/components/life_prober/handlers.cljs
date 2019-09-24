@@ -6,9 +6,8 @@
 
 (defn ping
   "Handler to ping the server and set the status."
-  [{:keys [state reduce! http]}]
-  (let [ping! (:ping http)]
-    (fn h-ping []
-      (reduce! (reducers/before-ping))
-      (async/go (-> (ping!) async/<! reducers/after-ping reduce!)))))
+  [{{:keys [ping]} :http :keys [state]}]
+  (fn h-ping []
+    (swap! state (reducers/before-ping))
+    (async/go (->> (ping) async/<! reducers/after-ping (swap! state)))))
 
