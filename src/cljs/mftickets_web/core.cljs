@@ -7,6 +7,7 @@
    [accountant.core :as accountant]
    [cljs.core.async :as async]
    [mftickets-web.instances.login-page :as instances.login-page]
+   [mftickets-web.instances.templates-page :as instances.templates-page]
    [mftickets-web.instances.header :as instances.header]
    [mftickets-web.instances.router-dialog :as instances.router-dialog]
    [mftickets-web.http :as http]))
@@ -20,7 +21,8 @@
     ["/items"
      ["" :items]
      ["/:item-id" :item]]
-    ["/about" :about]]))
+    ["/about" :about]
+    ["/templates" :templates]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -79,6 +81,7 @@
   (case route
     :index #'home-page
     :about #'about-page
+    :templates #'instances.templates-page/templates-page-instance
     :items #'items-page
     :item #'item-page))
 
