@@ -8,8 +8,9 @@
   [{:keys [state parent-react!] :as props} event]
   {:pre [(or (nil? event) (satisfies? p/PEvent event))
          (or (satisfies? IAtom state) (satisfies? ISwap state) (nil? state))]}
-  (js/console.log "Received event:")
-  (js/console.log event)
+  (js/console.log "Received eventstate:")
+  (js/console.log {:event event :state state})
+  
   (when event
     
     ;; Reduces the component's state.
