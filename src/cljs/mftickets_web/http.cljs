@@ -39,6 +39,16 @@
      "/api/ping"
      (-> base-request (wrap-auth token)))))
 
+(defn get-templates
+  "Makes a get requests for the templates."
+  [{:keys [token]}]
+  (fn i-get-templates [{:keys [project-id]}]
+    (http/get
+     "/api/templates"
+     (-> base-request
+         (wrap-auth token)
+         (assoc :query-params {:project-id project-id})))))
+
 (defn http-getter
   "Prepares a lookable object for http functions.
   `http-fns` is a map where each value is a curried function accepting options.

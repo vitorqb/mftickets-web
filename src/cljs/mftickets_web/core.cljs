@@ -39,7 +39,8 @@
   (http/http-getter
    {:send-key http/send-key
     :get-token http/get-token
-    :ping http/ping}
+    :ping http/ping
+    :get-templates http/get-templates}
    app-state))
 
 (def injections
@@ -73,6 +74,8 @@
   (fn [] [:span.main
           [:h1 "About mftickets-web"]]))
 
+(defn templates-page [] [instances.templates-page/templates-page-instance injections])
+
 ;; -------------------------
 ;; Routing
 (defn page-for
@@ -81,7 +84,7 @@
   (case route
     :index #'home-page
     :about #'about-page
-    :templates #'instances.templates-page/templates-page-instance
+    :templates #'templates-page
     :items #'items-page
     :item #'item-page))
 
