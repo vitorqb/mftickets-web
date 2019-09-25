@@ -30,3 +30,12 @@
       (is (= [:div {:class [sut/option-base-class sut/option-selected-modifier]}
               [:a {:href "Bar"} "Foo"]]
              (sut/option-el {::sut/selected? true ::sut/option option}))))))
+
+(deftest test-get-selected-option
+
+  (let [matching-options [{:label "Foo" :href "1"} {:label "Bar" :href "2"}]
+        selected-el-index 1
+        props {:router-input/matching-options matching-options
+               :router-input/selected-el-index selected-el-index}]
+    (is (= {:label "Bar" :href "2"}
+           (sut/get-selected-option props)))))

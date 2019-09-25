@@ -28,12 +28,18 @@
   [{:router-input/keys [options] :keys [state]}]
   (->> @state queries/input-value (matching-options options)))
 
+(defn- get-selected-option
+  "Returns the selected option given the current state."
+  [{:router-input/keys [matching-options selected-el-index]}]
+  (get (vec matching-options) selected-el-index))
+
 (defn- extend-props
   "Returns the props with the added values."
   [props]
   (as-> props it
       (assoc it :router-input/matching-options (get-matching-options it))
-      (assoc it :router-input/selected-el-index (get-selected-el-index it))))
+      (assoc it :router-input/selected-el-index (get-selected-el-index it))
+      (assoc it :router-input/selected-option (get-selected-option it))))
 
 (defn- input
   "A wrapper around an input, where the user types to select a route."
