@@ -11,5 +11,5 @@
    {:state   (state/->FocusedAtom app-state [::state])
     :http    http
     :events {:display-router-dialog-> handlers/display-router-dialog}
-    :parent-react! #(events/react! {:state app-state} %)}])
+    :parent-props {:state app-state}}])
 

@@ -27,4 +27,4 @@
                  :router-input components.router-input/router-input}
     :events     {:navigate-> handlers/navigate
                  :close-router-dialog-> handlers/close-router-dialog}
-    :parent-react! #(events/react! {:state app-state} %)}])
+    :parent-props {:state app-state}}])

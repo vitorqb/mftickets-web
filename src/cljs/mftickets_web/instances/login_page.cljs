@@ -11,4 +11,4 @@
    {:state         (state/->FocusedAtom app-state [::state])
     :http          http
     :events        {:update-token-> handlers/update-token}
-    :parent-react! #(events/react! {:state app-state} %)}])
+    :parent-props  {:state app-state}}])

@@ -9,16 +9,16 @@
 (defn- router-input
   "A wrapper around a router input component."
   [{:router-dialog/keys [options] :keys [components state] :as props}]
-  (let [router-input (:router-input components)
-        -state       (state/->FocusedAtom state [::router-input])
-        -events      {:close-router-dialog-> #(handlers/close-router-dialog-> props)
+  (let [router-input  (:router-input components)
+        -state        (state/->FocusedAtom state [::router-input])
+        -events       {:close-router-dialog-> #(handlers/close-router-dialog-> props)
                       :navigate-> #(handlers/navigate-> props %)}
-        -parent-react! #(events/react! props %)
-        -props       (assoc props
-                            :router-input/options options
-                            :state -state
-                            :events -events
-                            :parent-react! -parent-react!)]
+        -parent-props props
+        -props        (assoc props
+                             :router-input/options options
+                             :state -state
+                             :events -events
+                             :parent-props -parent-props)]
     [router-input -props]))
 
 (defn- body

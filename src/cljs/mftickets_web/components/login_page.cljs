@@ -24,7 +24,7 @@
    {:label "Email"
     :value (-> @state queries/email-input-state :value)
     :events {:on-change-> handlers/email-change}
-    :parent-react! #(events/react! props %) 
+    :parent-props props
     :disabled (queries/email-has-been-submited-sucessfully? @state)}])
 
 (defn- key-input
@@ -35,7 +35,7 @@
      {:label "Key"
       :value (-> @state queries/key-input-state :value)
       :events {:on-change-> handlers/key-change}
-      :parent-react! #(events/react! props %) }]))
+      :parent-props props}]))
 
 (defn- form
   "A form for the email and key inputs."
