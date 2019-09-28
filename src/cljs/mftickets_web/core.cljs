@@ -6,10 +6,8 @@
    [clerk.core :as clerk]
    [accountant.core :as accountant]
    [cljs.core.async :as async]
-   [mftickets-web.instances.login-page :as instances.login-page]
+   [mftickets-web.instances.current-page :as instances.current-page]
    [mftickets-web.instances.templates-page :as instances.templates-page]
-   [mftickets-web.instances.header :as instances.header]
-   [mftickets-web.instances.router-dialog :as instances.router-dialog]
    [mftickets-web.http :as http]))
 
 ;; -------------------------
@@ -46,12 +44,7 @@
 (def injections
   {:app-state app-state :http http})
 
-(defn home-page []
-  (fn []
-    [:div.main
-     (if-let [token (:token @app-state)]
-       [:div "You are logged in!"]
-       [instances.login-page/login-page-instance injections])]))
+(defn home-page [] [:div.main [:div "You are logged in!"]])
 
 (defn items-page []
   (fn []
@@ -90,14 +83,7 @@
 
 ;; -------------------------
 ;; Page mounting component
-(defn current-page []
-  (fn []
-    (let [page (:current-page (session/get :route))]
-      [:div
-       [instances.router-dialog/router-dialog-instance injections]
-       [:header [instances.header/header-instance injections]]
-       [page]
-       [:footer]])))
+(defn current-page [] [instances.current-page/current-page-instance injections])
 
 ;; -------------------------
 ;; Initialize app
