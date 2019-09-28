@@ -1,0 +1,5 @@
+language: clojure
+services:
+  - xvfb
+install: yarn install && npx shadow-cljs compile test
+script: npx karma start --single-run
