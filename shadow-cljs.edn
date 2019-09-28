@@ -20,4 +20,6 @@
           :test {:target     :karma
                  :output-to  "resources/public/test-build/js/karma-test-build.js"}}
 
- :dev-http {4000 {:root "resources/public"}}}
+ :dev-http {4000 {:root "resources/public"}}
+
+ :nrepl {:port 6500}}
