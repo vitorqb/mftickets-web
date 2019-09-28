@@ -7,8 +7,7 @@
 (deftest test-get-status-displayer-classes
 
   (testing "Base"
-    (let [state (-> {} ((reducers/set-status :live)))
+    (let [state (-> {} ((reducers/set-status :live)) atom)
           props {:state state}]
-      (is (= [sut/status-displayer-class
-              sut/status-displayer-class-live-modifier]
+      (is (= [sut/status-displayer-class sut/status-displayer-class-live-modifier]
              (sut/get-status-displayer-classes props))))))

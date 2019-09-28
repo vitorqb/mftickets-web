@@ -1,0 +1,7 @@
+.router-input {
+    &__option {
+        &--selected {
+            background-color: rgba(salmon, 0.25);
+        }
+    }
+}

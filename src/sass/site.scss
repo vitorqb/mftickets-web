@@ -9,6 +9,8 @@
 @import 'components/message-box';
 @import 'components/header';
 @import 'components/life-prober';
+@import 'components/dialog';
+@import 'components/router-input';
 
 // You can use any sass features, like variables, for instance:
 $font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
@@ -25,9 +27,6 @@ form {
 
 .body-container {
   font-family: $font-stack;
-  max-width: 600px;
-  margin: 0 auto;
-  padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: $base-font-size;
   color: #333;

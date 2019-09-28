@@ -7,9 +7,10 @@
    [accountant.core :as accountant]
    [cljs.core.async :as async]
    [mftickets-web.instances.login-page :as instances.login-page]
+   [mftickets-web.instances.templates-page :as instances.templates-page]
    [mftickets-web.instances.header :as instances.header]
-   [mftickets-web.http :as http]
-   [mftickets-web.messages :as messages]))
+   [mftickets-web.instances.router-dialog :as instances.router-dialog]
+   [mftickets-web.http :as http]))
 
 ;; -------------------------
 ;; Routes
@@ -20,7 +21,8 @@
     ["/items"
      ["" :items]
      ["/:item-id" :item]]
-    ["/about" :about]]))
+    ["/about" :about]
+    ["/templates" :templates]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -37,21 +39,16 @@
   (http/http-getter
    {:send-key http/send-key
     :get-token http/get-token
-    :ping http/ping}
-   app-state))
-
-(def messages
-  (messages/messages-getter
-   {:update-token messages/m-update-token}
+    :ping http/ping
+    :get-templates http/get-templates}
    app-state))
 
 (def injections
-  {:app-state app-state :http http :messages messages})
+  {:app-state app-state :http http})
 
 (defn home-page []
   (fn []
     [:div.main
-     [instances.header/header-instance injections]
      (if-let [token (:token @app-state)]
        [:div "You are logged in!"]
        [instances.login-page/login-page-instance injections])]))
@@ -77,6 +74,8 @@
   (fn [] [:span.main
           [:h1 "About mftickets-web"]]))
 
+(defn templates-page [] [instances.templates-page/templates-page-instance injections])
+
 ;; -------------------------
 ;; Routing
 (defn page-for
@@ -85,6 +84,7 @@
   (case route
     :index #'home-page
     :about #'about-page
+    :templates #'templates-page
     :items #'items-page
     :item #'item-page))
 
@@ -94,7 +94,8 @@
   (fn []
     (let [page (:current-page (session/get :route))]
       [:div
-       [:header]
+       [instances.router-dialog/router-dialog-instance injections]
+       [:header [instances.header/header-instance injections]]
        [page]
        [:footer]])))
 

@@ -1,15 +1,11 @@
-(ns mftickets-web.components.input)
+(ns mftickets-web.components.input
+  (:require
+   [mftickets-web.components.input.handlers :as handlers]
+   [mftickets-web.events :as events]))
 
 (def base-input-wrapper-class "input-wrapper")
 (def base-html-input-class "input-wrapper__input")
 (def base-input-wrapper-label-class "input-wrapper__label")
-
-(defn- on-change-handler
-  "Returns a handler for a change on the input value."
-  [{:keys [on-change]}]
-  (fn [event]
-    (when on-change
-      (-> event .-target .-value on-change))))
 
 (defn label-span
   "A span with the label, if any."
@@ -20,10 +16,11 @@
 
 (defn html-input
   "An input html component."
-  [{:keys [value disabled] :as props}]
+  [{:keys [value disabled id on-key-up] :as props}]
   [:input
    {:class base-html-input-class
-    :on-change (on-change-handler props)
+    :on-change #(->> % (handlers/on-change props) (events/react! props))
+    :on-key-up #(->> % (handlers/on-key-up props) (events/react! props))
     :value (or value "")
     :disabled (or disabled false)}])
 
