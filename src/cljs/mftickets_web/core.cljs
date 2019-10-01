@@ -9,7 +9,11 @@
    [mftickets-web.instances.current-page :as instances.current-page]
    [mftickets-web.instances.templates-page :as instances.templates-page]
    [mftickets-web.instances.projects-page :as instances.projects-page]
-   [mftickets-web.http :as http]))
+   [mftickets-web.instances.edit-project-page :as instances.edit-project-page]
+   [mftickets-web.http :as http]
+   [mftickets-web.app.handlers :as app.handlers]
+   [mftickets-web.app.queries :as app.queries]
+   [mftickets-web.events :as events]))
 
 ;; -------------------------
 ;; Routes
@@ -22,7 +26,8 @@
      ["/:item-id" :item]]
     ["/about" :about]
     ["/templates" :templates]
-    ["/projects" :projects]]))
+    ["/projects" :projects]
+    ["/projects/edit" :edit-projects]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -41,7 +46,9 @@
     :get-token http/get-token
     :ping http/ping
     :get-templates http/get-templates
-    :get-projects http/get-projects}
+    :get-projects http/get-projects
+    :get-app-metadata http/get-app-metadata
+    :edit-project http/edit-project}
    app-state))
 
 (def injections
@@ -72,7 +79,7 @@
 
 (defn templates-page [] [instances.templates-page/templates-page-instance injections])
 (defn projects-page [] [instances.projects-page/projects-page-instance injections])
-
+(defn edit-project-page [] [instances.edit-project-page/edit-project-page-instance injections])
 
 ;; -------------------------
 ;; Routing
@@ -84,6 +91,7 @@
     :about #'about-page
     :templates #'templates-page
     :projects #'projects-page
+    :edit-projects #'edit-project-page
     :items #'items-page
     :item #'item-page))
 
@@ -93,13 +101,14 @@
 
 ;; -------------------------
 ;; Initialize app
-(defn maybe-try-to-set-token-from-cookies!
+(defn- maybe-try-to-set-token-from-cookies!
   "Tries to set token from cookies, if token is not already set."
   []
   (when-not (:token @app-state)
     (async/go
-      (if-let [token (some-> ((http/get-token-from-cookies {})) async/<! :body :token :value)]
-        (swap! app-state assoc :token token)))))
+      (when-let [token (some-> ((http/get-token-from-cookies {})) async/<! :body :token :value)]
+        (let [props {:state app-state :http http}]
+          (events/react! props (app.handlers/update-token props token)))))))
 
 (defn mount-root []
   (maybe-try-to-set-token-from-cookies!)

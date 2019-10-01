@@ -41,7 +41,7 @@
   [:div {:class [form-wrapper-submit-button-container-class]}
    [:input {:class [form-wrapper-submit-button-class]
             :type "submit"
-            :value button-text}]])
+            :value (or button-text "Submit!")}]])
 
 (defn form
   "A wrapper around a css form."

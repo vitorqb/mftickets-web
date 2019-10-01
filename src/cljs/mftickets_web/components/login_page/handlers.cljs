@@ -35,13 +35,13 @@
     (reduce! [_] (reducers/set-key-value new-value))))
 
 (defn key-submit--after
-  [{{:keys [update-token->]} :events} response]
+  [{{:keys [update-token->]} :events :as props} response]
 
   (reify events.protocols/PEvent
 
     (reduce! [_] (reducers/after-key-submit response))
 
-    (propagate! [_] [(-> response :body :token update-token->)])))
+    (propagate! [_] [(->> response :body :token (update-token-> props))])))
 
 (defn key-submit
   "Handler to submit a key."

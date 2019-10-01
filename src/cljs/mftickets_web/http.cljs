@@ -26,6 +26,14 @@
      "/api/login/get-token"
      (assoc base-request :edn-params params))))
 
+(defn get-app-metadata
+  "Makes a post request for retrieving the app metadata"
+  [{:keys [token]}]
+  (fn i-get-app-metadata []
+    (http/get
+     "/api/app-metadata"
+     (-> base-request (wrap-auth token)))))
+
 (defn get-token-from-cookies
   "Makes a get request for retrieving a token"
   [_]
@@ -54,6 +62,17 @@
   [{:keys [token]}]
   (fn i-get-projects []
     (http/get "/api/projects" (-> base-request (wrap-auth token)))))
+
+(defn edit-project
+  "Makes a PUT request for a project."
+  [{:keys [token]}]
+  (fn i-edit-project [{:keys [id] :as edited-project}]
+    (let [params (select-keys edited-project [:name :description])]
+      (http/put
+       (str "/api/projects/" id)
+       (-> base-request
+           (wrap-auth token)
+           (assoc :edn-params params))))))
 
 (defn http-getter
   "Prepares a lookable object for http functions.

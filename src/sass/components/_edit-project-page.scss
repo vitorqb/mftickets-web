@@ -1,0 +1,19 @@
+.edit-project-page {
+
+    position: relative;
+
+    &__project-picker-wrapper {
+        padding-bottom: 25px;
+    }
+
+    &__project-picker-contents {
+        display: inline-block;
+        min-width: 600px;
+        margin-left: 10px;
+    }
+
+    &__loading-wrapper {
+        @include loading-wrapper;
+    }
+    
+}

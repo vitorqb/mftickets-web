@@ -4,6 +4,11 @@
    [mftickets-web.components.router-dialog :as components.router-dialog]
    [mftickets-web.components.dialog.reducers :as components.dialog.reducers]))
 
+(defn set-app-metadata-response
+  "Set's the response for the metadata for the entire app."
+  [app-metadata-response]
+  #(assoc % :app-metadata-response app-metadata-response))
+
 (defn display-router-dialog
   "Updates the app state to display the router dialog."
   []

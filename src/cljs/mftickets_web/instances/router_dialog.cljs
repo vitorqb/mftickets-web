@@ -11,6 +11,7 @@
 (def options
   [{:label "Templates" :href "/templates"}
    {:label "Projects" :href "/projects"}
+   {:label "Projects Edit [Projects]" :href "/projects/edit"}
    {:label "About" :href "/about"}
    {:label "Home" :href "/"}
    {:label "All you need" :href "#"}
