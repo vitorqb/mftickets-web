@@ -9,8 +9,8 @@
 
 ;; !!!! TODO -> Give real options
 (def options
-  [{:label "Template List [Template]" :href "/templates"}
-   {:label "My Projects" :href "#"}
+  [{:label "Templates" :href "/templates"}
+   {:label "Projects" :href "/projects"}
    {:label "About" :href "/about"}
    {:label "Home" :href "/"}
    {:label "All you need" :href "#"}

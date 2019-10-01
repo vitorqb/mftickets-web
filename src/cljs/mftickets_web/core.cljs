@@ -8,6 +8,7 @@
    [cljs.core.async :as async]
    [mftickets-web.instances.current-page :as instances.current-page]
    [mftickets-web.instances.templates-page :as instances.templates-page]
+   [mftickets-web.instances.projects-page :as instances.projects-page]
    [mftickets-web.http :as http]))
 
 ;; -------------------------
@@ -20,7 +21,8 @@
      ["" :items]
      ["/:item-id" :item]]
     ["/about" :about]
-    ["/templates" :templates]]))
+    ["/templates" :templates]
+    ["/projects" :projects]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -38,7 +40,8 @@
    {:send-key http/send-key
     :get-token http/get-token
     :ping http/ping
-    :get-templates http/get-templates}
+    :get-templates http/get-templates
+    :get-projects http/get-projects}
    app-state))
 
 (def injections
@@ -68,6 +71,8 @@
           [:h1 "About mftickets-web"]]))
 
 (defn templates-page [] [instances.templates-page/templates-page-instance injections])
+(defn projects-page [] [instances.projects-page/projects-page-instance injections])
+
 
 ;; -------------------------
 ;; Routing
@@ -78,6 +83,7 @@
     :index #'home-page
     :about #'about-page
     :templates #'templates-page
+    :projects #'projects-page
     :items #'items-page
     :item #'item-page))
 

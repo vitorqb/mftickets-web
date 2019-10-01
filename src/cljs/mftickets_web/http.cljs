@@ -49,6 +49,12 @@
          (wrap-auth token)
          (assoc :query-params {:project-id project-id})))))
 
+(defn get-projects
+  "Makes a get request for the projects of an user."
+  [{:keys [token]}]
+  (fn i-get-projects []
+    (http/get "/api/projects" (-> base-request (wrap-auth token)))))
+
 (defn http-getter
   "Prepares a lookable object for http functions.
   `http-fns` is a map where each value is a curried function accepting options.

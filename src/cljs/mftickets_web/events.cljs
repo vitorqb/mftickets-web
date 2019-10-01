@@ -3,6 +3,10 @@
    [mftickets-web.events.protocols :as p]
    [cljs.core.async :as async]))
 
+(defonce print? (atom false))
+
+(defn- console-log [x] (when @print? (js/console.log x)))
+
 (defn react!
   "Reacts to an event."
   [{:keys [state parent-props!] :as props} event]
@@ -15,7 +19,7 @@
            props* props
            todo   []]
       
-      (js/console.log {:event* event* :props* props* :todo todo})
+      (console-log {:event* event* :props* props* :todo todo})
 
       (cond
 
@@ -37,8 +41,8 @@
 
           ;; Reduces the component's state.
           (when-let [reducer (p/reduce! event*)]
-            (js/console.log "Reducing with")
-            (js/console.log reducer)
+            (console-log "Reducing with")
+            (console-log reducer)
             (swap! (:state props*) reducer))
 
           ;; Propagates and dispatches
@@ -51,10 +55,10 @@
     (doseq [[f props*] @effects-to-call
             :let [effects-chan (f)]
             :when effects-chan]
-      (js/console.log "Effects channel:")
-      (js/console.log effects-chan)
+      (console-log "Effects channel:")
+      (console-log effects-chan)
       (async/go
         (doseq [event* (async/<! effects-chan)]
-          (js/console.log "Received event from channel:")
-          (js/console.log event*)
+          (console-log "Received event from channel:")
+          (console-log event*)
           (react! props* event*))))))
