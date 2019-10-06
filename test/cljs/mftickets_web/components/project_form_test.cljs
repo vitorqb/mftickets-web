@@ -8,7 +8,7 @@
   (testing "Base"
     (let [edited-project {::foo "BAR"}
           props {:project-form/edited-project edited-project}
-          id "id"
+          id :id
           label "label"
           path ::foo
           disabled true

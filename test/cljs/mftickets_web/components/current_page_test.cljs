@@ -1,6 +1,6 @@
 (ns mftickets-web.components.current-page-test
   (:require [mftickets-web.components.current-page :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
+             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-page
 

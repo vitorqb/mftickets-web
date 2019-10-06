@@ -1,0 +1,9 @@
+.create-project-page {
+
+    position: relative;
+
+    &__loading-wrapper {
+        @include loading-wrapper;
+    };
+    
+}

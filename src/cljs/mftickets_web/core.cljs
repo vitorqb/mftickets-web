@@ -10,6 +10,7 @@
    [mftickets-web.instances.templates-page :as instances.templates-page]
    [mftickets-web.instances.projects-page :as instances.projects-page]
    [mftickets-web.instances.edit-project-page :as instances.edit-project-page]
+   [mftickets-web.instances.create-project-page :as instances.create-project-page]
    [mftickets-web.http :as http]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
@@ -27,7 +28,8 @@
     ["/about" :about]
     ["/templates" :templates]
     ["/projects" :projects]
-    ["/projects/edit" :edit-projects]]))
+    ["/projects/edit" :edit-projects]
+    ["/projects/create" :create-projects]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -48,7 +50,8 @@
     :get-templates http/get-templates
     :get-projects http/get-projects
     :get-app-metadata http/get-app-metadata
-    :edit-project http/edit-project}
+    :edit-project http/edit-project
+    :create-project http/create-project}
    app-state))
 
 (def injections
@@ -80,6 +83,8 @@
 (defn templates-page [] [instances.templates-page/templates-page-instance injections])
 (defn projects-page [] [instances.projects-page/projects-page-instance injections])
 (defn edit-project-page [] [instances.edit-project-page/edit-project-page-instance injections])
+(defn create-project-page []
+  [instances.create-project-page/create-project-page-instance injections])
 
 ;; -------------------------
 ;; Routing
@@ -92,6 +97,7 @@
     :templates #'templates-page
     :projects #'projects-page
     :edit-projects #'edit-project-page
+    :create-projects #'create-project-page
     :items #'items-page
     :item #'item-page))
 
