@@ -1,7 +1,15 @@
 .message-box {
 
     text-align: center;
-    background-color: lightcoral;
+    border-radius: 10000px;
+
+    &--error {
+        background-color: lightcoral;
+    }
+
+    &--success {
+        background-color: lightgreen;
+    }
 
     &__message {
     }
