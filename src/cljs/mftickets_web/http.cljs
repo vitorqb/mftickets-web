@@ -74,6 +74,17 @@
            (wrap-auth token)
            (assoc :edn-params params))))))
 
+(defn create-project
+  "Makes a POST request for creating a project."
+  [{:keys [token]}]
+  (fn i-create-project [raw-project]
+    (let [params (select-keys raw-project [:name :description])]
+      (http/post
+       "/api/projects"
+       (-> base-request
+           (wrap-auth token)
+           (assoc :edn-params params))))))
+
 (defn http-getter
   "Prepares a lookable object for http functions.
   `http-fns` is a map where each value is a curried function accepting options.

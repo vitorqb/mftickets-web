@@ -11,12 +11,10 @@
 (def options
   [{:label "Templates" :href "/templates"}
    {:label "Projects" :href "/projects"}
-   {:label "Projects Edit [Projects]" :href "/projects/edit"}
+   {:label "Projects - Edit [Projects]" :href "/projects/edit"}
+   {:label "Projects - Create [Projects]" :href "/projects/create"}
    {:label "About" :href "/about"}
-   {:label "Home" :href "/"}
-   {:label "All you need" :href "#"}
-   {:label "Is love!" :ref "#"}
-   {:label "Some crazy router here" :ref "#"}])
+   {:label "Home" :href "/"}])
 
 (defn router-dialog-instance
   [{:keys [app-state http]}]
