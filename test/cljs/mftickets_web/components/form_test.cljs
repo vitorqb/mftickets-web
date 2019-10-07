@@ -15,6 +15,11 @@
       (is (= [sut/form-wrapper-loading-div-class]
              (sut/get-loading-div-class props))))))
 
+(deftest test-form-wrapper-submit-button-modifiers
+  (testing "Danger"
+    (is (= [sut/form-wrapper-submit-button-class
+            (str sut/form-wrapper-submit-button-class "--danger")]
+           (sut/submit-button-style->class :danger)))))
 
 (deftest test-submit-handler
 

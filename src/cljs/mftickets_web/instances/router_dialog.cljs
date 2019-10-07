@@ -13,6 +13,7 @@
    {:label "Projects" :href "/projects"}
    {:label "Projects - Edit [Projects]" :href "/projects/edit"}
    {:label "Projects - Create [Projects]" :href "/projects/create"}
+   {:label "Projects - View [Projects]" :href "/projects/view"}
    {:label "About" :href "/about"}
    {:label "Home" :href "/"}])
 

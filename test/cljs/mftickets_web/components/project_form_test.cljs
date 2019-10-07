@@ -18,3 +18,16 @@
       (is (= {:label label :value (::foo edited-project) :disabled disabled :parent-props props}
              (dissoc (second response) :events)))
       (is (= (-> response meta :key) id)))))
+
+(deftest test-props->form-props
+
+  (testing "Base"
+    (let [form-props {::a ::b}
+          props {:project-form/form-props form-props}
+          result (sut/props->form-props props)]
+
+      (testing "Assoc on-submit"
+        (is (fn? (:on-submit result))))
+
+      (testing "Keeps base"
+        (is (= form-props (dissoc result :on-submit)))))))

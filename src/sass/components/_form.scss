@@ -13,5 +13,18 @@
     &__submit-button-container {
         text-align: center;
     }
+
+    &__submit-button {
+        
+        &--danger {
+            background-color: #d9534f;
+            color: #fff;
+            border-width: 1px;
+            border-radius: 3px;
+            padding: 3px 6px;
+            border-color: #d43f3a;
+            font-weight: 600;
+        }
+    }
     
 }

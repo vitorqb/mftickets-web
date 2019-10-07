@@ -85,6 +85,15 @@
            (wrap-auth token)
            (assoc :edn-params params))))))
 
+(defn delete-project
+  "Makes a DELETE request for deleting a project."
+  [{:keys [token]}]
+  (fn i-delete-project [{:keys [id]}]
+    {:pre [(int? id)]}
+    (http/delete
+     (str "/api/projects/" id)
+     (-> base-request (wrap-auth token)))))
+
 (defn http-getter
   "Prepares a lookable object for http functions.
   `http-fns` is a map where each value is a curried function accepting options.
