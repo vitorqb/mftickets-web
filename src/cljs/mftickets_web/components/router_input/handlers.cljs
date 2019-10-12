@@ -17,7 +17,7 @@
     (reduce! [_] (reducers/select-from-key matching-options key))))
 
 (defn on-input-key-up--enter
-  [{{:keys [navigate-> close-router-dialog->]} :events
+  [{{:keys [Navigate-> CloseRouterDialog->]} :events
     :router-input/keys [selected-option]
     :as props}
    key]
@@ -25,8 +25,8 @@
   (reify events.protocols/PEvent
     (propagate! [_]
       (when (= key "Enter")
-        [(-> selected-option :href navigate->)
-         (close-router-dialog->)]))))
+        [(-> selected-option :href Navigate->)
+         (CloseRouterDialog->)]))))
 
 (defn on-input-key-up
   "An event representing a key press while the user was focusing the input."

@@ -38,15 +38,15 @@
 
 (deftest test-on-delete-picked-project
 
-  (testing "Propagates to with-confirmation"
+  (testing "Propagates to WithConfirmation"
     (let [picked-project {:name "Foo"}
           state (-> {} ((reducers/set-picked-project picked-project)) atom)
-          with-confirmation identity
+          WithConfirmation identity
           http {:delete-project (constantly nil)}
-          props {:events {:with-confirmation-> with-confirmation} :state state :http http}
+          props {:events {:WithConfirmation-> WithConfirmation} :state state :http http}
           event (sut/on-delete-picked-project props)
-          [with-confirmation-args & _ :as propagated] (events.protocols/propagate! event)]
+          [WithConfirmation-args & _ :as propagated] (events.protocols/propagate! event)]
       (is (= 1 (count propagated)))
-      (is (= props (:props with-confirmation-args)))
+      (is (= props (:props WithConfirmation-args)))
       (is (= (sut/on-delete-picked-project-prompt picked-project)
-             (:prompt with-confirmation-args))))))
+             (:prompt WithConfirmation-args))))))

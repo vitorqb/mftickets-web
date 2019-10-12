@@ -11,8 +11,8 @@
   [{:router-dialog/keys [options] :keys [components state] :as props}]
   (let [router-input  (:router-input components)
         -state        (state/->FocusedAtom state [::router-input])
-        -events       {:close-router-dialog-> #(handlers/close-router-dialog-> props)
-                      :navigate-> #(handlers/navigate-> props %)}
+        -events       {:CloseRouterDialog-> #(handlers/close-router-dialog-> props)
+                      :Navigate-> #(handlers/navigate-> props %)}
         -parent-props props
         -props        (assoc props
                              :router-input/options options

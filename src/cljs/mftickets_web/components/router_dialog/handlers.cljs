@@ -3,12 +3,12 @@
    [mftickets-web.events.protocols :as events.protocols]))
 
 (defn close-router-dialog->
-  [{{:keys [close-router-dialog->]} :events}]
+  [{{:keys [CloseRouterDialog->]} :events}]
   (reify events.protocols/PEvent
-    (propagate! [_] [(close-router-dialog->)])))
+    (propagate! [_] [(CloseRouterDialog->)])))
 
 (defn navigate->
-  [{{:keys [navigate->]} :events} href]
+  [{{:keys [Navigate->]} :events} href]
   (reify events.protocols/PEvent
-    (propagate! [_] [(navigate-> href)])))
+    (propagate! [_] [(Navigate-> href)])))
 

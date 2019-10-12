@@ -6,7 +6,7 @@
 (defn create-project-page-instance
   "An instace of the page to create a new project."
   [{:keys [app-state http]}]
-  (let [refresh-app-metadata #(app.handlers/fetch-app-metadata-response {:http http})]
+  (let [refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
     [components.create-project-page/create-project-page
      {:state (state/->FocusedAtom app-state [::state])
       :http http

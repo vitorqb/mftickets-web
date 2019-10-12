@@ -29,8 +29,8 @@
   events.protocols/PEvent
   (reduce! [_] (reducers/after-key-submit response))
   (propagate! [_]
-    (let [update-token-> (-> props :events :update-token->)]
-      [(->> response :body :token (update-token-> props))])))
+    (let [UpdateToken-> (-> props :events :UpdateToken->)]
+      [(->> response :body :token (UpdateToken-> props))])))
 
 (defrecord KeySubmit [props]
   events.protocols/PEvent

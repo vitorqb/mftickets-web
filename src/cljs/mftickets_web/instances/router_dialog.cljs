@@ -25,6 +25,6 @@
     :http       http
     :components {:dialog components.dialog/dialog
                  :router-input components.router-input/router-input}
-    :events     {:navigate-> handlers/navigate
-                 :close-router-dialog-> handlers/close-router-dialog}
+    :events     {:Navigate-> handlers/->Navigate
+                 :CloseRouterDialog-> handlers/->CloseRouterDialog}
     :parent-props {:state app-state}}])

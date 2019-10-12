@@ -10,4 +10,4 @@
 (defn set-token [x]
   (let [props {:state mftickets-web.core/app-state
                :http mftickets-web.core/http}]
-    (events/react! props (app.handlers/update-token props x))))
+    (events/react! props (app.handlers/->UpdateToken props x))))

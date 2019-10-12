@@ -47,10 +47,10 @@
 
 (defn on-delete-picked-project
   "Handler for deleting the currently picked project."
-  [{{:keys [with-confirmation->]} :events
+  [{{:keys [WithConfirmation->]} :events
     :keys [state]
     :as props}]
-  {:pre [(fn? with-confirmation->) (satisfies? IDeref state)]}
+  {:pre [(fn? WithConfirmation->) (satisfies? IDeref state)]}
 
   ^{::name "on-delete-picked-project"}
   (reify events.protocols/PEvent
@@ -60,8 +60,8 @@
       (let [picked-project (queries/picked-project @state)
             perform-event (on-delete-picked-project--perform props picked-project)
             confirmation-prompt (on-delete-picked-project-prompt picked-project)
-            with-confirmation-opts {:props props
-                                    :event perform-event
-                                    :prompt confirmation-prompt}]
+            WithConfirmation-opts {:props props
+                                   :event perform-event
+                                   :prompt confirmation-prompt}]
 
-        [(with-confirmation-> with-confirmation-opts)]))))
+        [(WithConfirmation-> WithConfirmation-opts)]))))
