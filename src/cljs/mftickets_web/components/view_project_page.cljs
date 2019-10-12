@@ -16,7 +16,7 @@
     :keys [state]
     :as props}]
 
-  (let [events {:Change-> #(->> % handlers/on-picked-project-change (events/react! props))}
+  (let [events {:Change-> #(->> % handlers/->PickedProjectChange (events/react! props))}
         picked-project (queries/picked-project @state)
         props {:project-picker/projects (or projects [])
                :project-picker/picked-project picked-project
@@ -41,7 +41,7 @@
   "Wrapper around project-form used for displaying it."
   [{:keys [state] :as props}]
   (if-let [picked-project (queries/picked-project @state)]
-    (let [Submit #(->> (handlers/on-delete-picked-project props) (events/react! props))
+    (let [Submit #(->> (handlers/->DeletePickedProject props) (events/react! props))
           inputs-metadata (project-display-form-inputs-metadata)
           props {:project-form/edited-project picked-project
                  :project-form/inputs-metadata inputs-metadata

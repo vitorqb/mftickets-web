@@ -14,54 +14,36 @@
   (str "Are you sure you want to delete: " name "?"))
 
 ;; Events
-(defn on-picked-project-change
-  "Handler for when a project is picked by the user."
-  [picked-project]
+(defrecord PickedProjectChange [picked-project]
+  events.protocols/PEvent
+  (reduce! [_] (reducers/set-picked-project picked-project)))
 
-  ^{::name "on-picked-project-change"}
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/set-picked-project picked-project))))
+(defrecord DeltePickedProject--perform--after [props response]
+  events.protocols/PEvent
+  (reduce! [_] (reducers/after-delete-picked-project response))
+  (propagate! [_]
+    (let [{{:keys [refresh-app-metadata]} :events} props
+          _ (assert (fn? refresh-app-metadata))]
+      [(refresh-app-metadata)])))
 
-(defn on-delete-picked-project--perform--after
-  [{{:keys [refresh-app-metadata]} :events} response]
-  {:pre [(fn? refresh-app-metadata)]}
-
-  ^{::name "on-delete-picked-project--perform--after"}
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/after-delete-picked-project response))
-    (propagate! [_] [(refresh-app-metadata)])))
-
-(defn on-delete-picked-project--perform
-  "Actually performs deletion after user confirmation."
-  [{{:keys [delete-project]} :http :as props} project]
-  {:pre [(fn? delete-project)]}
-
-  ^{::name "on-delete-picked-project--perform"}
-  (reify events.protocols/PEvent
-    (run-effects! [_]
+(defrecord DeltePickedProject--perform [props project]
+  events.protocols/PEvent
+  (run-effects! [_]
+    (let [{{:keys [delete-project]} :http} props]
       (async/go
         [(->> project
               delete-project
               async/<!
-              (on-delete-picked-project--perform--after props))]))))
+              (->DeltePickedProject--perform--after props))]))))
 
-(defn on-delete-picked-project
-  "Handler for deleting the currently picked project."
-  [{{:keys [WithConfirmation->]} :events
-    :keys [state]
-    :as props}]
-  {:pre [(fn? WithConfirmation->) (satisfies? IDeref state)]}
-
-  ^{::name "on-delete-picked-project"}
-  (reify events.protocols/PEvent
-
-    (propagate! [_]
-
-      (let [picked-project (queries/picked-project @state)
-            perform-event (on-delete-picked-project--perform props picked-project)
-            confirmation-prompt (on-delete-picked-project-prompt picked-project)
-            WithConfirmation-opts {:props props
-                                   :event perform-event
-                                   :prompt confirmation-prompt}]
-
-        [(WithConfirmation-> WithConfirmation-opts)]))))
+(defrecord DeletePickedProject [props]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [{{:keys [WithConfirmation->]} :events :keys [state]} props
+          picked-project (queries/picked-project @state)
+          perform-event (->DeltePickedProject--perform props picked-project)
+          confirmation-prompt (on-delete-picked-project-prompt picked-project)
+          WithConfirmation-opts {:props props
+                                 :event perform-event
+                                 :prompt confirmation-prompt}]
+      [(WithConfirmation-> WithConfirmation-opts)])))
