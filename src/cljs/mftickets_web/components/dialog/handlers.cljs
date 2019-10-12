@@ -4,8 +4,6 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defn close
-  "Event for closing the router dialog."
-  []
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/set-disabled? true))))
+(defrecord Close []
+  events.protocols/PEvent
+  (reduce! [_] (reducers/set-disabled? true)))
