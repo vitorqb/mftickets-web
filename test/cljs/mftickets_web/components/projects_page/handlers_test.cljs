@@ -10,25 +10,24 @@
 
   (testing "Dispatches to fetch projects."
     (let [props {:state (atom {})}
-          handler (sut/init props)]
-      (with-redefs [sut/fetch-projects (fn [& xs] xs)]
-        (is (= [[props]]
-               (events.protocols/dispatch! handler)))))))
+          handler (sut/->Init props)]
+      (is (= [(sut/->FetchProjects props)]
+             (events.protocols/dispatch! handler))))))
 
-(deftest fetch-projects
+(deftest FetchProjects
 
   (let [props {:state (atom {})}
-        handler (sut/fetch-projects props)]
+        handler (sut/->FetchProjects props)]
 
-    (testing "Dispatches to `fetch-projects.before`"
-      (with-redefs [sut/fetch-projects--before (fn [& xs] xs)]
-        (is (= [[props]] (events.protocols/dispatch! handler)))))))
+    (testing "Dispatches to `FetchProjects--before`"
+      (is (= [(sut/->FetchProjects--before)]
+             (events.protocols/dispatch! handler))))))
 
-(deftest fetch-projects--before
+(deftest FetchProjects--before
 
   (let [state (-> {} ((reducers/set-fetch-projects-response {:status 200})))
         props {:state state}
-        handler (sut/fetch-projects--before state)
+        handler (sut/->FetchProjects--before)
         reducer (events.protocols/reduce! handler)
         new-state (reducer state)]
 
@@ -38,13 +37,12 @@
     (is (true? (queries/loading? new-state)))
     (is (nil? (queries/fetch-projects-response new-state)))))
 
-(deftest fetch-projects--after
+(deftest FetchProjects--after
 
   (let [state (-> {} ((reducers/set-loading? true)))
-        props {:state state}
         projects [{:id 99}]
         response {:status 200 :success true :body [projects]}
-        handler (sut/fetch-projects--after props response)
+        handler (sut/->FetchProjects--after response)
         reducer (events.protocols/reduce! handler)
         new-state (reducer state)]
 
@@ -54,18 +52,18 @@
     (is (= response (queries/fetch-projects-response new-state)))
     (is (false? (queries/loading? new-state)))))
 
-(deftest fetch-projects--run-effects
+(deftest FetchProjects--run-effects
 
   (let [state (atom {})
         projects [{:id 1 :name "Foo" :description "Bar"}]
-        http {:get-projects #(async/go projects)}
+        response {:body projects}
+        http {:get-projects #(async/go response)}
         props {:state state :http http}
-        handler (sut/fetch-projects props)]
+        handler (sut/->FetchProjects props)]
 
     (async
      done
      (async/go
-       (with-redefs [sut/fetch-projects--after (fn [& xs] (apply vector ::after xs))]
-         (is (= [[::after props projects]]
-                (async/<! (events.protocols/run-effects! handler))))
-         (done))))))
+       (is (= [(sut/->FetchProjects--after response)]
+              (async/<! (events.protocols/run-effects! handler))))
+       (done)))))
