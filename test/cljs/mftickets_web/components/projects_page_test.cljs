@@ -6,7 +6,7 @@
 (deftest test-projects-table
 
   (let [projects [{:id 1}]
-        props {:state (atom state) :projects-page/projects projects}
+        props {:state (atom {}) :projects-page/projects projects}
         component (sut/projects-table props)]
     (is (= {:table/config sut/projects-table-config
             :table/rows projects}
