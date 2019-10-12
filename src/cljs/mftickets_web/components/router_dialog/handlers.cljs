@@ -2,13 +2,16 @@
   (:require
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defn close-router-dialog->
-  [{{:keys [CloseRouterDialog->]} :events}]
-  (reify events.protocols/PEvent
-    (propagate! [_] [(CloseRouterDialog->)])))
+(defrecord CloseRouterDialog [props]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [CloseRouterDialog-> (-> props :events :CloseRouterDialog->)
+          _ (assert (fn? CloseRouterDialog->))]
+      [(CloseRouterDialog->)])))
 
-(defn navigate->
-  [{{:keys [Navigate->]} :events} href]
-  (reify events.protocols/PEvent
-    (propagate! [_] [(Navigate-> href)])))
+(defrecord Navigate [props href]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [Navigate-> (-> props :events :Navigate->)]
+      [(Navigate-> href)])))
 
