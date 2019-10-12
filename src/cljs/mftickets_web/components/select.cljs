@@ -12,7 +12,7 @@
                        #(contains? % :value)))
 (s/def :select/value (s/nilable :select/option))
 (s/def :select/options (s/coll-of :select/option))
-(s/def :select/events #(-> % :on-change-> fn?))
+(s/def :select/events #(-> % :Change-> fn?))
 
 ;; Component
 (defn select
@@ -28,4 +28,4 @@
   [(r/adapt-react-class Select)
    {:value value
     :options options
-    :on-change #(->> % (handlers/on-change props) (events/react! props))}])
+    :on-change #(->> % (handlers/->Change props) (events/react! props))}])
