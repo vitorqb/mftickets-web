@@ -4,50 +4,31 @@
             [cljs.core.async :as async]
             [mftickets-web.components.create-project-page.queries :as queries]))
 
-(defn on-raw-project-change
-  "Reacts to a raw project change."
-  [new-raw-project]
+(defrecord RawProjectChange [new-raw-project]
+  events.protocols/PEvent
+  (reduce! [_] (reducers/set-raw-project new-raw-project)))
 
-  ^{::name "on-raw-project-change"}
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/set-raw-project new-raw-project))))
+(defrecord CreateProjectSubmit--before []
+  events.protocols/PEvent
+  (reduce! [_] (comp (reducers/set-create-project-response nil)
+                     (reducers/set-loading? true))))
 
-(defn on-create-project-submit--before
-  []
-  ^{::name "on-create-project-submit--before"}
-  (reify events.protocols/PEvent
-    (reduce! [_] (comp (reducers/set-create-project-response nil)
-                       (reducers/set-loading? true)))))
+(defrecord CreateProjectSubmit--after [props created-project-response]
+  events.protocols/PEvent
+  (reduce! [_] (comp (reducers/set-create-project-response created-project-response)
+                     (reducers/set-loading? false)))
+  (propagate! [_]
+    (let [refresh-app-metadata-> (-> props :events :refresh-app-metadata->)]
+      [(refresh-app-metadata->)])))
 
-(defn on-create-project-submit--after
-  [{{:keys [refresh-app-metadata->]} :events
-    :as props}
-   created-project-response]
-  {:pre [(fn? refresh-app-metadata->)]}
-
-  ^{::name "on-create-project-submit--after"}
-  (reify events.protocols/PEvent
-    (reduce! [_] (comp (reducers/set-create-project-response created-project-response)
-                       (reducers/set-loading? false)))
-    (propagate! [_] [(refresh-app-metadata->)])))
-
-(defn on-create-project-submit
-  "Reacts to the user submitting a project to be created."
-  [{{:keys [create-project]} :http
-    :keys [state]
-    :as props}]
-  {:pre [(fn? create-project)
-         (satisfies? ISwap state)]}
-
-  ^{::name "on-create-project-submit"}
-  (reify events.protocols/PEvent
-
-    (dispatch! [_] [(on-create-project-submit--before)])
-
-    (run-effects! [_]
+(defrecord CreateProjectSubmit [props]
+  events.protocols/PEvent
+  (dispatch! [_] [(->CreateProjectSubmit--before)])
+  (run-effects! [_]
+    (let [create-project (-> props :http :create-project)]
       (async/go
-        [(->> @state
+        [(->> @(:state props)
               queries/raw-project
               create-project
               async/<!
-              (on-create-project-submit--after props))]))))
+              (->CreateProjectSubmit--after props))]))))
