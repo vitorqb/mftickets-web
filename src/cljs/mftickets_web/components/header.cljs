@@ -19,9 +19,16 @@
   [:button {:on-click #(->> (handlers/->DisplayRouter props) (events/react! props))}
    "Router"])
 
+(defn- refresh-app-metadata-btn
+  "A button to refresh the app metadata."
+  [props]
+  [:button {:on-click #(->> (handlers/->RefreshAppMetadata props) (events/react! props))}
+   "Refresh!"])
+
 (defn header
   "The header of the app."
   [props]
   [:header {:class [base-class]}
    [life-prober props]
-   [router-btn props]])
+   [router-btn props]
+   [refresh-app-metadata-btn props]])

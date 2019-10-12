@@ -7,3 +7,8 @@
   (let [props {:events {:DisplayRouterDialog-> (constantly ::foo)}}
         event (sut/->DisplayRouter props)]
     (is (= [::foo] (events.protocols/propagate! event)))))
+
+(deftest test-RefreshAppMetadata
+  (let [props {:events {:RefreshAppMetadata-> (constantly ::foo)}}
+        event (sut/->RefreshAppMetadata props)]
+    (is (= [::foo] (events.protocols/propagate! event)))))
