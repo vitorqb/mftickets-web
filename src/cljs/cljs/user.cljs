@@ -11,3 +11,7 @@
   (let [props {:state mftickets-web.core/app-state
                :http mftickets-web.core/http}]
     (events/react! props (app.handlers/->UpdateToken props x))))
+
+(defn set-events-log
+  ([] (set-events-log true))
+  ([x] (reset! events/print? x)))
