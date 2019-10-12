@@ -23,9 +23,6 @@
 (def router
   (reitit/router
    [["/" :index]
-    ["/items"
-     ["" :items]
-     ["/:item-id" :item]]
     ["/about" :about]
     ["/templates" :templates]
     ["/projects" :projects]
@@ -61,23 +58,6 @@
   {:app-state app-state :http http})
 
 (defn home-page [] [:div.main [:div "You are logged in!"]])
-
-(defn items-page []
-  (fn []
-    [:span.main
-     [:h1 "The items of mftickets-web"]
-     [:ul (map (fn [item-id]
-                 [:li {:name (str "item-" item-id) :key (str "item-" item-id)}
-                  [:a {:href (path-for :item {:item-id item-id})} "Item: " item-id]])
-               (range 1 60))]]))
-
-(defn item-page []
-  (fn []
-    (let [routing-data (session/get :route)
-          item (get-in routing-data [:route-params :item-id])]
-      [:span.main
-       [:h1 (str "Item " item " of mftickets-web")]
-       [:p [:a {:href (path-for :items)} "Back to the list of items"]]])))
 
 (defn about-page []
   (fn [] [:span.main
