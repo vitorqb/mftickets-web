@@ -1,5 +1,7 @@
-(ns mftickets-web.components.form)
+(ns mftickets-web.components.form
+  (:require [cljs.spec.alpha :as spec]))
 
+;; Css
 (def form-wrapper-base-class
   "form-wrapper")
 
@@ -12,8 +14,23 @@
 (def form-wrapper-submit-button-class
   (str form-wrapper-base-class "__submit-button"))
 
+(def submit-button-styles #{:default :danger})
+(spec/def ::submit-button-styles submit-button-styles)
+
 (def form-wrapper-submit-button-container-class
   (str form-wrapper-base-class "__submit-button-container"))
+
+;; Helpers
+(defn- submit-button-style->class
+  "Maps submit-button-styles -> array of css class."
+  [style]
+  {:pre [(spec/valid? ::submit-button-styles style)]
+   :post [(spec/valid? (spec/nilable (spec/coll-of string?)) %)]}
+  (let [base [form-wrapper-submit-button-class]
+        modifiers (case style
+                    :danger [(str form-wrapper-submit-button-class "--danger")]
+                    :default nil)]
+    (concat base modifiers)))
 
 (defn- on-submit-handler
   "Returns a handler for on-submit given some props."
@@ -29,6 +46,7 @@
   (cond-> [form-wrapper-loading-div-class]
     (not is-loading?) (conj form-wrapper-loading-div-inactive-class-modifier)))
 
+;; Components
 (defn loading-div
   "A div that overrides the form wrapper when loading."
   [props]
@@ -37,11 +55,15 @@
 
 (defn submit-btn
   "A input of type submit for the form."
-  [{:keys [button-text]}]
+  [{:keys [button-text button-style]
+    :or {button-style :default
+         button-text "Submit!"}}]
+  {:pre [(spec/valid? ::submit-button-styles button-style)]}
+
   [:div {:class [form-wrapper-submit-button-container-class]}
-   [:input {:class [form-wrapper-submit-button-class]
+   [:input {:class (submit-button-style->class button-style)
             :type "submit"
-            :value (or button-text "Submit!")}]])
+            :value button-text}]])
 
 (defn form
   "A wrapper around a css form."

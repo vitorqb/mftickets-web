@@ -61,6 +61,13 @@
                              :events {:on-change-> on-change->}
                              :parent-props props}]))
 
+(defn- props->form-props
+  "Prepares the props for the form component."
+  [{:project-form/keys [form-props] :as props}]
+  {:pre [(-> form-props (contains? :on-submit) not)]}
+  (let [on-submit #(events/react! props (handlers/on-submit props))]
+    (assoc form-props :on-submit on-submit)))
+
 (defn project-form
   "A form to create/edit/view a project."
   [{:project-form/keys [original-project edited-project inputs-metadata]
@@ -69,7 +76,6 @@
     :as props}]
   {:pre [(spec/valid? (spec/coll-of :project-form/input-metadata) inputs-metadata)]}
 
-  [components.form/form
-   {:on-submit #(events/react! props (handlers/on-submit props))}
+  [components.form/form (props->form-props props)
    (for [input-metadata inputs-metadata]
      (render-input props input-metadata))])

@@ -54,3 +54,15 @@
 
     ;; Refresh the app metadata
     (dispatch! [_] [(fetch-app-metadata-response props)])))
+
+(defn with-confirmation
+  "Returns an event that asks the user for confirmation and only dispatches the next
+  event if it confirms."
+  [{:keys [props event prompt]}]
+
+  ^{::name "with-confirmation"}
+  (reify events.protocols/PEvent
+    (run-effects! [_]
+      (when (js/confirm prompt)
+        (events/react! props event))
+      nil)))
