@@ -4,8 +4,8 @@
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.login-page.reducers :as reducers]))
 
-(deftest test-email-change
+(deftest test-EmailChange
   (testing "Reduces setting email"
-    (let [handler (sut/email-change "FOO")
+    (let [handler (sut/->EmailChange "FOO")
           reducer (events.protocols/reduce! handler)]
       (is (= (-> {} ((reducers/set-email-value "FOO"))) (reducer {}))))))

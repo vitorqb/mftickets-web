@@ -3,6 +3,7 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.components.login-page.queries :as queries]
             [mftickets-web.components.login-page.reducers :as reducers]
+            [mftickets-web.components.login-page.handlers :as handlers]
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.events :as events]))
 
@@ -64,16 +65,14 @@
 
   (testing "Returns an key-submit handler if email submited successfully."
     (let [state (-> {} ((reducers/after-email-submit {:status 204})) atom)
-          handler (sut/get-form-submit-handler {:state state})
-          is-key-submit-handler? (-> handler meta ::sut/key-submit)]
+          handler (sut/get-form-submit-handler {:state state})]
       (is (true? (queries/email-has-been-submited-sucessfully? @state)))
-      (is (true? is-key-submit-handler?))))
+      (is (instance? handlers/KeySubmit handler))))
 
   (testing "Returns an email-submit handler if email not submited successfully."
     (let [state (-> {} ((reducers/after-email-submit {:status 500})) atom)
-          handler (sut/get-form-submit-handler {:state state})
-          is-email-submit-handler? (-> handler meta ::sut/email-submit)]
-      (is (true? is-email-submit-handler?)))))
+          handler (sut/get-form-submit-handler {:state state})]
+      (is (instance? handlers/EmailSubmit handler)))))
 
 (deftest test-form
 

@@ -12,9 +12,10 @@
 (defn- get-form-submit-handler
   "Returns a handler for the form submit depending on current props."
   [{:keys [state] :as props}]
-  (if (queries/email-has-been-submited-sucessfully? @state)
-    (with-meta (handlers/key-submit props) {::key-submit true})
-    (with-meta (handlers/email-submit props) {::email-submit true})))
+  (let [handler (if (queries/email-has-been-submited-sucessfully? @state)
+                  handlers/->KeySubmit
+                  handlers/->EmailSubmit)]
+    (handler props)))
 
 ;; Components
 (defn- email-input
@@ -23,7 +24,7 @@
   [components.input/input
    {:label "Email"
     :value (-> @state queries/email-input-state :value)
-    :events {:on-change-> handlers/email-change}
+    :events {:on-change-> handlers/->EmailChange}
     :parent-props props
     :disabled (queries/email-has-been-submited-sucessfully? @state)}])
 
@@ -34,7 +35,7 @@
     [components.input/input
      {:label "Key"
       :value (-> @state queries/key-input-state :value)
-      :events {:on-change-> handlers/key-change}
+      :events {:on-change-> handlers/->KeyChange}
       :parent-props props}]))
 
 (defn- form
