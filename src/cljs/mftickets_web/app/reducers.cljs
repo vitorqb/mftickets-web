@@ -31,3 +31,5 @@
   "Set's the current token."
   [new-token]
   #(assoc % :token new-token))
+
+(defn set-active-project-id [x] #(assoc % :active-project-id x))

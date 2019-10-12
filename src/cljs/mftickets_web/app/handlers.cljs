@@ -46,3 +46,8 @@
       (when (js/confirm prompt)
         (events/react! props event)
         nil))))
+
+(defrecord UpdateCurrentProject [new-project]
+  ;; Updates the current project to be new-project
+  events.protocols/PEvent
+  (reduce! [_] (-> new-project :id reducers/set-active-project-id)))

@@ -21,3 +21,31 @@
         state (-> {} ((reducers/set-app-metadata-response {:success true
                                                            :body {:projects projects}})))]
     (is (= projects (sut/projects state)))))
+
+(deftest test-active-project
+
+  (testing "When no project and no active, nil"
+    (is (nil? (sut/active-project {}))))
+
+  (testing "When project id no longer exists, nil"
+    (let [project-id 99
+          state (-> {}
+                    ((reducers/set-active-project-id project-id))
+                    ((reducers/set-app-metadata-response {:success true
+                                                          :body {:projects []}})))]
+      (is (nil? (sut/active-project state)))))
+
+  (testing "When project id and it exists"
+    (let [project-id 88
+          project {:id project-id}
+          state (-> {}
+                    ((reducers/set-active-project-id project-id))
+                    ((reducers/set-app-metadata-response {:success true
+                                                          :body {:projects [project]}})))]
+      (is (= project (sut/active-project state)))))
+
+  (testing "When projects but no selected id, pick first."
+    (let [projects [{:id 99}]
+          state (-> {} ((reducers/set-app-metadata-response {:success true
+                                                             :body {:projects projects}})))]
+      (is (= (first projects) (sut/active-project state))))))

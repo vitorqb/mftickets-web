@@ -15,7 +15,8 @@
    {:label "Projects - Create [Projects]" :href "/projects/create"}
    {:label "Projects - View [Projects]" :href "/projects/view"}
    {:label "About" :href "/about"}
-   {:label "Home" :href "/"}])
+   {:label "Home" :href "/"}
+   {:label "Configurations [Options]" :href "/config"}])
 
 (defn router-dialog-instance
   [{:keys [app-state http]}]

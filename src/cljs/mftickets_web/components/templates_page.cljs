@@ -37,6 +37,6 @@
   [{:keys [state] :as props}]
   (init! props)
   [:div.main {}
-   "Templates Page"
+   [:h3.heading-tertiary "Templates Page"]
    [refresh-button props]
    [templates-table props]])

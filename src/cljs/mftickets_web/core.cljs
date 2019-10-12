@@ -12,6 +12,7 @@
    [mftickets-web.instances.edit-project-page :as instances.edit-project-page]
    [mftickets-web.instances.create-project-page :as instances.create-project-page]
    [mftickets-web.instances.view-project-page :as instances.view-project-page]
+   [mftickets-web.instances.config-page :as instances.config-page]
    [mftickets-web.http :as http]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
@@ -28,7 +29,8 @@
     ["/projects" :projects]
     ["/projects/edit" :edit-projects]
     ["/projects/create" :create-projects]
-    ["/projects/view" :view-projects]]))
+    ["/projects/view" :view-projects]
+    ["/config" :config-page]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -78,6 +80,9 @@
 (defn view-project-page []
   [instances.view-project-page/view-project-page-instance injections])
 
+(defn config-page []
+  [instances.config-page/config-page-instance injections])
+
 ;; -------------------------
 ;; Routing
 (defn page-for
@@ -91,8 +96,7 @@
     :edit-projects #'edit-project-page
     :create-projects #'create-project-page
     :view-projects #'view-project-page
-    :items #'items-page
-    :item #'item-page))
+    :config-page #'config-page))
 
 ;; -------------------------
 ;; Page mounting component

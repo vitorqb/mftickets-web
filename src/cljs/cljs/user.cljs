@@ -3,7 +3,8 @@
    [mftickets-web.core]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.events :as events]
-   [com.rpl.specter :as s]))
+   [com.rpl.specter :as s]
+   [cljs.spec.alpha :as spec]))
 
 (defn get-app-state [] mftickets-web.core/app-state)
 
@@ -15,3 +16,5 @@
 (defn set-events-log
   ([] (set-events-log true))
   ([x] (reset! events/print? x)))
+
+(spec/check-asserts true)
