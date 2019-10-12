@@ -3,7 +3,7 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.events.protocols :as events.protocols]))
 
-(deftest test-on-input-change
+(deftest test-InputChange
 
   (testing "Set's path to value and propagates to parent EditedProjectChange->"
     (let [EditedProjectChange-> identity
@@ -13,5 +13,5 @@
           value "Bar"
           path [:name]
           new-edited-project {:name "Bar"}
-          event (sut/on-input-change props {:input-path path :input-value value})]
+          event (sut/->InputChange props {:input-path path :input-value value})]
       (is (= [new-edited-project] (events.protocols/propagate! event))))))

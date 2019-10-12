@@ -21,7 +21,7 @@
     (let [edited-project (queries/edited-project @state)
           state* (state/->FocusedAtom state [::project-form])
           events* {:EditedProjectChange-> handlers/->EditedprojectChange
-                   :on-submit-> #(handlers/->EditedProjectSubmit props)}
+                   :Submit-> #(handlers/->EditedProjectSubmit props)}
           props* {:project-form/original-project picked-project
                   :project-form/edited-project edited-project
                   :state state*

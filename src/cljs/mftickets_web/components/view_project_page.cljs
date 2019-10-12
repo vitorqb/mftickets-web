@@ -41,12 +41,12 @@
   "Wrapper around project-form used for displaying it."
   [{:keys [state] :as props}]
   (if-let [picked-project (queries/picked-project @state)]
-    (let [on-submit #(->> (handlers/on-delete-picked-project props) (events/react! props))
+    (let [Submit #(->> (handlers/on-delete-picked-project props) (events/react! props))
           inputs-metadata (project-display-form-inputs-metadata)
           props {:project-form/edited-project picked-project
                  :project-form/inputs-metadata inputs-metadata
                  :project-form/form-props {:button-style :danger :button-text "Delete!"}
-                 :events {:on-submit-> on-submit}}]
+                 :events {:Submit-> Submit}}]
       [components.project-form/project-form props])))
 
 (defn view-project-page

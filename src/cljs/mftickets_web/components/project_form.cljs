@@ -52,7 +52,7 @@
   {:pre [(spec/valid? :project-form/input-metadata input-metadata)]}
   
   (let [value (or (s/select-first path edited-project) "")
-        OnChange-> #(handlers/on-input-change props {:input-path path :input-value %})]
+        OnChange-> #(handlers/->InputChange props {:input-path path :input-value %})]
 
     ^{:key id}
     [components.input/input {:label label
@@ -65,7 +65,7 @@
   "Prepares the props for the form component."
   [{:project-form/keys [form-props] :as props}]
   {:pre [(-> form-props (contains? :on-submit) not)]}
-  (let [on-submit #(events/react! props (handlers/on-submit props))]
+  (let [on-submit #(events/react! props (handlers/->Submit props))]
     (assoc form-props :on-submit on-submit)))
 
 (defn project-form

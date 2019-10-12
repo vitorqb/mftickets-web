@@ -29,7 +29,7 @@
   [{:keys [state] :as props}]
   (let [raw-project (queries/raw-project @state)
         events {:EditedProjectChange-> handlers/->RawProjectChange
-                :on-submit-> #(handlers/->CreateProjectSubmit props)}]
+                :Submit-> #(handlers/->CreateProjectSubmit props)}]
     [components.project-form/project-form
      {:project-form/inputs-metadata project-form-selected-inputs-metadata
       :project-form/edited-project raw-project
