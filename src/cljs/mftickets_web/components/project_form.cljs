@@ -52,13 +52,13 @@
   {:pre [(spec/valid? :project-form/input-metadata input-metadata)]}
   
   (let [value (or (s/select-first path edited-project) "")
-        on-change-> #(handlers/on-input-change props {:input-path path :input-value %})]
+        OnChange-> #(handlers/on-input-change props {:input-path path :input-value %})]
 
     ^{:key id}
     [components.input/input {:label label
                              :disabled disabled
                              :value value
-                             :events {:on-change-> on-change->}
+                             :events {:OnChange-> OnChange->}
                              :parent-props props}]))
 
 (defn- props->form-props

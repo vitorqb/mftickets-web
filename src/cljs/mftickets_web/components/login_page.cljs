@@ -24,7 +24,7 @@
   [components.input/input
    {:label "Email"
     :value (-> @state queries/email-input-state :value)
-    :events {:on-change-> handlers/->EmailChange}
+    :events {:OnChange-> handlers/->EmailChange}
     :parent-props props
     :disabled (queries/email-has-been-submited-sucessfully? @state)}])
 
@@ -35,7 +35,7 @@
     [components.input/input
      {:label "Key"
       :value (-> @state queries/key-input-state :value)
-      :events {:on-change-> handlers/->KeyChange}
+      :events {:OnChange-> handlers/->KeyChange}
       :parent-props props}]))
 
 (defn- form

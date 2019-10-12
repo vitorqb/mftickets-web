@@ -12,8 +12,8 @@
   (testing "Set's state at change"
     (let [state (atom {})
           props {:state state}
-          on-change-> (-> props sut/email-input (get-in [1 :events :on-change->]))]
-      (events/react! {:state state} (on-change-> "vitorqb@gmail.com"))
+          OnChange-> (-> props sut/email-input (get-in [1 :events :OnChange->]))]
+      (events/react! {:state state} (OnChange-> "vitorqb@gmail.com"))
       (is (= {:value "vitorqb@gmail.com"}
              (queries/email-input-state @state)))))
 
@@ -55,8 +55,8 @@
   (testing "Sets email value at change"
     (let [state (-> {} ((reducers/after-email-submit {:status 204})) atom)
           props {:state state}
-          on-change (-> props sut/key-input second :events :on-change-> (apply ["FOO"]))
-          reducer (events.protocols/reduce! on-change)
+          OnChange (-> props sut/key-input second :events :OnChange-> (apply ["FOO"]))
+          reducer (events.protocols/reduce! OnChange)
           new-state (reducer @state)]
       (is (= {:value "FOO"}
              (queries/key-input-state new-state))))))

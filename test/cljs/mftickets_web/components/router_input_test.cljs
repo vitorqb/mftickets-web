@@ -15,8 +15,8 @@
     (let [init-state (-> {} ((reducers/set-input-value "Foo")))
           state (atom init-state)
           props {:state state}
-          on-change (-> props sut/input second :events :on-change->)]
-      (on-change "Bar")
+          OnChange-> (-> props sut/input second :events :OnChange->)]
+      (OnChange-> "Bar")
       (is (= ((reducers/set-input-value "Bar") init-state) @state)))))
 
 (deftest option-el
