@@ -16,7 +16,7 @@
     :keys [state]
     :as props}]
 
-  (let [events {:on-change-> #(->> % handlers/on-picked-project-change (events/react! props))}
+  (let [events {:Change-> #(->> % handlers/on-picked-project-change (events/react! props))}
         picked-project (queries/picked-project @state)
         props {:project-picker/projects (or projects [])
                :project-picker/picked-project picked-project

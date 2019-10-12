@@ -28,7 +28,7 @@
   (let [value (project->select-option picked-project)
         options (map project->select-option projects)
         props* (merge
-                {:events {:on-change-> #(handlers/on-change props %)}
+                {:events {:on-change-> #(handlers/->Change props %)}
                  :parent-props props}
                 #:select{:value value :options options})]
     [:div {:class [base-class]}

@@ -11,7 +11,7 @@
           value (-> props sut/input second :value)]
       (is (= "Foo" value))))
 
-  (testing "Passes on-change"
+  (testing "Passes OnChange->"
     (let [init-state (-> {} ((reducers/set-input-value "Foo")))
           state (atom init-state)
           props {:state state}

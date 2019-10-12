@@ -39,7 +39,7 @@
         projects* (or projects [])
         props* {:project-picker/projects projects*
                 :project-picker/picked-project picked-project
-                :events {:on-change-> handlers/->PickedProjectChange}
+                :events {:Change-> handlers/->PickedProjectChange}
                 :parent-props props}]
   
     [:div {:class [project-picker-wrapper-class]}
