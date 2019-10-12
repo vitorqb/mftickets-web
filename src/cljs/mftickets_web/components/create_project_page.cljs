@@ -28,7 +28,7 @@
   "A wrapper around project-form"
   [{:keys [state] :as props}]
   (let [raw-project (queries/raw-project @state)
-        events {:on-edited-project-change-> handlers/->RawProjectChange
+        events {:EditedProjectChange-> handlers/->RawProjectChange
                 :on-submit-> #(handlers/->CreateProjectSubmit props)}]
     [components.project-form/project-form
      {:project-form/inputs-metadata project-form-selected-inputs-metadata

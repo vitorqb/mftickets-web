@@ -5,11 +5,11 @@
 
 (defn on-input-change
   "Handler for a change of a input value."
-  [{{:keys [on-edited-project-change->]} :events
+  [{{:keys [EditedProjectChange->]} :events
     :project-form/keys [edited-project]}
    {:keys [input-path input-value]}]
 
-  {:pre [(fn? on-edited-project-change->)
+  {:pre [(fn? EditedProjectChange->)
          (spec/valid? (spec/or :keyword keyword?
                                :col-of-keyword (spec/coll-of keyword?))
                    input-path)]}
@@ -17,7 +17,7 @@
   ^{::name "on-input-change"}
   (reify events.protocols/PEvent
     (propagate! [_] [(-> (s/setval input-path input-value edited-project)
-                         on-edited-project-change->)])))
+                         EditedProjectChange->)])))
 
 (defn on-submit
   "Handler for the form submission."

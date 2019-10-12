@@ -4,20 +4,20 @@
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.edit-project-page.reducers :as reducers]))
 
-(deftest test-on-edited-project-submit--before
+(deftest test-EditedProjectSubmit--before
   (let [state {}
-        event (sut/on-edited-project-submit--before)
+        event (sut/->EditedProjectSubmit--before)
         reducer (events.protocols/reduce! event)]
     (is (= (-> state
                ((reducers/set-loading? true))
                ((reducers/set-edit-project-response nil)))
            (reducer state)))))
 
-(deftest test-on-edited-project-submit--after
+(deftest test-EditedProjectSubmit--after
   (let [state {}
         props {:events {:refresh-app-metadata-> (constantly nil)}}
         response {:status 204}
-        event (sut/on-edited-project-submit--after props response)
+        event (sut/->EditedProjectSubmit--after props response)
         reducer (events.protocols/reduce! event)]
     (is (= (-> state
                ((reducers/set-loading? false))
