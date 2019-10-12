@@ -1,14 +1,3 @@
 .projects-page {
-
-    position: relative;
-
-    &__loading-wrapper {
-        @include loading-wrapper;
-
-        &--inactive {
-            display: none;
-        }
-        
-    }
     
 }
