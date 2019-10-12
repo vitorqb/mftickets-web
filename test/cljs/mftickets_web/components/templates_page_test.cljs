@@ -14,9 +14,8 @@
         (is (nil? (sut/init! props))))))
 
   (testing "Calls react! if we don't have http-response"
-    (with-redefs [events/react! (fn [props handler] [props handler])
-                  handlers/init! (fn [props] {:handlers.init!/props props})]
+    (with-redefs [events/react! (fn [props handler] [props handler])]
       (let [state (atom {})
             props {:state state}]
-        (is (= (sut/init! props)
-               [props {:handlers.init!/props props}]))))))
+        (is (= [props (handlers/->Init props)]
+               (sut/init! props)))))))

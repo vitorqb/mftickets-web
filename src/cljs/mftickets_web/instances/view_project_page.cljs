@@ -10,11 +10,11 @@
   [{:keys [app-state http] :as injections}]
   (let [projects (queries/projects @app-state)
         state (state/->FocusedAtom app-state [::state])
-        refresh-app-metadata #(app.handlers/fetch-app-metadata-response {:http http})]
+        refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
     [components.view-project-page/view-project-page
      {:view-project-page/projects projects
       :state state
-      :events {:with-confirmation-> app.handlers/with-confirmation
+      :events {:WithConfirmation-> app.handlers/->WithConfirmation
                :refresh-app-metadata refresh-app-metadata}
       :parent-props {:state app-state}
       :http http}]))

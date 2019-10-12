@@ -32,7 +32,7 @@
 (defn- refresh-button
   "A button to update the current list of projects."
   [props]
-  [:button {:on-click #(events/react! props (handlers/fetch-projects props))}
+  [:button {:on-click #(events/react! props (handlers/->FetchProjects props))}
    "Refresh"])
 
 (defn- projects-table
@@ -48,7 +48,7 @@
 
   (when (and (-> @state queries/fetch-projects-response nil?)
              (-> @state queries/loading? false?))
-    (events/react! props (handlers/init props)))
+    (events/react! props (handlers/->Init props)))
 
   [:div.projects-page
    [:h3.heading-tertiary "PROJECTS PAGE"]

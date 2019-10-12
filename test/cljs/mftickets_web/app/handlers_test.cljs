@@ -4,7 +4,7 @@
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.app.reducers :as reducers]))
 
-(deftest test-close-router-dialog
+(deftest test-CloseRouterDialog
   (let [exp-state (-> {} ((reducers/close-router-dialog)))
-        reducer (events.protocols/reduce! (sut/close-router-dialog))]
+        reducer (events.protocols/reduce! (sut/->CloseRouterDialog))]
     (is (= exp-state (reducer {})))))

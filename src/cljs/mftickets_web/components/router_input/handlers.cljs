@@ -5,32 +5,26 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defn on-input-change
-  "An event when the user input changes."
-  [{:keys [state]} new-value]
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/set-input-value new-value))))
+(defrecord InputChange [new-value]
+  events.protocols/PEvent
+  (reduce! [_] (reducers/set-input-value new-value)))
 
-(defn on-input-key-up--arrows
-  [{:router-input/keys [matching-options]} key]
-  (reify events.protocols/PEvent
-    (reduce! [_] (reducers/select-from-key matching-options key))))
+(defrecord InputKeyUp--arrows [props key]
+  events.protocols/PEvent
+  (reduce! [_]
+    (let [matching-options (:router-input/matching-options props)]
+      (reducers/select-from-key matching-options key))))
 
-(defn on-input-key-up--enter
-  [{{:keys [navigate-> close-router-dialog->]} :events
-    :router-input/keys [selected-option]
-    :as props}
-   key]
-  
-  (reify events.protocols/PEvent
-    (propagate! [_]
-      (when (= key "Enter")
-        [(-> selected-option :href navigate->)
-         (close-router-dialog->)]))))
+(defrecord InputKeyUp--enter [props key]
+  events.protocols/PEvent
+  (propagate! [_]
+    (when (= key "Enter")
+      (let [{:keys [Navigate-> CloseRouterDialog->]} (-> props :events)
+            selected-option (:router-input/selected-option props)]
+        [(-> selected-option :href Navigate->)
+         (CloseRouterDialog->)]))))
 
-(defn on-input-key-up
-  "An event representing a key press while the user was focusing the input."
-  [props key]
-  (reify events.protocols/PEvent
-    (dispatch! [_] [(on-input-key-up--arrows props key)
-                    (on-input-key-up--enter props key)])))
+(defrecord InputKeyUp [props key]
+  events.protocols/PEvent
+  (dispatch! [_] [(->InputKeyUp--arrows props key)
+                  (->InputKeyUp--enter props key)]))

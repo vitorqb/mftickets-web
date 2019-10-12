@@ -2,12 +2,10 @@
   (:require [mftickets-web.events.protocols :as events.protocols]
             [cljs.spec.alpha :as s]))
 
-(defn on-change
-  "An event to handle changing the currently picked project."
-  [{{:keys [on-change->]} :events} new-option]
-  {:pre [(s/valid? :select/option new-option)
-         (s/valid? fn? on-change->)]}
-
-  ^{::name "on-change"}
-  (reify events.protocols/PEvent
-    (events.protocols/propagate! [_] [(-> new-option :value on-change->)])))
+(defrecord Change [props new-option]
+  events.protocols/PEvent
+  (events.protocols/propagate! [_]
+    (let [Change-> (-> props :events :Change->)
+          _ (assert (s/valid? :select/option new-option))
+          _ (assert (s/valid? fn? Change->))]
+      [(-> new-option :value Change->)])))

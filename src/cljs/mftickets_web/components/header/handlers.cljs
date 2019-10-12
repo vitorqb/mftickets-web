@@ -3,7 +3,9 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defn display-router [{{:keys [display-router-dialog->]} :events}]
-  (reify events.protocols/PEvent
-    (propagate! [_] [(display-router-dialog->)])))
+(defrecord DisplayRouter [props]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [DisplayRouterDialog-> (-> props :events :DisplayRouterDialog->)]
+      [(DisplayRouterDialog->)])))
 

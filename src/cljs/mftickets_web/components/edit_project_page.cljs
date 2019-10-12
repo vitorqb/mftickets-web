@@ -20,8 +20,8 @@
   (if-let [picked-project (queries/picked-project @state)]
     (let [edited-project (queries/edited-project @state)
           state* (state/->FocusedAtom state [::project-form])
-          events* {:on-edited-project-change-> handlers/on-edited-project-change
-                   :on-submit-> #(handlers/on-edited-project-submit props)}
+          events* {:EditedProjectChange-> handlers/->EditedprojectChange
+                   :Submit-> #(handlers/->EditedProjectSubmit props)}
           props* {:project-form/original-project picked-project
                   :project-form/edited-project edited-project
                   :state state*
@@ -39,7 +39,7 @@
         projects* (or projects [])
         props* {:project-picker/projects projects*
                 :project-picker/picked-project picked-project
-                :events {:on-change-> handlers/on-picked-project-change}
+                :events {:Change-> handlers/->PickedProjectChange}
                 :parent-props props}]
   
     [:div {:class [project-picker-wrapper-class]}

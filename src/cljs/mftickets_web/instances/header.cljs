@@ -10,6 +10,6 @@
   [components.header/header
    {:state   (state/->FocusedAtom app-state [::state])
     :http    http
-    :events {:display-router-dialog-> handlers/display-router-dialog}
+    :events {:DisplayRouterDialog-> handlers/->DisplayRouterDialog}
     :parent-props {:state app-state}}])
 

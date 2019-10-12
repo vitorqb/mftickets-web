@@ -3,11 +3,11 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.events.protocols :as events.protocols]))
 
-(deftest test-on-change
+(deftest test-Change
 
-  (testing "Propagates to on-change-> after transforming to cljs"
-    (let [on-change identity
-          props {:events {:on-change-> on-change}}
+  (testing "Propagates to Change-> after transforming to cljs"
+    (let [Change-> identity
+          props {:events {:Change-> Change->}}
           new-value {:name "foo" :id 1}
-          event (sut/on-change props (clj->js new-value))]
+          event (sut/->Change props (clj->js new-value))]
       (is (= [new-value] (events.protocols/propagate! event))))))

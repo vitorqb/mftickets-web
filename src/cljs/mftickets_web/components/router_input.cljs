@@ -46,8 +46,8 @@
   [{:keys [state] :as props}]
   [components.input/input
    {:value (queries/input-value @state)
-    :events {:on-change-> #(->> % (handlers/on-input-change props) (events/react! props))
-             :on-key-up-> #(->> % (handlers/on-input-key-up props) (events/react! props))}
+    :events {:OnChange-> #(->> % handlers/->InputChange (events/react! props))
+             :OnKeyUp-> #(->> % (handlers/->InputKeyUp props) (events/react! props))}
     :parent-props props
     :autofocus true}])
 

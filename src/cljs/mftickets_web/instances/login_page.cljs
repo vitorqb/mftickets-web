@@ -10,5 +10,5 @@
   [components.login-page/login-page
    {:state         (state/->FocusedAtom app-state [::state])
     :http          http
-    :events        {:update-token-> handlers/update-token}
+    :events        {:UpdateToken-> handlers/->UpdateToken}
     :parent-props  {:state app-state}}])

@@ -3,27 +3,21 @@
             [cljs.spec.alpha :as spec]
             [com.rpl.specter :as s]))
 
-(defn on-input-change
-  "Handler for a change of a input value."
-  [{{:keys [on-edited-project-change->]} :events
-    :project-form/keys [edited-project]}
-   {:keys [input-path input-value]}]
+(defrecord InputChange [props input-spec]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [{{:keys [EditedProjectChange->]} :events :project-form/keys [edited-project]} props
+          {:keys [input-path input-value]} input-spec
+          _ (assert (fn? EditedProjectChange->))
+          _ (assert (spec/valid? (spec/or :keyword keyword?
+                                          :col-of-keyword (spec/coll-of keyword?))
+                                 input-path))]
+      [(-> (s/setval input-path input-value edited-project)
+           EditedProjectChange->)])))
 
-  {:pre [(fn? on-edited-project-change->)
-         (spec/valid? (spec/or :keyword keyword?
-                               :col-of-keyword (spec/coll-of keyword?))
-                   input-path)]}
-  
-  ^{::name "on-input-change"}
-  (reify events.protocols/PEvent
-    (propagate! [_] [(-> (s/setval input-path input-value edited-project)
-                         on-edited-project-change->)])))
-
-(defn on-submit
-  "Handler for the form submission."
-  [{{:keys [on-submit->]} :events}]
-  {:pre [(fn? on-submit->)]}
-
-  ^{::name "on-submit"}
-  (reify events.protocols/PEvent
-    (propagate! [_] [(on-submit->)])))
+(defrecord Submit [props]
+  events.protocols/PEvent
+  (propagate! [_]
+    (let [Submit-> (-> props :events :Submit->)
+          _ (assert (fn? Submit->))]
+      [(Submit->)])))

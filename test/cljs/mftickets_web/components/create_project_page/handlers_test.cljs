@@ -5,13 +5,13 @@
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.create-project-page.queries :as queries]))
 
-(deftest test-on-create-project-submit--before
+(deftest test-CreateProjectSubmit--before
 
   (testing "Reduces state: "
     (let [state (-> {}
                     ((reducers/set-create-project-response {::foo ::bar}))
                     ((reducers/set-loading? false)))
-          event (sut/on-create-project-submit--before)
+          event (sut/->CreateProjectSubmit--before)
           reducer (events.protocols/reduce! event)
           new-state (reducer state)]
 
@@ -21,13 +21,13 @@
       (testing "Set's response to nil"
         (is (nil? (queries/create-project-response new-state)))))))
 
-(deftest test-on-create-project-submit--after
+(deftest test-CreateProjectSubmit--after
 
   (testing "Reducers state: "
     (let [response {:success true}
           state (-> {} ((reducers/set-loading? true)))
           props {:events {:refresh-app-metadata-> (constantly nil)}}
-          event (sut/on-create-project-submit--after props response)
+          event (sut/->CreateProjectSubmit--after props response)
           reducer (events.protocols/reduce! event)
           new-state (reducer state)]
 

@@ -8,7 +8,7 @@
 (defn edit-project-page-instance
   "An instance of the page to edit a project."
   [{:keys [app-state http]}]
-  (let [refresh-app-metadata #(app.handlers/fetch-app-metadata-response {:http http})]
+  (let [refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
     [components.edit-project-page/edit-project-page
      {:state (state/->FocusedAtom app-state ::state)
       :edit-project-page/projects (app.queries/projects @app-state)
