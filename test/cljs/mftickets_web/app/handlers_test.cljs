@@ -8,3 +8,9 @@
   (let [exp-state (-> {} ((reducers/close-router-dialog)))
         reducer (events.protocols/reduce! (sut/->CloseRouterDialog))]
     (is (= exp-state (reducer {})))))
+
+(deftest test-UpdateCurrentProject
+  (let [project {:id 77}
+        exp-state (-> {} ((reducers/set-active-project-id (:id project))))
+        reducer (events.protocols/reduce! (sut/->UpdateCurrentProject project))]
+    (is (= exp-state (reducer {})))))

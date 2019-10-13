@@ -6,6 +6,6 @@
   events.protocols/PEvent
   (events.protocols/propagate! [_]
     (let [Change-> (-> props :events :Change->)
-          _ (assert (s/valid? :select/option new-option))
-          _ (assert (s/valid? fn? Change->))]
+          _ (s/assert :select/option new-option)
+          _ (s/assert fn? Change->)]
       [(-> new-option :value Change->)])))

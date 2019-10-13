@@ -12,6 +12,7 @@
    [mftickets-web.instances.edit-project-page :as instances.edit-project-page]
    [mftickets-web.instances.create-project-page :as instances.create-project-page]
    [mftickets-web.instances.view-project-page :as instances.view-project-page]
+   [mftickets-web.instances.config-page :as instances.config-page]
    [mftickets-web.http :as http]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
@@ -23,15 +24,13 @@
 (def router
   (reitit/router
    [["/" :index]
-    ["/items"
-     ["" :items]
-     ["/:item-id" :item]]
     ["/about" :about]
     ["/templates" :templates]
     ["/projects" :projects]
     ["/projects/edit" :edit-projects]
     ["/projects/create" :create-projects]
-    ["/projects/view" :view-projects]]))
+    ["/projects/view" :view-projects]
+    ["/config" :config-page]]))
 
 (defn path-for [route & [params]]
   (if params
@@ -62,23 +61,6 @@
 
 (defn home-page [] [:div.main [:div "You are logged in!"]])
 
-(defn items-page []
-  (fn []
-    [:span.main
-     [:h1 "The items of mftickets-web"]
-     [:ul (map (fn [item-id]
-                 [:li {:name (str "item-" item-id) :key (str "item-" item-id)}
-                  [:a {:href (path-for :item {:item-id item-id})} "Item: " item-id]])
-               (range 1 60))]]))
-
-(defn item-page []
-  (fn []
-    (let [routing-data (session/get :route)
-          item (get-in routing-data [:route-params :item-id])]
-      [:span.main
-       [:h1 (str "Item " item " of mftickets-web")]
-       [:p [:a {:href (path-for :items)} "Back to the list of items"]]])))
-
 (defn about-page []
   (fn [] [:span.main
           [:h1 "About mftickets-web"]]))
@@ -98,6 +80,9 @@
 (defn view-project-page []
   [instances.view-project-page/view-project-page-instance injections])
 
+(defn config-page []
+  [instances.config-page/config-page-instance injections])
+
 ;; -------------------------
 ;; Routing
 (defn page-for
@@ -111,8 +96,7 @@
     :edit-projects #'edit-project-page
     :create-projects #'create-project-page
     :view-projects #'view-project-page
-    :items #'items-page
-    :item #'item-page))
+    :config-page #'config-page))
 
 ;; -------------------------
 ;; Page mounting component
