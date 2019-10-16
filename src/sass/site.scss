@@ -5,6 +5,7 @@
 // Import mixings
 @import 'mixins/loading';
 @import 'mixins/project-page';
+@import 'mixins/picker';
 
 // import components
 @import 'typography';
@@ -21,6 +22,7 @@
 @import 'components/project-picker';
 @import 'components/create-project-page';
 @import 'components/view-project-page';
+@import 'components/view-template-page';
 @import 'components/config-page';
 
 // You can use any sass features, like variables, for instance:

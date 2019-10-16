@@ -15,7 +15,10 @@
           metadata {:id id :label label :path path :disabled disabled}
           response (sut/render-input props metadata)]
       (is (= components.input/input (first response)))
-      (is (= {:label label :value (::foo edited-project) :disabled disabled :parent-props props}
+      (is (= {:input/label label
+              :input/value (::foo edited-project)
+              :input/disabled disabled
+              :parent-props props}
              (dissoc (second response) :events)))
       (is (= (-> response meta :key) id)))))
 

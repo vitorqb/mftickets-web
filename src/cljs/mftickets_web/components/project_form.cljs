@@ -9,23 +9,23 @@
    [cljs.spec.alpha :as spec]))
 
 ;; Specs
-(spec/def :project-form.input-metadata/id
+(spec/def :input-metadata/id
   keyword?)
 
-(spec/def :project-form.input-metadata/label
+(spec/def :input-metadata/label
   string?)
 
-(spec/def :project-form.input-metadata/disabled
+(spec/def :input-metadata/disabled
   (spec/nilable boolean?))
 
-(spec/def :project-form.input-metadata/path
+(spec/def :input-metadata/path
   (spec/or :keyword keyword? :seq-of-keyword (spec/coll-of keyword?)))
 
 (spec/def :project-form/input-metadata
-  (spec/keys :req-un [:project-form.input-metadata/id
-                      :project-form.input-metadata/label
-                      :project-form.input-metadata/path]
-             :opt-un [:project-form.input-metadata/disabled]))
+  (spec/keys :req-un [:input-metadata/id
+                      :input-metadata/label
+                      :input-metadata/path]
+             :opt-un [:input-metadata/disabled]))
 
 ;; Input metadata
 (def id-input-metadata
@@ -55,11 +55,12 @@
         OnChange-> #(handlers/->InputChange props {:input-path path :input-value %})]
 
     ^{:key id}
-    [components.input/input {:label label
-                             :disabled disabled
-                             :value value
-                             :events {:OnChange-> OnChange->}
-                             :parent-props props}]))
+    [components.input/input
+     {:input/label label
+      :input/disabled disabled
+      :input/value value
+      :events {:OnChange-> OnChange->}
+      :parent-props props}]))
 
 (defn- props->form-props
   "Prepares the props for the form component."

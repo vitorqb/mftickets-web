@@ -20,14 +20,14 @@
   (testing "Passes value"
     (let [state (atom {:inputs {:email {:value "Foo"}}})
           props {:state state}
-          input-value (-> props sut/email-input second :value)]
+          input-value (-> props sut/email-input second :input/value)]
       (is (= "Foo" input-value))))
 
   (testing "Passes disabled if email submit response is success."
     (let [email-submit-response {:status 204}
           state (atom {:email-submission {:response email-submit-response}})
           props {:state state}
-          input-disabled? (-> props sut/email-input second :disabled)]
+          input-disabled? (-> props sut/email-input second :input/disabled)]
       (is (true? (queries/email-has-been-submited-sucessfully? @state)))
       (is (true? input-disabled?)))))
 
@@ -49,7 +49,7 @@
                     ((reducers/after-email-submit {:status 204}))
                     atom)
           props {:state state}
-          key-value (-> props sut/key-input second :value)]
+          key-value (-> props sut/key-input second :input/value)]
       (is (= "abc" key-value))))
 
   (testing "Sets email value at change"

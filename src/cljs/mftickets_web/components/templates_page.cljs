@@ -18,6 +18,7 @@
    {:table/key :project-id    :table/header "Project Id"}
    {:table/key :creation-date :table/header "Creation Date"}])
 
+;; !!!! TODO -> We need to adapt this for pagination!
 (defn- templates-table
   "A table with the templates information."
   [{{:keys [table]} :components :keys [state]}]

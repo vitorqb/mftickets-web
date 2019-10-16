@@ -22,19 +22,19 @@
   "An input for an email."
   [{:keys [state] :as props}]
   [components.input/input
-   {:label "Email"
-    :value (-> @state queries/email-input-state :value)
+   {:input/label "Email"
+    :input/value (-> @state queries/email-input-state :value)
+    :input/disabled (queries/email-has-been-submited-sucessfully? @state)
     :events {:OnChange-> handlers/->EmailChange}
-    :parent-props props
-    :disabled (queries/email-has-been-submited-sucessfully? @state)}])
+    :parent-props props}])
 
 (defn- key-input
   "And input for the key."
   [{:keys [state] :as props}]
   (when (queries/email-has-been-submited-sucessfully? @state)
     [components.input/input
-     {:label "Key"
-      :value (-> @state queries/key-input-state :value)
+     {:input/label "Key"
+      :input/value (-> @state queries/key-input-state :value)
       :events {:OnChange-> handlers/->KeyChange}
       :parent-props props}]))
 

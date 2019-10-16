@@ -1,6 +1,7 @@
 (ns mftickets-web.http
   (:require
-   [cljs-http.client :as http]))
+   [cljs-http.client :as http]
+   [cljs.core.async :as async]))
 
 (def base-request
   {:with-credentials? true
@@ -48,14 +49,32 @@
      (-> base-request (wrap-auth token)))))
 
 (defn get-templates
-  "Makes a get requests for the templates."
+  "Makes a get requests for the templates.
+  The returning fn accepts:
+  - project-id: the id of the project for which templates are queried.
+  - name-like:  a string that should match the template name."
   [{:keys [token]}]
-  (fn i-get-templates [{:keys [project-id]}]
-    (http/get
-     "/api/templates"
-     (-> base-request
-         (wrap-auth token)
-         (assoc :query-params {:project-id project-id})))))
+
+  (fn i-get-templates [{:keys [project-id name-like] :pagination/keys [page-number page-size]}]
+
+    (let [params (cond-> {:project-id project-id}
+                   name-like (assoc :name-like name-like)
+                   page-number (assoc :pageNumber page-number)
+                   page-size (assoc :pageSize page-size))
+          request (-> base-request (wrap-auth token) (assoc :query-params params))]
+
+      (http/get "/api/templates" request))))
+
+(defn get-matching-templates
+  "Wrapper aroung get-templates that returns the list of templates on the first page of
+  the `get-templates` response."
+  [{:keys [token]}]
+
+  (fn i-get-matching-templates [opts]
+    (async/go
+      (let [get-templates* (get-templates {:token token})
+            response (-> opts get-templates* async/<!)]
+        (-> response :body :items)))))
 
 (defn get-projects
   "Makes a get request for the projects of an user."

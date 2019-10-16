@@ -10,6 +10,7 @@
 ;; !!!! TODO -> Give real options
 (def options
   [{:label "Templates" :href "/templates"}
+   {:label "Templates - View [Templates]" :href "/templates/view"}
    {:label "Projects" :href "/projects"}
    {:label "Projects - Edit [Projects]" :href "/projects/edit"}
    {:label "Projects - Create [Projects]" :href "/projects/create"}
