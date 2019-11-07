@@ -6,61 +6,29 @@
    [com.rpl.specter :as s]
    [mftickets-web.components.project-form.handlers :as handlers]
    [mftickets-web.events :as events]
-   [cljs.spec.alpha :as spec]))
-
-;; Specs
-(spec/def :input-metadata/id
-  keyword?)
-
-(spec/def :input-metadata/label
-  string?)
-
-(spec/def :input-metadata/disabled
-  (spec/nilable boolean?))
-
-(spec/def :input-metadata/path
-  (spec/or :keyword keyword? :seq-of-keyword (spec/coll-of keyword?)))
-
-(spec/def :project-form/input-metadata
-  (spec/keys :req-un [:input-metadata/id
-                      :input-metadata/label
-                      :input-metadata/path]
-             :opt-un [:input-metadata/disabled]))
-
-;; Input metadata
-(def id-input-metadata
-  {:id :id
-   :label "Id"
-   :path :id
-   :disabled true})
-
-(def name-input-metadata
-  {:id :name
-   :label "Name"
-   :path :name})
-
-(def description-input-metadata
-  {:id :description
-   :label "Description"
-   :path :description})
+   [cljs.spec.alpha :as spec]
+   [mftickets-web.components.project-form.inputs :as inputs]))
 
 ;; Components
 (defn- render-input
-  "Renders a input from metadata given the edited project and a metadata."
+  "Renders an input from the current props and input metadata."
   [{:project-form/keys [edited-project] :as props}
-   {:keys [id label path disabled] :as input-metadata}]
-  {:pre [(spec/valid? :project-form/input-metadata input-metadata)]}
-  
-  (let [value (or (s/select-first path edited-project) "")
-        OnChange-> #(handlers/->InputChange props {:input-path path :input-value %})]
+   {:project-form.input/keys [query-project-value-fn events-mapping value-kw component id
+                              assoc-value-to-props-fn]
+    :keys [events]
+    :as metadata}]
+
+  {:pre [(spec/assert :project-form/input metadata)]}
+
+  (let [value (query-project-value-fn edited-project)
+        InputChange #(handlers/->InputChange props metadata %)
+        events* (assoc events (:InputChange events-mapping) InputChange)
+        props* (-> metadata
+                   (assoc :events events* :parent-props props)
+                   (assoc-value-to-props-fn value))]
 
     ^{:key id}
-    [components.input/input
-     {:input/label label
-      :input/disabled disabled
-      :input/value value
-      :events {:OnChange-> OnChange->}
-      :parent-props props}]))
+    [component props*]))
 
 (defn- props->form-props
   "Prepares the props for the form component."
@@ -72,10 +40,11 @@
 (defn project-form
   "A form to create/edit/view a project."
   [{:project-form/keys [original-project edited-project inputs-metadata]
-    :or {inputs-metadata [id-input-metadata name-input-metadata description-input-metadata]}
+    :or {inputs-metadata [inputs/id inputs/name inputs/description]}
     :keys [state]
     :as props}]
-  {:pre [(spec/valid? (spec/coll-of :project-form/input-metadata) inputs-metadata)]}
+  
+  {:pre [(spec/assert (spec/coll-of :project-form/input) inputs-metadata)]}
 
   [components.form/form (props->form-props props)
    (for [input-metadata inputs-metadata]

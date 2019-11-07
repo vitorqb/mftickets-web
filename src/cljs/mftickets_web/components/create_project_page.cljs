@@ -3,15 +3,16 @@
    [mftickets-web.components.project-form :as components.project-form]
    [mftickets-web.components.create-project-page.queries :as queries]
    [mftickets-web.components.create-project-page.handlers :as handlers]
-   [mftickets-web.components.message-box :as components.message-box]))
+   [mftickets-web.components.message-box :as components.message-box]
+   [mftickets-web.components.project-form.inputs :as components.project-form.inputs]))
 
 (def base-class "create-project-page")
 (def loading-wrapper-class (str base-class "__loading-wrapper"))
 
 (def ^:private project-form-selected-inputs-metadata
   "Metadata for inputs from project-form that should be displayed."
-  [components.project-form/name-input-metadata
-   components.project-form/description-input-metadata])
+  [components.project-form.inputs/name
+   components.project-form.inputs/description])
 
 (defn- message-box
   [{:keys [state]}]

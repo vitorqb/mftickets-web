@@ -5,22 +5,29 @@
 
 (deftest test-render-input
 
-  (testing "Base"
-    (let [edited-project {::foo "BAR"}
-          props {:project-form/edited-project edited-project}
-          id :id
-          label "label"
-          path ::foo
-          disabled true
-          metadata {:id id :label label :path path :disabled disabled}
-          response (sut/render-input props metadata)]
-      (is (= components.input/input (first response)))
-      (is (= {:input/label label
-              :input/value (::foo edited-project)
-              :input/disabled disabled
-              :parent-props props}
-             (dissoc (second response) :events)))
-      (is (= (-> response meta :key) id)))))
+  (let [edited-project {:id 1 :name "Foo"}
+        props {:project-form/edited-project edited-project}
+        metadata {:project-form.input/component :div
+                  :project-form.input/id 1
+                  :project-form.input/query-project-value-fn (constantly ::foo)
+                  :project-form.input/assoc-project-value-fn (constantly ::bar)
+                  :project-form.input/events-mapping {:InputChange ::baz}
+                  :project-form.input/assoc-value-to-props-fn #(assoc %1 ::boz %2)
+                  :div/disabled true}
+        result (sut/render-input props metadata)
+        [result-component result-props] result]
+
+    (testing "Returns components"
+      (is (= result-component :div)))
+
+    (testing "New props are superset of old props"
+      (is (every? (fn [[k v]] (= v (get result-props k))) metadata)))
+
+    (testing "Events is assoced"
+      (is (not (nil? (::baz (:events result-props))))))
+
+    (testing "Value is assoced"
+      (is (= ::foo (::boz result-props))))))
 
 (deftest test-props->form-props
 
