@@ -2,5 +2,5 @@
 
 (defn template-sections-form
   "A form for sections of a template"
-  [_]
+  [props]
   [:div "Template Sections Form"])
