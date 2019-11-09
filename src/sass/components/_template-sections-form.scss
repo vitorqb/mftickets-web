@@ -1,0 +1,13 @@
+.template-sections-form {
+
+    &__label {
+        @include input-label;
+        text-decoration: underline;
+    }
+
+    &__inputs-container {
+        @include input-content;
+        padding-left: 60px;
+    }
+    
+}

@@ -5,7 +5,8 @@
             [mftickets-web.state :as state]
             [mftickets-web.components.view-template-page.handlers :as handlers]
             [mftickets-web.components.view-template-page.queries :as queries]
-            [mftickets-web.components.template-form :as components.template-form]))
+            [mftickets-web.components.template-form :as components.template-form]
+            [mftickets-web.components.template-form.inputs :as components.template-form.inputs]))
 
 ;; Css
 (def base-class "template-page")
@@ -15,6 +16,14 @@
 ;; Specs
 (spec/def :view-template-page/props
   (spec/keys :req-un [::events.specs/state]))
+
+;; Metadata
+(def template-form-inputs
+  [components.template-form.inputs/id
+   (assoc components.template-form.inputs/name :input/disabled true)
+   (assoc components.template-form.inputs/project-id :input/disabled true)
+   (assoc components.template-form.inputs/creation-date :input/disabled true)
+   (assoc components.template-form.inputs/sections :template-sections-form/disabled true)])
 
 ;; Components
 (defn template-picker
@@ -33,7 +42,8 @@
   [{:keys [state]}]
   (let [template (queries/picked-template @state)
         props* {:template-form/original-template template
-                :template-form/edited-template template}]
+                :template-form/edited-template template
+                :template-form/inputs-metadatas template-form-inputs}]
     [components.template-form/template-form props*]))
 
 (defn view-template-page
