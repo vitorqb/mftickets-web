@@ -22,7 +22,7 @@
   [components.template-form.inputs/id
    (assoc components.template-form.inputs/name :input/disabled true)
    (assoc components.template-form.inputs/project-id :input/disabled true)
-   (assoc components.template-form.inputs/creation-date :input/disabled true)
+   components.template-form.inputs/creation-date
    (assoc components.template-form.inputs/sections :template-sections-form/disabled true)])
 
 ;; Components

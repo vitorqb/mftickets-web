@@ -10,5 +10,10 @@
         padding-left: 30px;
         width: unset;
     }
+
+    &__section-input {
+        border-bottom: 1px solid grey;
+        border-top: 1px solid grey;
+    }
     
 }

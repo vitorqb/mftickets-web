@@ -8,6 +8,7 @@
 (def base-class "template-sections-form")
 (def label-class (str base-class "__label"))
 (def inputs-container-class (str base-class "__inputs-container"))
+(def section-input-class (str base-class "__section-input"))
 
 ;; Specs
 (spec/def :template-sections-form/sections (spec/coll-of any?))
@@ -24,9 +25,7 @@
 
   {:pre [(spec/assert :factories/input metadata)]}
   
-  (let [metadata* (cond-> metadata
-                    disabled (assoc :input/disabled true))]
-
+  (let [metadata* (cond-> metadata disabled (assoc :input/disabled true))]
     (factories.input/input-factory props metadata* section)))
 
 ;; Components
@@ -36,7 +35,7 @@
     :template-sections-form/keys [inputs-metadatas]
     :or {inputs-metadatas [input/id input/name]}
     :as props}]
-  [:div
+  [:div {:class [section-input-class]}
    (for [metadata inputs-metadatas]
      (render-input props metadata))])
 

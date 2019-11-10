@@ -44,7 +44,8 @@
    :factories.input/events-mapping {:InputChange :OnChange->}
    :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
    :input/id :creation-date
-   :input/label "Creation Date"})
+   :input/label "Creation Date"
+   :input/disabled true})
 
 (def sections
   {:factories.input/component #'components.template-sections-form/template-sections-form
