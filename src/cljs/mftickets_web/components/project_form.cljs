@@ -7,28 +7,22 @@
    [mftickets-web.components.project-form.handlers :as handlers]
    [mftickets-web.events :as events]
    [cljs.spec.alpha :as spec]
-   [mftickets-web.components.project-form.inputs :as inputs]))
+   [mftickets-web.components.project-form.inputs :as inputs]
+   [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Components
 (defn- render-input
   "Renders an input from the current props and input metadata."
   [{:project-form/keys [edited-project] :as props}
-   {:project-form.input/keys [query-project-value-fn events-mapping value-kw component id
-                              assoc-value-to-props-fn]
-    :keys [events]
-    :as metadata}]
+   {:project-form.input/keys [events-mapping] :as metadata}]
 
-  {:pre [(spec/assert :project-form/input metadata)]}
+  {:pre [(spec/assert :factories/input metadata)
+         (spec/assert :project-form.input/events-mapping events-mapping)]}
 
-  (let [value (query-project-value-fn edited-project)
-        InputChange #(handlers/->InputChange props metadata %)
-        events* (assoc events (:InputChange events-mapping) InputChange)
-        props* (-> metadata
-                   (assoc :events events* :parent-props props)
-                   (assoc-value-to-props-fn value))]
+  (let [InputChange #(handlers/->InputChange props metadata %)
+        metadata* (update metadata :events assoc (:InputChange events-mapping) InputChange)]
 
-    ^{:key id}
-    [component props*]))
+    (factories.input/input-factory props metadata* edited-project)))
 
 (defn- props->form-props
   "Prepares the props for the form component."
@@ -43,8 +37,6 @@
     :or {inputs-metadata [inputs/id inputs/name inputs/description]}
     :keys [state]
     :as props}]
-  
-  {:pre [(spec/assert (spec/coll-of :project-form/input) inputs-metadata)]}
 
   [components.form/form (props->form-props props)
    (for [input-metadata inputs-metadata]

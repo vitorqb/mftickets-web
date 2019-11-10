@@ -12,7 +12,7 @@
                  :project-form/edited-project edited-project}
           value "Bar"
           assoc-project-value-fn #(assoc %1 :name %2)
-          input-metadata {:project-form.input/assoc-project-value-fn assoc-project-value-fn}
+          input-metadata {:factories.input/update-value-fn assoc-project-value-fn}
           new-edited-project {:name value}
           event (sut/->InputChange props input-metadata value)]
       (is (= [new-edited-project]

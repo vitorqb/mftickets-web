@@ -7,12 +7,14 @@
 
   (let [edited-project {:id 1 :name "Foo"}
         props {:project-form/edited-project edited-project}
-        metadata {:project-form.input/component :div
-                  :project-form.input/id 1
-                  :project-form.input/query-project-value-fn (constantly ::foo)
-                  :project-form.input/assoc-project-value-fn (constantly ::bar)
+        metadata {:factories.input/component :div
+                  :factories.input/id 1
+                  :factories.input/focus-value-fn (constantly ::foo)
+                  :factories.input/update-value-fn (constantly ::bar)
+                  :factories.input/assoc-value-to-props-fn #(assoc %1 ::boz %2)
+
                   :project-form.input/events-mapping {:InputChange ::baz}
-                  :project-form.input/assoc-value-to-props-fn #(assoc %1 ::boz %2)
+
                   :div/disabled true}
         result (sut/render-input props metadata)
         [result-component result-props] result]

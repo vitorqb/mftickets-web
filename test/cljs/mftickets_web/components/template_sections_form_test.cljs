@@ -6,11 +6,11 @@
 
   (let [section {:id 1}
         props {::sut/section section}
-        metadata {:template-sections-form.input/component ::div
-                  :template-sections-form.input/id ::id
-                  :template-sections-form.input/query-section-value-fn :id
-                  :template-sections-form.input/assoc-section-value-fn #(assoc %1 :id %2)
-                  :template-sections-form.input/assoc-value-to-props-fn #(assoc %1 :value %2)}
+        metadata {:factories.input/component ::div
+                  :factories.input/id ::id
+                  :factories.input/focus-value-fn :id
+                  :factories.input/update-value-fn #(assoc %1 :id %2)
+                  :factories.input/assoc-value-to-props-fn #(assoc %1 :value %2)}
         result (sut/render-input props metadata)
         [r-component r-props] result]
 

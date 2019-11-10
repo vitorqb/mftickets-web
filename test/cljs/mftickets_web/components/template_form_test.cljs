@@ -8,11 +8,11 @@
 
   (let [edited-template {:name "Foo"}
         props {:template-form/edited-template edited-template}
-        metadata {:template-form.input/component ::component
-                  :template-form.input/id ::id
-                  :template-form.input/query-template-value-fn :name
-                  :template-form.input/assoc-template-value-fn #(assoc %1 :name %2)
-                  :template-form.input/assoc-value-to-props-fn #(assoc %1 :value %2)}
+        metadata {:factories.input/component ::component
+                  :factories.input/id ::id
+                  :factories.input/focus-value-fn :name
+                  :factories.input/update-value-fn #(assoc %1 :name %2)
+                  :factories.input/assoc-value-to-props-fn #(assoc %1 :value %2)}
         result (sut/render-input props metadata)
         [r-component r-props] result]
 
