@@ -24,8 +24,10 @@
   [{::keys [section] :template-sections-form/keys [disabled] :as props} metadata]
 
   {:pre [(spec/assert :factories/input metadata)]}
-  
-  (let [metadata* (cond-> metadata disabled (assoc :input/disabled true))]
+
+  ;; !!!! TODO -> Smarter way to set disabled without knowing the component
+  (let [metadata* (cond-> metadata
+                    disabled (assoc :input/disabled true :template-properties-form/disabled true))]
     (factories.input/input-factory props metadata* section)))
 
 ;; Components
@@ -33,7 +35,7 @@
   "An input for a section."
   [{::keys [section]
     :template-sections-form/keys [inputs-metadatas]
-    :or {inputs-metadatas [input/id input/name]}
+    :or {inputs-metadatas [input/id input/name input/properties]}
     :as props}]
   [:div {:class [section-input-class]}
    (for [metadata inputs-metadatas]
