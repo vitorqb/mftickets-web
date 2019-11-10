@@ -23,7 +23,7 @@
 
 ;; Metadata
 (def id
-  {:project-form.input/component components.input/input
+  {:project-form.input/component #'components.input/input
    :project-form.input/id :id
    :project-form.input/query-project-value-fn :id
    :project-form.input/assoc-project-value-fn #(assoc %1 :id %2)
@@ -34,7 +34,7 @@
    :input/disabled true})
 
 (def name
-  {:project-form.input/component components.input/input
+  {:project-form.input/component #'components.input/input
    :project-form.input/id :name
    :project-form.input/query-project-value-fn :name
    :project-form.input/assoc-project-value-fn #(assoc %1 :name %2)
@@ -44,7 +44,7 @@
    :input/label "Name"})
 
 (def description
-  {:project-form.input/component components.input/input
+  {:project-form.input/component #'components.input/input
    :project-form.input/id :description
    :project-form.input/query-project-value-fn :description
    :project-form.input/assoc-project-value-fn #(assoc %1 :description %2)

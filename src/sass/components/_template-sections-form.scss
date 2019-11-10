@@ -7,7 +7,8 @@
 
     &__inputs-container {
         @include input-content;
-        padding-left: 60px;
+        padding-left: 30px;
+        width: unset;
     }
     
 }

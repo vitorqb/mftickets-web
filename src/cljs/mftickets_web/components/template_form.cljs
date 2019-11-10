@@ -40,14 +40,15 @@
 ;; Components
 (defn template-form
   "A form representing a template."
-  [{:template-form/keys [inputs-metadatas]
+  [{:template-form/keys [inputs-metadatas edited-template]
     :or {inputs-metadatas [inputs/id inputs/name inputs/project-id inputs/creation-date
                            inputs/sections]}
     :as props}]
 
   {:pre [(spec/assert :template-form/props props)
          (spec/assert (spec/coll-of :template-form/input) inputs-metadatas)]}
-  
-  [components.form/form {}
-   (for [input-metadata inputs-metadatas]
-     (render-input props input-metadata))])
+
+  (when edited-template
+    [components.form/form {}
+     (for [input-metadata inputs-metadatas]
+       (render-input props input-metadata))]))

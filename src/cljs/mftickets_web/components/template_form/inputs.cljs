@@ -23,7 +23,7 @@
 
 ;; Metadata
 (def id
-  {:template-form.input/component components.input/input
+  {:template-form.input/component #'components.input/input
    :template-form.input/id :id
    :template-form.input/query-template-value-fn :id
    :template-form.input/assoc-template-value-fn #(assoc %1 :id %2)
@@ -34,7 +34,7 @@
    :input/disabled true})
 
 (def name
-  {:template-form.input/component components.input/input
+  {:template-form.input/component #'components.input/input
    :template-form.input/id :name
    :template-form.input/query-template-value-fn :name
    :template-form.input/assoc-template-value-fn #(assoc %1 :name %2)
@@ -44,7 +44,7 @@
    :input/label "Name"})
 
 (def project-id
-  {:template-form.input/component components.input/input
+  {:template-form.input/component #'components.input/input
    :template-form.input/id :project-id
    :template-form.input/query-template-value-fn :project-id
    :template-form.input/assoc-template-value-fn #(assoc %1 :project-id %2)
@@ -54,7 +54,7 @@
    :input/label "Project Id"})
 
 (def creation-date
-  {:template-form.input/component components.input/input
+  {:template-form.input/component #'components.input/input
    :template-form.input/id :creation-date
    :template-form.input/query-template-value-fn :creation-date
    :template-form.input/assoc-template-value-fn #(assoc %1 :creation-date %2)
@@ -64,7 +64,7 @@
    :input/label "Creation Date"})
 
 (def sections
-  {:template-form.input/component components.template-sections-form/template-sections-form
+  {:template-form.input/component #'components.template-sections-form/template-sections-form
    :template-form.input/id :sections
    :template-form.input/query-template-value-fn :sections
    :template-form.input/assoc-template-value-fn #(assoc %1 :sections %2)
