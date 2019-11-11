@@ -2,16 +2,7 @@
 
     padding-bottom: 5px;
 
-    &__label {
-        display: inline-block;
-        padding-right: 10px;
-        min-width: 100px;
-        text-align: right;
-    }
+    &__label { @include input-label; }
 
-    &__input {
-        min-width: 250px;
-        max-width: 1000px;
-        width: 20rem;
-    }
+    &__input { @include input-content; }
 }

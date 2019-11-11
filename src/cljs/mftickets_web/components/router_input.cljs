@@ -45,11 +45,11 @@
   "A wrapper around an input, where the user types to select a route."
   [{:keys [state] :as props}]
   [components.input/input
-   {:value (queries/input-value @state)
+   {:input/value (queries/input-value @state)
+    :input/autofocus true
     :events {:OnChange-> #(->> % handlers/->InputChange (events/react! props))
              :OnKeyUp-> #(->> % (handlers/->InputKeyUp props) (events/react! props))}
-    :parent-props props
-    :autofocus true}])
+    :parent-props props}])
 
 (defn- option-el
   "An element representing an option inside an options list."

@@ -1,0 +1,12 @@
+@mixin input-label {
+    display: inline-block;
+    padding-right: 10px;
+    min-width: 100px;
+    text-align: right;    
+}
+
+@mixin input-content {
+    min-width: 250px;
+    max-width: 1000px;
+    width: 30em;
+}

@@ -10,7 +10,7 @@
 (defn templates-page-instance
   [{:keys [app-state http]}]
   (components.templates-page/templates-page
-   {:templates-page/current-project-id (queries/active-project-id @app-state)
+   {:templates-page/current-project-id (:id (queries/active-project @app-state))
     :components {:table components.table/table}
     :state (state/->FocusedAtom app-state [::state])
     :http http}))

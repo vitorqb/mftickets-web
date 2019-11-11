@@ -38,3 +38,4 @@
   (download [o]
     (download (pr-str o))))
 
+(def pp cljs.pprint/pprint)

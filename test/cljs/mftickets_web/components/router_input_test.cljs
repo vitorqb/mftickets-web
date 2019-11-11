@@ -8,7 +8,7 @@
   (testing "Passes value"
     (let [state (-> {} ((reducers/set-input-value "Foo")) atom)
           props {:state state}
-          value (-> props sut/input second :value)]
+          value (-> props sut/input second :input/value)]
       (is (= "Foo" value))))
 
   (testing "Passes OnChange->"

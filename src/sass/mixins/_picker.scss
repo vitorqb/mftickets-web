@@ -1,0 +1,9 @@
+@mixin picker-wrapper {
+    padding-bottom: 25px;
+}
+
+@mixin picker-contents {
+    display: inline-block;
+    min-width: 600px;
+    margin-left: 10px;
+}

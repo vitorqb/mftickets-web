@@ -17,13 +17,13 @@
 
 (defn html-input
   "An input html component."
-  [{:keys [value disabled id on-key-up autofocus] :as props}]
+  [{:input/keys [value disabled id on-key-up autofocus] :as props}]
   (r/create-class
    {:component-did-update
     #(when autofocus (.focus (r/dom-node %)))
     
     :reagent-render
-    (fn [{:keys [value disabled id on-key-up] :as props}]
+    (fn [{:input/keys [value disabled id on-key-up] :as props}]
       [:input
        {:class base-html-input-class
         :on-change #(->> % (handlers/->OnChange props) (events/react! props))
@@ -33,7 +33,7 @@
 
 (defn input
   "Wrapper for an input component."
-  [{:keys [label] :as props}]
+  [{:input/keys [label] :as props}]
   [:div {:class base-input-wrapper-class}
    [label-span label]
    [html-input props]])

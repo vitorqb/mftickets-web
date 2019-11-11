@@ -4,7 +4,8 @@
             [mftickets-web.components.view-project-page.handlers :as handlers]
             [mftickets-web.events :as events]
             [mftickets-web.components.project-form :as components.project-form]
-            [com.rpl.specter :as s]))
+            [com.rpl.specter :as s]
+            [mftickets-web.components.project-form.inputs :as components.project-form.inputs]))
 
 (def ^:private base-class "view-project-page")
 (def ^:private project-picker-wrapper-class (str base-class "__project-picker-wrapper"))
@@ -30,12 +31,9 @@
 (defn- project-display-form-inputs-metadata
   "Returns the metadata for the inputs of the project form."
   []
-  (s/setval
-   [s/ALL :disabled]
-   true
-   [components.project-form/id-input-metadata
-    components.project-form/name-input-metadata
-    components.project-form/description-input-metadata]))
+  [(assoc components.project-form.inputs/id :input/disabled true)
+   (assoc components.project-form.inputs/name :input/disabled true)
+   (assoc components.project-form.inputs/description :input/disabled true)])
 
 (defn project-display-form
   "Wrapper around project-form used for displaying it."

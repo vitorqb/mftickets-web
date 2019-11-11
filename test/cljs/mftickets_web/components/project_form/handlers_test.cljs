@@ -5,13 +5,15 @@
 
 (deftest test-InputChange
 
-  (testing "Set's path to value and propagates to parent EditedProjectChange->"
+  (testing "Set's new-value and propagates"
     (let [EditedProjectChange-> identity
           edited-project {:name "Foo"}
           props {:events {:EditedProjectChange-> EditedProjectChange->}
                  :project-form/edited-project edited-project}
           value "Bar"
-          path [:name]
-          new-edited-project {:name "Bar"}
-          event (sut/->InputChange props {:input-path path :input-value value})]
-      (is (= [new-edited-project] (events.protocols/propagate! event))))))
+          assoc-project-value-fn #(assoc %1 :name %2)
+          input-metadata {:factories.input/update-value-fn assoc-project-value-fn}
+          new-edited-project {:name value}
+          event (sut/->InputChange props input-metadata value)]
+      (is (= [new-edited-project]
+             (events.protocols/propagate! event))))))
