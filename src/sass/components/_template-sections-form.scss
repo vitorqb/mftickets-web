@@ -6,9 +6,7 @@
     }
 
     &__inputs-container {
-        @include input-content;
-        padding-left: 30px;
-        width: unset;
+        @include input-section;
     }
 
     &__section-input {

@@ -13,3 +13,7 @@
   (is (true? (sut/string->boolean "TRUE")))
   (is (= [::sut/invalid-string "foo"] (sut/string->boolean "foo"))))
 
+(deftest boolean->string
+  (is (= "true" (sut/boolean->string true)))
+  (is (= "false" (sut/boolean->string false))))
+
