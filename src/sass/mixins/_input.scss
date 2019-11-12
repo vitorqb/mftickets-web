@@ -6,7 +6,11 @@
 }
 
 @mixin input-content {
-    min-width: 250px;
-    max-width: 1000px;
-    width: 30em;
+    width: 400px;
+    display: inline-block;
+}
+
+@mixin input-section {
+    padding-left: 30px;
+    display: block;
 }

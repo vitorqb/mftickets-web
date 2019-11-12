@@ -1,5 +1,8 @@
 (ns mftickets-web.components.template-properties-form.input
-  (:require [mftickets-web.components.input :as components.input])
+  (:require [mftickets-web.components.input :as components.input]
+            [mftickets-web.components.select :as components.select]
+            [mftickets-web.domain.boolean :as domain.boolean]
+            [mftickets-web.domain.select :as domain.select])
   (:refer-clojure :exclude [name]))
 
 (def id
@@ -20,12 +23,22 @@
    :input/label "Name"})
 
 (def is-multiple
-  {:factories.input/component #'components.input/input
+  {:factories.input/component #'components.select/select
    :factories.input/id :is-multiple
-   :factories.input/focus-value-fn #(-> % :is-multiple str)
-   :factories.input/update-value-fn #(assoc %1 :is-multiple %2)
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :input/label "Multiple?"})
+   :factories.input/focus-value-fn #(some-> % :is-multiple domain.select/boolean->option)
+   :factories.input/update-value-fn (fn [property is-multiple-option]
+                                      (->> is-multiple-option
+                                           domain.select/option->boolean
+                                           (assoc property :is-multiple)))
+   :factories.input/assoc-value-to-props-fn #(assoc %1 :select/value %2)
+
+   :select/options domain.select/boolean-options
+   :select/label "Is Multiple?"
+   :select/contents-wrapper-class components.input/base-html-input-class
+   :select/label-wrapper-class components.input/base-input-wrapper-label-class
+
+   ;; !!!! TODO
+   :events {:Change-> js/console.log}})
 
 (def value-type
   {:factories.input/component #'components.input/input
