@@ -42,10 +42,8 @@
   {:pre [(spec/assert (spec/coll-of :factories/input) inputs-metadatas)]}
   
   [:div {:class property-input-class}
-   ;; !!!! TODO -> Smarter way to set disabled without knowing the component
    (for [metadata inputs-metadatas
-         :let [metadata* (cond-> metadata
-                           disabled (assoc :input/disabled true :select/disabled true))]]
+         :let [metadata* (cond-> metadata disabled (assoc :factories.input/disabled? true))]]
      (factories.input/input-factory props metadata* property))])
 
 (defn template-properties-form
