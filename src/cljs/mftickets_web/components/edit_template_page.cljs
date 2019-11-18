@@ -14,15 +14,21 @@
 (def template-picker-contents-class (str base-class "__template-picker-contents"))
 
 ;; Specs
-(spec/def :edit-template-page/project-id int?)
+(spec/def :edit-template-page/project-id (spec/or :nil nil? :int int?))
+
+(spec/def :edit-template-page.events/EditedTemplateChange-> fn?)
+(spec/def :edit-template-page/events
+  (:req-un [:edit-template-page.events/EditedTemplateChange->]))
+
 (spec/def :edit-template-page/props
   (spec/keys
-   :req [:edit-template-page/project-id]))
+   :req [:edit-template-page/project-id]
+   :opt-un [:edit-template-page/events]))
 
 ;; Helpers
 (def template-form-inputs
   [components.template-form.inputs/id
-   (assoc components.template-form.inputs/name :input/disabled true)
+   components.template-form.inputs/name
    (assoc components.template-form.inputs/project-id :input/disabled true)
    components.template-form.inputs/creation-date
    (assoc components.template-form.inputs/sections :template-sections-form/disabled true)])
@@ -32,7 +38,7 @@
   "A wrapper around `template-picker` for the user to select a template to edit."
   [{:keys [http state] :edit-template-page/keys [project-id] :as props}]
 
-  {:pre [(spec/assert :edit-template-page/project-id project-id)]}
+  {:pre [(do (spec/assert :edit-template-page/project-id project-id) true)]}
 
   (let [props {:template-picker/project-id project-id
                :template-picker/picked-template (queries/picked-template @state)
@@ -49,7 +55,9 @@
   (if-let [picked-template (queries/picked-template @state)]
     (let [props {:template-form/edited-template (queries/edited-template @state)
                  :template-form/original-template picked-template
-                 :template-form/inputs-metadatas template-form-inputs}]
+                 :template-form/inputs-metadatas template-form-inputs
+                 :events {:EditedTemplateChange-> handlers/->EditedTemplateChange}
+                 :parent-props props}]
       [components.template-form/template-form props])))
 
 (defn edit-template-page

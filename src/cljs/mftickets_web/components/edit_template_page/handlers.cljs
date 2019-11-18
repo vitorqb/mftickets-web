@@ -7,3 +7,7 @@
   (reduce! [_] #(-> %
                     ((reducers/set-edited-template template))
                     ((reducers/set-picked-template template)))))
+
+(defrecord EditedTemplateChange [template]
+  events.protocols/PEvent
+  (reduce! [_] #(-> % ((reducers/set-edited-template template)))))
