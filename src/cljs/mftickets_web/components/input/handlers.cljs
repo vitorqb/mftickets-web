@@ -3,13 +3,6 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-;; !!!! TODO -> REMOVE
-(defrecord OnChange [props event]
-  events.protocols/PEvent
-  (propagate! [_]
-    (if-let [OnChange-> (-> props :events :OnChange->)]
-      [(-> event .-target .-value OnChange->)])))
-
 (defrecord OnKeyUp [props event]
   events.protocols/PEvent
   (propagate! [_]

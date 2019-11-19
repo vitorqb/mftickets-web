@@ -28,10 +28,7 @@
     (fn [{:input/keys [value disabled id on-key-up] :as props}]
       [:input
        {:class base-html-input-class
-        ;; TODO REMOVE DISPATCH
-        :on-change #(if (:input.messages/on-change props)
-                      (handlers/on-html-input-change props %)
-                      (->> % (handlers/->OnChange props) (events/react! props)))
+        :on-change #(handlers/on-html-input-change props %)
         :on-key-up #(->> % (handlers/->OnKeyUp props) (events/react! props))
         :value (or value "")
         :disabled (or disabled false)}])}))

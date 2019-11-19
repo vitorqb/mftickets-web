@@ -3,20 +3,6 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.events.protocols :as events.protocols]))
 
-(deftest test-OnChange
-
-  (testing "Propagates change"
-    (let [OnChange #(if (= % "FOO") %)
-          props {:events {:OnChange-> OnChange}}
-          event (clj->js {:target {:value "FOO"}})
-          handler (sut/->OnChange props event)]
-      (is (= ["FOO"] (events.protocols/propagate! handler)))))
-
-  (testing "Don't propagate if no up handler"
-    (let [event (clj->js {:target {:value "FOO"}})
-          handler (sut/->OnChange {} event)]
-      (is (= nil (events.protocols/propagate! handler))))))
-
 (deftest test-OnKeyUp
 
   (testing "Propagates change"
