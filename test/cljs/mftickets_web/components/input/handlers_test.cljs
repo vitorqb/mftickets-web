@@ -3,19 +3,17 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.events.protocols :as events.protocols]))
 
-(deftest test-OnKeyUp
+(deftest test-on-key-up
 
-  (testing "Propagates change"
-    (let [OnKeyUp #(if (= % "KEY") "KEY")
-          props {:events {:OnKeyUp-> OnKeyUp}}
-          event (clj->js {:key "KEY"})
-          handler (sut/->OnKeyUp props event)]
-      (is (= ["KEY"] (events.protocols/propagate! handler)))))
+  (let [event (clj->js {:key "KEY"})]
 
-  (testing "Don't propagate if not up handler"
-    (let [event (clj->js {:key "KEY"})
-          handler (sut/->OnKeyUp {} event)]
-      (is (= nil (events.protocols/propagate! handler))))))
+    (testing "With handler defined"
+      (let [on-key-up (fn [x] [::on-key-up x])
+            props {:input.messages/on-key-up on-key-up}]
+        (is (= [::on-key-up "KEY"] (sut/on-key-up props event)))))
+
+    (testing "No handler"
+      (is (nil? (sut/on-key-up {} event))))))
 
 (deftest test-on-html-input-change
 

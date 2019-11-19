@@ -26,8 +26,8 @@
 
 (spec/def :template-form/props
   (spec/keys :req [:template-form/original-template
-                   :template-form/edited-template
-                   :template-form.messages/on-edited-template-change]))
+                   :template-form/edited-template]
+             :opt [:template-form.messages/on-edited-template-change]))
 
 ;; Helpers
 (defn- render-input

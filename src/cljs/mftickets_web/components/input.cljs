@@ -29,7 +29,7 @@
       [:input
        {:class base-html-input-class
         :on-change #(handlers/on-html-input-change props %)
-        :on-key-up #(->> % (handlers/->OnKeyUp props) (events/react! props))
+        :on-key-up #(handlers/on-key-up props %)
         :value (or value "")
         :disabled (or disabled false)}])}))
 

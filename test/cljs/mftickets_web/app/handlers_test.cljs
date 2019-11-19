@@ -4,10 +4,11 @@
             [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.app.reducers :as reducers]))
 
-(deftest test-CloseRouterDialog
-  (let [exp-state (-> {} ((reducers/close-router-dialog)))
-        reducer (events.protocols/reduce! (sut/->CloseRouterDialog))]
-    (is (= exp-state (reducer {})))))
+(deftest test-close-router-dialog
+  (let [app-state (atom {})
+        exp-state (-> @app-state ((reducers/close-router-dialog)))
+        inject {:app-state app-state}]
+    (is (= exp-state (sut/close-router-dialog inject)))))
 
 (deftest test-UpdateCurrentProject
   (let [project {:id 77}

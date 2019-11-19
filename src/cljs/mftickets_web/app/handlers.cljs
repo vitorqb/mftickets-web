@@ -10,13 +10,11 @@
   events.protocols/PEvent
   (reduce! [_] (reducers/display-router-dialog)))
 
-(defrecord CloseRouterDialog []
-  events.protocols/PEvent
-  (reduce! [_] (reducers/close-router-dialog)))
+(defn close-router-dialog [{:keys [app-state]}]
+  (swap! app-state (reducers/close-router-dialog)))
 
-(defrecord Navigate [href]
-  events.protocols/PEvent
-  (run-effects! [_] (do (accountant/navigate! href) nil)))
+(defn navigate [_ href]
+  (accountant/navigate! href))
 
 (defrecord FetchAppMetadataResponse--after [app-metadata-response]
   events.protocols/PEvent
