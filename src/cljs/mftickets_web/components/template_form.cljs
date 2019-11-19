@@ -15,6 +15,9 @@
 (spec/def :template-form.template/name
   string?)
 
+(spec/def :template-form.messages/on-edited-template-change
+  fn?)
+
 (spec/def :template-form/edited-template
   (spec/nilable
    (spec/keys :req-un [:template-form.template/id :template-form.template/name])))
@@ -22,7 +25,9 @@
 (spec/def :template-form/original-template :template-form/edited-template)
 
 (spec/def :template-form/props
-  (spec/keys :req [:template-form/original-template :template-form/edited-template]))
+  (spec/keys :req [:template-form/original-template
+                   :template-form/edited-template
+                   :template-form.messages/on-edited-template-change]))
 
 ;; Helpers
 (defn- render-input
@@ -33,8 +38,8 @@
   {:pre [(spec/assert :factories/input metadata)
          (spec/assert :template-form/props props)]}
 
-  (let [InputChange #(handlers/->InputChange props metadata %)
-        metadata* (update metadata :events assoc (:InputChange events-mapping) InputChange)]
+  (let [input-change #(handlers/on-input-change props metadata %)
+        metadata* (assoc metadata :input.messages/on-change input-change)]
   
     (factories.input/input-factory props metadata* edited-template)))
 

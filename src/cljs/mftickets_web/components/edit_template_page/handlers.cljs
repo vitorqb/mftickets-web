@@ -8,6 +8,5 @@
                     ((reducers/set-edited-template template))
                     ((reducers/set-picked-template template)))))
 
-(defrecord EditedTemplateChange [template]
-  events.protocols/PEvent
-  (reduce! [_] #(-> % ((reducers/set-edited-template template)))))
+(defn on-edited-template-change [{:keys [state]} new-template]
+  (swap! state (reducers/set-edited-template new-template)))

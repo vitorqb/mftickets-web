@@ -56,8 +56,8 @@
     (let [props {:template-form/edited-template (queries/edited-template @state)
                  :template-form/original-template picked-template
                  :template-form/inputs-metadatas template-form-inputs
-                 :events {:EditedTemplateChange-> handlers/->EditedTemplateChange}
-                 :parent-props props}]
+                 :template-form.messages/on-edited-template-change
+                 #(handlers/on-edited-template-change props %)}]
       [components.template-form/template-form props])))
 
 (defn edit-template-page

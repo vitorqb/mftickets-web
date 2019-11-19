@@ -20,3 +20,11 @@
 
     (testing "Set's edited-template"
       (is (= template (queries/edited-template new-state))))))
+
+
+(deftest test-on-edited-template-change
+  (let [state (atom {})
+        new-template {:id 99}
+        e-state (-> @state ((reducers/set-edited-template new-template)))]
+    (sut/on-edited-template-change {:state state} new-template)
+    (is (= e-state @state))))

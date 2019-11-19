@@ -2,20 +2,13 @@
   (:require [mftickets-web.events.protocols :as events.protocols]
             [cljs.spec.alpha :as spec]))
 
-(defrecord InputChange [props metadata new-value]
-  ;; Represents an input change.
-  ;; `props` -> template form props.
-  ;; `metadata` -> inputs metadata for the input-like component.
-  ;; `new-value` -> The new value
+(defn on-input-change
+  "Represents an input change. `metadata` is the input metadata. `new-value`
+  is the new value for the input."
+  [{:template-form.messages/keys [on-edited-template-change] :template-form/keys [edited-template]}
+   {:factories.input/keys [update-value-fn]}
+   new-value]
 
-  events.protocols/PEvent
-  (propagate! [_]
-
-    (spec/assert :factories/input metadata)
-    
-    (let [{{:keys [EditedTemplateChange->]} :events :template-form/keys [edited-template]} props
-          _ (spec/assert fn? EditedTemplateChange->)
-          {:factories.input/keys [update-value-fn]} metadata
-          new-edited-template (update-value-fn edited-template new-value)]
-
-      [(EditedTemplateChange-> new-edited-template)])))
+  {:pre [(fn? on-edited-template-change)]}
+  
+  (-> edited-template (update-value-fn new-value) on-edited-template-change))

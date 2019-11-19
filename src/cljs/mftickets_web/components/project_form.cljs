@@ -13,8 +13,7 @@
 ;; Components
 (defn- render-input
   "Renders an input from the current props and input metadata."
-  [{:project-form/keys [edited-project] :as props}
-   {:project-form.input/keys [events-mapping] :as metadata}]
+  [{:project-form/keys [edited-project] :as props} metadata]
 
   {:pre [(spec/assert :factories/input metadata)]}
 
