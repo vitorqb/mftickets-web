@@ -5,10 +5,6 @@
    [mftickets-web.events :as events]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defrecord InputChange [new-value]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-input-value new-value)))
-
 (defrecord InputKeyUp--arrows [props key]
   events.protocols/PEvent
   (reduce! [_]
@@ -28,3 +24,7 @@
   events.protocols/PEvent
   (dispatch! [_] [(->InputKeyUp--arrows props key)
                   (->InputKeyUp--enter props key)]))
+
+
+(defn on-input-change [{:keys [state]} new-value]
+  (swap! state (reducers/set-input-value new-value)))

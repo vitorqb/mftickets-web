@@ -47,8 +47,8 @@
   [components.input/input
    {:input/value (queries/input-value @state)
     :input/autofocus true
-    :events {:OnChange-> #(->> % handlers/->InputChange (events/react! props))
-             :OnKeyUp-> #(->> % (handlers/->InputKeyUp props) (events/react! props))}
+    :input.messages/on-change #(handlers/on-input-change props %)
+    :events {:OnKeyUp-> #(->> % (handlers/->InputKeyUp props) (events/react! props))}
     :parent-props props}])
 
 (defn- option-el
