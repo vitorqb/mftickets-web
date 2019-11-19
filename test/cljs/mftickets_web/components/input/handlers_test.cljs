@@ -30,3 +30,13 @@
     (let [event (clj->js {:key "KEY"})
           handler (sut/->OnKeyUp {} event)]
       (is (= nil (events.protocols/propagate! handler))))))
+
+(deftest test-on-html-input-change
+
+  (testing "Calls on-change with event value"
+    (let [on-change (fn [x] [::on-change x])
+          props {:input.messages/on-change on-change}
+          event-value "FOO"
+          event (clj->js {:target {:value "FOO"}})]
+      (is (= [::on-change event-value]
+             (sut/on-html-input-change props event))))))
