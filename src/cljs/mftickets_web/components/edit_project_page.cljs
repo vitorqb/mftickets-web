@@ -20,10 +20,11 @@
   (if-let [picked-project (queries/picked-project @state)]
     (let [edited-project (queries/edited-project @state)
           state* (state/->FocusedAtom state [::project-form])
-          events* {:EditedProjectChange-> handlers/->EditedprojectChange
-                   :Submit-> #(handlers/->EditedProjectSubmit props)}
+          events* {:Submit-> #(handlers/->EditedProjectSubmit props)}
           props* {:project-form/original-project picked-project
                   :project-form/edited-project edited-project
+                  :project-form.messages/on-edited-project-change
+                  #(handlers/on-project-form-edited-project-change props %)
                   :state state*
                   :parent-props props
                   :events events*}]

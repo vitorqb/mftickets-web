@@ -16,11 +16,10 @@
   [{:project-form/keys [edited-project] :as props}
    {:project-form.input/keys [events-mapping] :as metadata}]
 
-  {:pre [(spec/assert :factories/input metadata)
-         (spec/assert :project-form.input/events-mapping events-mapping)]}
+  {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [InputChange #(handlers/->InputChange props metadata %)
-        metadata* (update metadata :events assoc (:InputChange events-mapping) InputChange)]
+  (let [on-input-change #(handlers/on-input-change props metadata %)
+        metadata* (assoc metadata :input.messages/on-change on-input-change)]
 
     (factories.input/input-factory props metadata* edited-project)))
 

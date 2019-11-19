@@ -8,10 +8,6 @@
   events.protocols/PEvent
   (reduce! [_] (reducers/new-picked-project new-picked-project)))
 
-(defrecord EditedprojectChange [new-edited-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-edited-project new-edited-project)))
-
 (defrecord EditedProjectSubmit--before []
   events.protocols/PEvent
   (reduce! [_] (comp (reducers/set-loading? true)
@@ -36,3 +32,8 @@
               edit-project
               async/<!
               (->EditedProjectSubmit--after props))]))))
+
+(defn on-project-form-edited-project-change
+  "Handles messages from project form when the edited project changes."
+  [{:keys [state]} new-edited-project]
+  (swap! state (reducers/set-edited-project new-edited-project)))

@@ -25,7 +25,6 @@
 
   {:pre [(spec/assert :factories/input metadata)]}
 
-  ;; !!!! TODO -> Smarter way to set disabled without knowing the component
   (let [metadata* (cond-> metadata disabled (assoc :factories.input/disabled? true))]
     (factories.input/input-factory props metadata* section)))
 
