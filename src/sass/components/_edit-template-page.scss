@@ -1,0 +1,7 @@
+.edit-template-page {
+
+    &__template-picker-wrapper { @include picker-wrapper }
+
+    &__template-picker-contents { @include picker-contents }
+    
+}

@@ -11,6 +11,7 @@
 (def options
   [{:label "Templates" :href "/templates"}
    {:label "Templates - View [Templates]" :href "/templates/view"}
+   {:label "Templates - Edit [Templates]" :href "/templates/edit"}
    {:label "Projects" :href "/projects"}
    {:label "Projects - Edit [Projects]" :href "/projects/edit"}
    {:label "Projects - Create [Projects]" :href "/projects/create"}

@@ -5,7 +5,8 @@
             [mftickets-web.components.template-sections-form :as components.template-sections-form]
             [com.rpl.specter :as s]
             [mftickets-web.components.template-form.inputs :as inputs]
-            [mftickets-web.components.factories.input :as factories.input]))
+            [mftickets-web.components.factories.input :as factories.input]
+            [mftickets-web.components.template-form.handlers :as handlers]))
 
 ;; Specs
 (spec/def :template-form.template/id
@@ -26,12 +27,16 @@
 ;; Helpers
 (defn- render-input
   "Renders an input given the for props and input metadta."
-  [{:template-form/keys [edited-template] :as props} metadata]
+  [{:template-form/keys [edited-template] :as props}
+   {:factories.input/keys [events-mapping] :as metadata}]
 
   {:pre [(spec/assert :factories/input metadata)
          (spec/assert :template-form/props props)]}
+
+  (let [InputChange #(handlers/->InputChange props metadata %)
+        metadata* (update metadata :events assoc (:InputChange events-mapping) InputChange)]
   
-  (factories.input/input-factory props metadata edited-template))
+    (factories.input/input-factory props metadata* edited-template)))
 
 ;; Components
 (defn template-form

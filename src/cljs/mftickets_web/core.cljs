@@ -17,7 +17,8 @@
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
    [mftickets-web.events :as events]
-   [mftickets-web.instances.view-template-page :as instances.view-template-page]))
+   [mftickets-web.instances.view-template-page :as instances.view-template-page]
+   [mftickets-web.instances.edit-template-page :as instances.edit-template-page]))
 
 ;; -------------------------
 ;; Routes
@@ -28,6 +29,7 @@
     ["/about" :about]
     ["/templates" :templates]
     ["/templates/view" :view-templates]
+    ["/templates/edit" :edit-templates]
     ["/projects" :projects]
     ["/projects/edit" :edit-projects]
     ["/projects/create" :create-projects]
@@ -74,6 +76,9 @@
 (defn view-template-page []
   [instances.view-template-page/view-template-page-instance injections])
 
+(defn edit-template-page []
+  [instances.edit-template-page/edit-template-page-instance injections])
+
 (defn projects-page []
   [instances.projects-page/projects-page-instance injections])
 
@@ -99,6 +104,7 @@
     :about #'about-page
     :templates #'templates-page
     :view-templates #'view-template-page
+    :edit-templates #'edit-template-page
     :projects #'projects-page
     :edit-projects #'edit-project-page
     :create-projects #'create-project-page
