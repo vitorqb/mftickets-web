@@ -42,8 +42,7 @@
 
   (let [props {:template-picker/project-id project-id
                :template-picker/picked-template (queries/picked-template @state)
-               :parent-props props
-               :events {:ValueChange-> handlers/->PickedTemplateChange}
+               :template-picker.messages/on-template-picked #(handlers/on-template-picked props %)
                :state (state/->FocusedAtom state ::template-picker)
                :http http}]
 

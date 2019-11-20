@@ -17,11 +17,10 @@
     :keys [state]
     :as props}]
 
-  (let [events {:Change-> #(->> % handlers/->PickedProjectChange (events/react! props))}
-        picked-project (queries/picked-project @state)
-        props {:project-picker/projects (or projects [])
-               :project-picker/picked-project picked-project
-               :events events}]
+  (let [props {:project-picker/projects (or projects [])
+               :project-picker/picked-project (queries/picked-project @state)
+               :project-picker.messages/on-picked-project-change
+               #(handlers/on-picked-project-change props %)}]
 
     [:div {:class [project-picker-wrapper-class]}
      [:span.featured-label-1 "Pick a project:"]

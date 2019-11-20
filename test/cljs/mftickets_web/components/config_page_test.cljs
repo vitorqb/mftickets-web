@@ -5,6 +5,7 @@
 (deftest test-active-project-picker
   (testing "Passes project"
     (let [projects [{:id 1}]
-          props {:config-page/projects projects}]
+          props {:config-page/projects projects
+                 :config-page.messages/update-current-project (constantly nil)}]
       (is (= projects
              (-> props sut/active-project-picker second :project-picker/projects))))))

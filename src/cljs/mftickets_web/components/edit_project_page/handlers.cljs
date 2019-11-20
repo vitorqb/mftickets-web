@@ -4,9 +4,8 @@
             [cljs.core.async :as async]
             [mftickets-web.components.edit-project-page.queries :as queries]))
 
-(defrecord PickedProjectChange [new-picked-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/new-picked-project new-picked-project)))
+(defn on-picked-project-change [{:keys [state]} new-picked-project]
+  (swap! state (reducers/new-picked-project new-picked-project)))
 
 (defrecord EditedProjectSubmit--before []
   events.protocols/PEvent

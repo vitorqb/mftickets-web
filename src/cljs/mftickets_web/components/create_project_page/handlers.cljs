@@ -4,9 +4,8 @@
             [cljs.core.async :as async]
             [mftickets-web.components.create-project-page.queries :as queries]))
 
-(defrecord RawProjectChange [new-raw-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-raw-project new-raw-project)))
+(defn on-raw-project-change [{:keys [state]} new-raw-project]
+  (swap! state (reducers/set-raw-project new-raw-project)))
 
 (defrecord CreateProjectSubmit--before []
   events.protocols/PEvent

@@ -10,8 +10,10 @@
         inject {:app-state app-state}]
     (is (= exp-state (sut/close-router-dialog inject)))))
 
-(deftest test-UpdateCurrentProject
+(deftest test-update-current-project
   (let [project {:id 77}
-        exp-state (-> {} ((reducers/set-active-project-id (:id project))))
-        reducer (events.protocols/reduce! (sut/->UpdateCurrentProject project))]
-    (is (= exp-state (reducer {})))))
+        app-state (atom {})
+        inject {:app-state app-state}
+        exp-state (-> @app-state ((reducers/set-active-project-id (:id project))))]
+    (sut/update-current-project inject project)
+    (is (= exp-state @app-state))))

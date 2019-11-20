@@ -14,20 +14,17 @@
 (spec/def :template-picker/http
   #(-> % :get-matching-templates fn?))
 
-(spec/def :template-picker.events/ValueChange->
-  fn?)
-
-(spec/def :template-picker/events
-  (spec/keys :req-un [:template-picker.events/ValueChange->]))
+(spec/def :template-picker.messages/on-template-picked ifn?)
 
 (spec/def :template-picker/project-id (spec/nilable int?))
 
 (spec/def :template-picker/picked-template any?)
 
 (spec/def :template-picker/props
-  (spec/keys :req-un [:template-picker/http ::events.specs/state ::events.specs/parent-props
-                      :template-picker/events]
-             :req [:template-picker/project-id :template-picker/picked-template]))
+  (spec/keys :req-un [:template-picker/http]
+             :req [:template-picker/project-id
+                   :template-picker/picked-template
+                   :template-picker.messages/on-template-picked]))
 
 ;; Globals
 (def ^:private no-project-selected-user-message "No project is selected!")
@@ -59,10 +56,10 @@
   (if-not project-id
     [no-project-selected-message-box]
     (let [picked-option (some-> picked-template template->select-option)
-          props* {:events {:Change-> #(handlers/->ValueChange props %)}
-                  :parent-props props
+          props* {:parent-props props
                   :select/value picked-option
-                  :select.async/get-matching-options (get-matching-options props)}]
+                  :select.async/get-matching-options (get-matching-options props)
+                  :select.messages/on-select-change #(handlers/on-select-change props %)}]
       [components.select/async-select props*])))
 
 (defn template-picker

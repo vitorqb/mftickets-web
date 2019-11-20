@@ -14,9 +14,8 @@
   (str "Are you sure you want to delete: " name "?"))
 
 ;; Events
-(defrecord PickedProjectChange [picked-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-picked-project picked-project)))
+(defn on-picked-project-change [{:keys [state]} picked-project]
+  (swap! state (reducers/set-picked-project picked-project)))
 
 (defrecord DeltePickedProject--perform--after [props response]
   events.protocols/PEvent

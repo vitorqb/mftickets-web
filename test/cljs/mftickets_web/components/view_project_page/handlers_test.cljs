@@ -9,15 +9,13 @@
   (is (= "Are you sure you want to delete: My Project?"
          (sut/on-delete-picked-project-prompt {:name "My Project"}))))
 
-(deftest test-PickedProjectChange
+(deftest test-on-picked-project-change
 
   (testing "Reduces state with picked project"
-    (let [state {}
-          picked-project {:id 1}
-          event (sut/->PickedProjectChange picked-project)
-          reducer (events.protocols/reduce! event)
-          new-state (reducer state)]
-      (is (= picked-project (queries/picked-project new-state))))))
+    (let [state (atom {})
+          picked-project {:id 1}]
+      (sut/on-picked-project-change {:state state} picked-project)
+      (is (= picked-project (queries/picked-project @state))))))
 
 (deftest test-DeltePickedProject--perform--after
 

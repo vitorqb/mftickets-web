@@ -21,9 +21,6 @@
     (testing "Renders a template picker"
       (is (= components.template-picker/template-picker r-component)))
 
-    (testing "Passes parent props"
-      (is (= props (-> r-props :parent-props))))
-
     (testing "Passes project id"
       (is (= project-id (-> r-props :template-picker/project-id))))
 

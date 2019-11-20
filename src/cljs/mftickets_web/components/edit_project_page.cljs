@@ -40,8 +40,8 @@
         projects* (or projects [])
         props* {:project-picker/projects projects*
                 :project-picker/picked-project picked-project
-                :events {:Change-> handlers/->PickedProjectChange}
-                :parent-props props}]
+                :project-picker.messages/on-picked-project-change
+                #(handlers/on-picked-project-change props %)}]
   
     [:div {:class [project-picker-wrapper-class]}
      [:span.featured-label-1 "Pick a project:"]

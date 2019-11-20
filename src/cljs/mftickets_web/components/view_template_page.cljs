@@ -33,9 +33,9 @@
    {:http http
     :state (state/->FocusedAtom state ::template-picker)
     :parent-props props
-    :events {:ValueChange-> handlers/->PickedTemplateChange}
     :template-picker/project-id project-id
-    :template-picker/picked-template (queries/picked-template @state)}])
+    :template-picker/picked-template (queries/picked-template @state)
+    :template-picker.messages/on-template-picked #(handlers/on-picked-template-change props %)}])
 
 (defn template-form
   "A wrapper around `template-form` for the user to see a template."

@@ -45,7 +45,5 @@
         (events/react! props event)
         nil))))
 
-(defrecord UpdateCurrentProject [new-project]
-  ;; Updates the current project to be new-project
-  events.protocols/PEvent
-  (reduce! [_] (-> new-project :id reducers/set-active-project-id)))
+(defn update-current-project [{:keys [app-state]} new-project]
+  (->> new-project :id reducers/set-active-project-id (swap! app-state)))

@@ -2,11 +2,8 @@
   (:require [mftickets-web.events.protocols :as events.protocols]
             [cljs.core.async :as async]))
 
-(defrecord Change [props new-value]
-  events.protocols/PEvent
-  (propagate! [_]
-    (let [Change-> (-> props :events :Change->)]
-      [(-> new-value (js->clj :keywordize-keys true) Change->)])))
+(defn on-change [{:select.messages/keys [on-select-change]} new-value]
+  (-> new-value (js->clj :keywordize-keys true) on-select-change))
 
 (defrecord OnLoadOptions--after [matching-options callback]
   events.protocols/PEvent
