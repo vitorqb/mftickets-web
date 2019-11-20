@@ -8,9 +8,9 @@
 (defn header-instance
   [{:keys [app-state http] :as injections}]
   [components.header/header
-   {:state   (state/->FocusedAtom app-state [::state])
+   {:header.messages/display-router #(handlers/display-router-dialog injections)
+    :state   (state/->FocusedAtom app-state [::state])
     :http    http
-    :events {:DisplayRouterDialog-> handlers/->DisplayRouterDialog
-             :RefreshAppMetadata-> #(handlers/->FetchAppMetadataResponse injections)}
+    :events {:RefreshAppMetadata-> #(handlers/->FetchAppMetadataResponse injections)}
     :parent-props {:state app-state}}])
 

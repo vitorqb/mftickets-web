@@ -15,8 +15,9 @@
 
 (defn- router-btn
   "A button used to display the router dialog."
-  [props]
-  [:button {:on-click #(->> (handlers/->DisplayRouter props) (events/react! props))}
+  [{:header.messages/keys [display-router]}]
+  {:pre [(ifn? display-router)]}
+  [:button {:on-click display-router}
    "Router"])
 
 (defn- refresh-app-metadata-btn

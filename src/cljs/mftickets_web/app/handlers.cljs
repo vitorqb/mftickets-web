@@ -6,9 +6,8 @@
    [mftickets-web.app.reducers :as reducers]
    [cljs.core.async :as async]))
 
-(defrecord DisplayRouterDialog []
-  events.protocols/PEvent
-  (reduce! [_] (reducers/display-router-dialog)))
+(defn display-router-dialog [{:keys [app-state]}]
+  (swap! app-state (reducers/display-router-dialog)))
 
 (defn close-router-dialog [{:keys [app-state]}]
   (swap! app-state (reducers/close-router-dialog)))
