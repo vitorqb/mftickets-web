@@ -8,10 +8,9 @@
 
 (defn get-app-state [] mftickets-web.core/app-state)
 
-(defn set-token [x]
-  (let [props {:state mftickets-web.core/app-state
-               :http mftickets-web.core/http}]
-    (events/react! props (app.handlers/->UpdateToken props x))))
+(defn set-token
+  ([] (set-token "foo"))
+  ([x] (mftickets-web.app.handlers/update-token mftickets-web.core/injections x)))
 
 (defn set-events-log
   ([] (set-events-log true))

@@ -19,15 +19,13 @@
     :as props}]
   (if-let [picked-project (queries/picked-project @state)]
     (let [edited-project (queries/edited-project @state)
-          state* (state/->FocusedAtom state [::project-form])
-          events* {:Submit-> #(handlers/->EditedProjectSubmit props)}
           props* {:project-form/original-project picked-project
                   :project-form/edited-project edited-project
                   :project-form.messages/on-edited-project-change
                   #(handlers/on-project-form-edited-project-change props %)
-                  :state state*
-                  :parent-props props
-                  :events events*}]
+                  :project-form.messages/on-edited-project-submit
+                  #(handlers/on-edited-project-submit props)
+                  :state (state/->FocusedAtom state [::project-form])}]
       [components.project-form/project-form props*])))
 
 (defn- project-picker

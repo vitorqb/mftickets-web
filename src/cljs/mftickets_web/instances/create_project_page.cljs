@@ -5,10 +5,9 @@
 
 (defn create-project-page-instance
   "An instace of the page to create a new project."
-  [{:keys [app-state http]}]
-  (let [refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
-    [components.create-project-page/create-project-page
-     {:state (state/->FocusedAtom app-state [::state])
-      :http http
-      :events {:refresh-app-metadata-> refresh-app-metadata}
-      :parent-props {:state app-state}}]))
+  [{:keys [app-state http] :as inject}]
+  [components.create-project-page/create-project-page
+   {:create-project-page.messages/refresh-app-metadata
+    #(app.handlers/fetch-app-metadata-response inject)
+    :state (state/->FocusedAtom app-state [::state])
+    :http http}])

@@ -3,13 +3,6 @@
             [cljs.spec.alpha :as spec]
             [com.rpl.specter :as s]))
 
-(defrecord Submit [props]
-  events.protocols/PEvent
-  (propagate! [_]
-    (let [Submit-> (-> props :events :Submit->)
-          _ (assert (fn? Submit->))]
-      [(Submit->)])))
-
 (defn on-input-change
   "Handles an input on-change message."
   [{:project-form.messages/keys [on-edited-project-change] :project-form/keys [edited-project]}

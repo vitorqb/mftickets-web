@@ -123,8 +123,7 @@
   (when-not (:token @app-state)
     (async/go
       (when-let [token (some-> ((http/get-token-from-cookies {})) async/<! :body :token :value)]
-        (let [props {:state app-state :http http}]
-          (events/react! props (app.handlers/->UpdateToken props token)))))))
+        (app.handlers/update-token injections token)))))
 
 (defn mount-root []
   (maybe-try-to-set-token-from-cookies!)

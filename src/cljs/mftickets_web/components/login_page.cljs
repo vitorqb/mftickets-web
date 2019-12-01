@@ -13,8 +13,8 @@
   "Returns a handler for the form submit depending on current props."
   [{:keys [state] :as props}]
   (let [handler (if (queries/email-has-been-submited-sucessfully? @state)
-                  handlers/->KeySubmit
-                  handlers/->EmailSubmit)]
+                  handlers/on-key-submit
+                  handlers/on-email-submit)]
     (handler props)))
 
 ;; Components
@@ -43,7 +43,7 @@
   [components.form/form
    {:is-loading? (-> @state queries/email-submission-current-state #{:ongoing} boolean)
     :button-text "Submit!"
-    :on-submit #(->> (get-form-submit-handler props) (events/react! props))}
+    :on-submit #(get-form-submit-handler props)}
    children])
 
 (defn- msg-box

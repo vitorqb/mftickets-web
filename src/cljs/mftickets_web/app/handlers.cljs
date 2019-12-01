@@ -15,34 +15,23 @@
 (defn navigate [_ href]
   (accountant/navigate! href))
 
-(defrecord FetchAppMetadataResponse--after [app-metadata-response]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-app-metadata-response app-metadata-response)))
+(defn fetch-app-metadata-response
+  [{app-state :app-state {:keys [get-app-metadata]} :http}]
+  {:pre [(ifn? get-app-metadata)]}
+  (async/go
+    (let [response (async/<! (get-app-metadata))]
+      (swap! app-state (reducers/set-app-metadata-response response)))))
 
-(defrecord FetchAppMetadataResponse [props]
-  events.protocols/PEvent
-  (run-effects! [_]
-    (let [get-app-metadata (-> props :http :get-app-metadata)]
-      (async/go [(-> (get-app-metadata) async/<! ->FetchAppMetadataResponse--after)]))))
+(defn update-token
+  [{:keys [app-state] :as injections} new-token]
+  (swap! app-state (reducers/set-token new-token))
+  (fetch-app-metadata-response injections))
 
-(defrecord UpdateToken [props new-token]
-  events.protocols/PEvent
-
-  ;; Reduce app state to set the new token
-  (reduce! [_] (reducers/set-token new-token))
-
-  ;; Refresh the app metadata
-  (dispatch! [_] [(->FetchAppMetadataResponse props)]))
-
-(defrecord WithConfirmation [opts]
-  ;; Returns an event that asks the user for confirmation and only dispatches the next
-  ;; event if it confirms.
-  events.protocols/PEvent
-  (run-effects! [_]
-    (let [{:keys [prompt props event]} opts]
-      (when (js/confirm prompt)
-        (events/react! props event)
-        nil))))
+(defn with-confirmation
+  "Asks the user to confirm an action and calls message on success."
+  [{:keys [message prompt]}]
+  (when (js/confirm prompt)
+    (message)))
 
 (defn update-current-project [{:keys [app-state]} new-project]
   (->> new-project :id reducers/set-active-project-id (swap! app-state)))

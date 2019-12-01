@@ -24,10 +24,11 @@
 
 (defn- props->form-props
   "Prepares the props for the form component."
-  [{:project-form/keys [form-props] :as props}]
-  {:pre [(-> form-props (contains? :on-submit) not)]}
-  (let [on-submit #(events/react! props (handlers/->Submit props))]
-    (assoc form-props :on-submit on-submit)))
+  [{:project-form/keys [form-props]
+    :project-form.messages/keys [on-edited-project-submit]
+    :as props}]
+  {:pre [(fn? on-edited-project-submit)]}
+  (assoc form-props :on-submit on-edited-project-submit))
 
 (defn project-form
   "A form to create/edit/view a project."

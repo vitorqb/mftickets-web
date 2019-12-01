@@ -5,35 +5,25 @@
    [cljs.core.async :as async]
    [mftickets-web.events.protocols :as events.protocols]))
 
-(defrecord EmailSubmit--after [response]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/after-email-submit response)))
+(defn after-email-submit [{:keys [state]} response]
+  (swap! state (reducers/after-email-submit response)))
 
-(defrecord EmailSubmit [props]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/before-email-submit))
-  (run-effects! [_]
-    (let [{{:keys [send-key]} :http :keys [state]} props
-          email (-> @state queries/email-input-state :value)]
-      (async/go [(->> {:email email} send-key async/<! ->EmailSubmit--after)]))))
+(defn on-email-submit [{state :state {:keys [send-key]} :http :as props}]
+  (swap! state (reducers/before-email-submit))
+  (let [email (-> @state queries/email-input-state :value)]
+    (async/go (->> {:email email} send-key async/<! (after-email-submit props)))))
 
-(defrecord KeySubmit--after [props response]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/after-key-submit response))
-  (propagate! [_]
-    (let [UpdateToken-> (-> props :events :UpdateToken->)]
-      [(->> response :body :token (UpdateToken-> props))])))
+(defn after-key-submit [{:keys [state] :login-page.messages/keys [update-token]} response]
+  (swap! state (reducers/after-key-submit response))
+  (->> response :body :token update-token))
 
-(defrecord KeySubmit [props]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/before-key-submit))
-  (run-effects! [_]
-    (let [state (:state props)
-          get-token (-> props :http :get-token)
-          key (-> @state queries/key-input-state :value)
-          email (-> @state queries/email-input-state :value)
-          params {:keyValue key :email email}]
-      (async/go [(->> params get-token async/<! (->KeySubmit--after props))]))))
+(defn on-key-submit [{state :state {:keys [get-token]} :http :as props}]
+  (swap! state (reducers/before-key-submit))
+  (let [state (:state props)
+        key (-> @state queries/key-input-state :value)
+        email (-> @state queries/email-input-state :value)
+        params {:keyValue key :email email}]
+    (async/go (->> params get-token async/<! (after-key-submit props)))))
 
 (defn on-email-input-change [{:keys [state]} new-value]
   (swap! state (reducers/set-email-value new-value)))

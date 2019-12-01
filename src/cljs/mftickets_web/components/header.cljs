@@ -1,7 +1,6 @@
 (ns mftickets-web.components.header
   (:require
    [mftickets-web.components.life-prober :as components.life-prober]
-   [mftickets-web.components.header.handlers :as handlers]
    [mftickets-web.events :as events]
    [mftickets-web.state :as state]))
 
@@ -22,8 +21,9 @@
 
 (defn- refresh-app-metadata-btn
   "A button to refresh the app metadata."
-  [props]
-  [:button {:on-click #(->> (handlers/->RefreshAppMetadata props) (events/react! props))}
+  [{:header.messages/keys [refresh-app-metadata]}]
+  {:pre [(fn? refresh-app-metadata)]}
+  [:button {:on-click refresh-app-metadata}
    "Refresh!"])
 
 (defn header

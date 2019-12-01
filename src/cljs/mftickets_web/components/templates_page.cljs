@@ -9,7 +9,7 @@
   "Handles initialization logic."
   [{:keys [state] :as props}]
   (when-not (queries/templates-http-response @state)
-    (events/react! props (handlers/->Init props))))
+    (handlers/init props)))
 
 (def ^:private templates-table-config
   "A config for the templates table."
@@ -30,7 +30,7 @@
   "A button to refresh the page."
   [props]
   [:div
-   [:button {:on-click #(->> (handlers/->FetchTemplates props) (events/react! props))}
+   [:button {:on-click #(handlers/on-fetch-templates props)}
     "Refresh"]])
 
 (defn templates-page

@@ -7,27 +7,21 @@
 (defn on-raw-project-change [{:keys [state]} new-raw-project]
   (swap! state (reducers/set-raw-project new-raw-project)))
 
-(defrecord CreateProjectSubmit--before []
-  events.protocols/PEvent
-  (reduce! [_] (comp (reducers/set-create-project-response nil)
+(defn- before-create-project-submit [{:keys [state]}]
+  (swap! state (comp (reducers/set-create-project-response nil)
                      (reducers/set-loading? true))))
 
-(defrecord CreateProjectSubmit--after [props created-project-response]
-  events.protocols/PEvent
-  (reduce! [_] (comp (reducers/set-create-project-response created-project-response)
+(defn- after-create-project-submit
+  [{:keys [state] :create-project-page.messages/keys [refresh-app-metadata]}
+   response]
+  {:pre [(ifn? refresh-app-metadata)]}
+  (swap! state (comp (reducers/set-create-project-response response)
                      (reducers/set-loading? false)))
-  (propagate! [_]
-    (let [refresh-app-metadata-> (-> props :events :refresh-app-metadata->)]
-      [(refresh-app-metadata->)])))
+  (refresh-app-metadata))
 
-(defrecord CreateProjectSubmit [props]
-  events.protocols/PEvent
-  (dispatch! [_] [(->CreateProjectSubmit--before)])
-  (run-effects! [_]
-    (let [create-project (-> props :http :create-project)]
-      (async/go
-        [(->> @(:state props)
-              queries/raw-project
-              create-project
-              async/<!
-              (->CreateProjectSubmit--after props))]))))
+(defn on-create-project-submit
+  [{{:keys [create-project]} :http state :state :as props}]
+  {:pre [(ifn? create-project)]}
+  (before-create-project-submit props)
+  (async/go
+    [(->> @state queries/raw-project create-project async/<! (after-create-project-submit props))]))

@@ -81,5 +81,5 @@
 
   [(r/adapt-react-class AsyncSelect)
    {:value value
-    :load-options #(->> %& (apply handlers/->OnLoadOptions props) (events/react! props))
+    :load-options #(handlers/on-load-options props %1 %2)
     :on-change #(handlers/on-change props %)}])

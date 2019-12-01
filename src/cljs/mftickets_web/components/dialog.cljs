@@ -23,7 +23,7 @@
   "A button to close the dialog."
   [props]
   [:button {:class close-btn-class
-            :on-click #(->> (handlers/->Close) (events/react! props))}
+            :on-click #(handlers/close props)}
    "X"])
 
 (defn dialog

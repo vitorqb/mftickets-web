@@ -8,13 +8,11 @@
 (defn view-project-page-instance
   "Instance of a page component to view a project."
   [{:keys [app-state http] :as injections}]
-  (let [projects (queries/projects @app-state)
-        state (state/->FocusedAtom app-state [::state])
-        refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
-    [components.view-project-page/view-project-page
-     {:view-project-page/projects projects
-      :state state
-      :events {:WithConfirmation-> app.handlers/->WithConfirmation
-               :refresh-app-metadata refresh-app-metadata}
-      :parent-props {:state app-state}
-      :http http}]))
+  [components.view-project-page/view-project-page
+   {:view-project-page/projects (queries/projects @app-state)
+    :view-project-page.messages/with-confirmation #(app.handlers/with-confirmation %)
+    :view-project-page.messages/refresh-app-metadata
+    #(app.handlers/fetch-app-metadata-response injections)
+    :state (state/->FocusedAtom app-state [::state])
+    :parent-props {:state app-state}
+    :http http}])

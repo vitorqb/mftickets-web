@@ -34,7 +34,7 @@
   [props]
   [:button
    {:class button-class
-    :on-click #(->> (handlers/->Ping props) (events/react! props))}
+    :on-click #(handlers/on-ping props)}
    "Probe Life"])
 
 (defn life-prober

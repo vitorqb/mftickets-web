@@ -32,7 +32,8 @@
 
   (testing "Base"
     (let [form-props {::a ::b}
-          props {:project-form/form-props form-props}
+          props {:project-form.messages/on-edited-project-submit (constantly nil)
+                 :project-form/form-props form-props}
           result (sut/props->form-props props)]
 
       (testing "Assoc on-submit"

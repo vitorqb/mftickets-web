@@ -63,15 +63,20 @@
 (deftest test-get-form-submit-handler
 
   (testing "Returns an key-submit handler if email submited successfully."
-    (let [state (-> {} ((reducers/after-email-submit {:status 204})) atom)
-          handler (sut/get-form-submit-handler {:state state})]
-      (is (true? (queries/email-has-been-submited-sucessfully? @state)))
-      (is (instance? handlers/KeySubmit handler))))
+    (with-redefs [handlers/on-key-submit (fn [x] [::on-key-submit x])]
+      (let [state (-> {} ((reducers/after-email-submit {:status 204})) atom)
+            props {:state state}
+            handler (sut/get-form-submit-handler props)]
+        (is (true? (queries/email-has-been-submited-sucessfully? @state)))
+        (is (= [::on-key-submit props] handler)))))
 
-  (testing "Returns an email-submit handler if email not submited successfully."
-    (let [state (-> {} ((reducers/after-email-submit {:status 500})) atom)
-          handler (sut/get-form-submit-handler {:state state})]
-      (is (instance? handlers/EmailSubmit handler)))))
+  (testing "Returns an email-submit handler if email submited successfully."
+    (with-redefs [handlers/on-email-submit (fn [x] [::on-email-submit x])]
+      (let [state (-> {} ((reducers/after-email-submit {:status 500})) atom)
+            props {:state state}
+            handler (sut/get-form-submit-handler props)]
+        (is (false? (queries/email-has-been-submited-sucessfully? @state)))
+        (is (= [::on-email-submit props] handler))))))
 
 (deftest test-form
 

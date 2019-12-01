@@ -4,19 +4,14 @@
    [mftickets-web.components.templates-page.reducers :as reducers]
    [cljs.core.async :as async]))
 
-(defrecord FetchTemplates--after [response]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-templates-http-response response)))
+(defn after-fetch-templates [{:keys [state]} response]
+  (swap! state (reducers/set-templates-http-response response)))
 
-(defrecord FetchTemplates [props]
-  events.protocols/PEvent
-  (run-effects! [_]
-    (let [{{:keys [get-templates]} :http :templates-page/keys [current-project-id]} props]
-      (async/go [(-> {:project-id current-project-id}
-                     get-templates
-                     async/<!
-                     ->FetchTemplates--after)]))))
+(defn on-fetch-templates
+  [{{:keys [get-templates]} :http :templates-page/keys [current-project-id] :as props}]
+  (async/go (->> {:project-id current-project-id}
+                 get-templates
+                 async/<!
+                 (after-fetch-templates props))))
 
-(defrecord Init [props]
-  events.protocols/PEvent
-  (dispatch! [_] [(->FetchTemplates props)]))
+(defn init [props] (on-fetch-templates props))
