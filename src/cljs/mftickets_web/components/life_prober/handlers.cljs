@@ -2,9 +2,7 @@
   (:require
    [mftickets-web.components.life-prober.queries :as queries]
    [mftickets-web.components.life-prober.reducers :as reducers]
-   [cljs.core.async :as async]
-   [mftickets-web.events :as events]
-   [mftickets-web.events.protocols :as events.protocols]))
+   [cljs.core.async :as async]))
 
 (defn after-ping [{:keys [state]} response]
   (swap! state (reducers/after-ping response)))

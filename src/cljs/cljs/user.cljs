@@ -2,7 +2,6 @@
   (:require
    [mftickets-web.core]
    [mftickets-web.app.handlers :as app.handlers]
-   [mftickets-web.events :as events]
    [com.rpl.specter :as s]
    [cljs.spec.alpha :as spec]))
 
@@ -11,10 +10,6 @@
 (defn set-token
   ([] (set-token "foo"))
   ([x] (mftickets-web.app.handlers/update-token mftickets-web.core/injections x)))
-
-(defn set-events-log
-  ([] (set-events-log true))
-  ([x] (reset! events/print? x)))
 
 (spec/check-asserts true)
 

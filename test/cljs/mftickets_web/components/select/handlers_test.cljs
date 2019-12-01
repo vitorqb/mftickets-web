@@ -1,7 +1,6 @@
 (ns mftickets-web.components.select.handlers-test
   (:require [mftickets-web.components.select.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-on-change
 

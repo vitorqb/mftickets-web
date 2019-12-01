@@ -16,7 +16,6 @@
    [mftickets-web.http :as http]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
-   [mftickets-web.events :as events]
    [mftickets-web.instances.view-template-page :as instances.view-template-page]
    [mftickets-web.instances.edit-template-page :as instances.edit-template-page]))
 

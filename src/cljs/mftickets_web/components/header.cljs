@@ -1,7 +1,6 @@
 (ns mftickets-web.components.header
   (:require
    [mftickets-web.components.life-prober :as components.life-prober]
-   [mftickets-web.events :as events]
    [mftickets-web.state :as state]))
 
 (def base-class "header")

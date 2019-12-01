@@ -1,9 +1,7 @@
 (ns mftickets-web.components.router-input.handlers
   (:require
    [mftickets-web.components.router-input.reducers :as reducers]
-   [mftickets-web.components.router-input.reducers :as queries]
-   [mftickets-web.events :as events]
-   [mftickets-web.events.protocols :as events.protocols]))
+   [mftickets-web.components.router-input.reducers :as queries]))
 
 (defn on-input-change [{:keys [state]} new-value]
   (swap! state (reducers/set-input-value new-value)))

@@ -1,7 +1,6 @@
 (ns mftickets-web.components.template-picker
   (:require
    [cljs.spec.alpha :as spec]
-   [mftickets-web.events.specs :as events.specs]
    [mftickets-web.components.select :as components.select]
    [mftickets-web.components.template-picker.handlers :as handlers]
    [cljs.core.async :as async]

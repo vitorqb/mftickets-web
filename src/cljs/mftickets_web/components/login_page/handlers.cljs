@@ -2,8 +2,7 @@
   (:require
    [mftickets-web.components.login-page.reducers :as reducers]
    [mftickets-web.components.login-page.queries :as queries]
-   [cljs.core.async :as async]
-   [mftickets-web.events.protocols :as events.protocols]))
+   [cljs.core.async :as async]))
 
 (defn after-email-submit [{:keys [state]} response]
   (swap! state (reducers/after-email-submit response)))

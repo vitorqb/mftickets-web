@@ -2,7 +2,6 @@
   (:require
    [mftickets-web.components.header :as components.header]
    [mftickets-web.state :as state]
-   [mftickets-web.events :as events]
    [mftickets-web.app.handlers :as handlers]))
 
 (defn header-instance

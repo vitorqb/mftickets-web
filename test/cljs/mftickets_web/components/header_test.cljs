@@ -1,8 +1,7 @@
 (ns mftickets-web.components.header-test
   (:require
    [mftickets-web.components.header :as sut]
-   [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-   [mftickets-web.events :as events]))
+   [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-life-prober
 

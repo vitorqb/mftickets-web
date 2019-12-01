@@ -5,8 +5,7 @@
    [mftickets-web.components.login-page.reducers :as reducers]
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.form :as components.form]
-   [mftickets-web.components.message-box :as components.message-box]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.message-box :as components.message-box]))
 
 ;; Helpers
 (defn- get-form-submit-handler

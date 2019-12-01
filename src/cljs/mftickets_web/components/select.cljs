@@ -4,8 +4,7 @@
    ["react-select" :default Select]
    ["react-select/async" :default AsyncSelect]
    [cljs.spec.alpha :as s]
-   [mftickets-web.components.select.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.select.handlers :as handlers]))
 
 (def base-class "select")
 (def base-label-class "select__label")

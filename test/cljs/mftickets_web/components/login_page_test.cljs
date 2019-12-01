@@ -3,9 +3,7 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.components.login-page.queries :as queries]
             [mftickets-web.components.login-page.reducers :as reducers]
-            [mftickets-web.components.login-page.handlers :as handlers]
-            [mftickets-web.events.protocols :as events.protocols]
-            [mftickets-web.events :as events]))
+            [mftickets-web.components.login-page.handlers :as handlers]))
 
 (deftest email-input
 

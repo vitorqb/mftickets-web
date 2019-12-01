@@ -3,7 +3,6 @@
    [mftickets-web.components.projects-page.handlers :as handlers]
    [mftickets-web.components.projects-page.queries :as queries]
    [mftickets-web.components.table :as components.table]
-   [mftickets-web.events :as events]
    [cljs.spec.alpha :as spec]))
 
 ;; Css

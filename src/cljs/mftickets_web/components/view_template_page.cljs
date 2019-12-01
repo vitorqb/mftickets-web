@@ -1,12 +1,12 @@
 (ns mftickets-web.components.view-template-page
   (:require [mftickets-web.components.template-picker :as components.template-picker]
             [cljs.spec.alpha :as spec]
-            [mftickets-web.events.specs :as events.specs]
             [mftickets-web.state :as state]
             [mftickets-web.components.view-template-page.handlers :as handlers]
             [mftickets-web.components.view-template-page.queries :as queries]
             [mftickets-web.components.template-form :as components.template-form]
-            [mftickets-web.components.template-form.inputs :as components.template-form.inputs]))
+            [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
+            [mftickets-web.specs]))
 
 ;; Css
 (def base-class "template-page")
@@ -15,7 +15,7 @@
 
 ;; Specs
 (spec/def :view-template-page/props
-  (spec/keys :req-un [::events.specs/state]))
+  (spec/keys :req-un [::mftickets-web.specs/state]))
 
 ;; Metadata
 (def template-form-inputs

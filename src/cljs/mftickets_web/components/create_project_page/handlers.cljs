@@ -1,6 +1,5 @@
 (ns mftickets-web.components.create-project-page.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [mftickets-web.components.create-project-page.reducers :as reducers]
+  (:require [mftickets-web.components.create-project-page.reducers :as reducers]
             [cljs.core.async :as async]
             [mftickets-web.components.create-project-page.queries :as queries]))
 

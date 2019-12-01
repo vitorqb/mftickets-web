@@ -1,7 +1,4 @@
-(ns mftickets-web.components.input.handlers
-  (:require
-   [mftickets-web.events :as events]
-   [mftickets-web.events.protocols :as events.protocols]))
+(ns mftickets-web.components.input.handlers)
 
 (defn on-key-up
   [{:input.messages/keys [on-key-up]} event]

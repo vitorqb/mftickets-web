@@ -2,7 +2,6 @@
   (:require [mftickets-web.components.create-project-page.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.components.create-project-page.reducers :as reducers]
-            [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.create-project-page.queries :as queries]))
 
 (deftest test-before-create-project-submit

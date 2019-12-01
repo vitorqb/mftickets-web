@@ -1,7 +1,6 @@
 (ns mftickets-web.components.project-form.handlers-test
   (:require [mftickets-web.components.project-form.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-on-input-change
   (let [on-edited-project-change (fn [x] [::on-edited-project-change x])

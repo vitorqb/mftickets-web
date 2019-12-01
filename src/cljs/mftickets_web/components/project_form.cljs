@@ -5,7 +5,6 @@
    [mftickets-web.components.project-form.queries :as queries]
    [com.rpl.specter :as s]
    [mftickets-web.components.project-form.handlers :as handlers]
-   [mftickets-web.events :as events]
    [cljs.spec.alpha :as spec]
    [mftickets-web.components.project-form.inputs :as inputs]
    [mftickets-web.components.factories.input :as factories.input]))

@@ -1,7 +1,6 @@
 (ns mftickets-web.components.router-dialog
   (:require
-   [mftickets-web.state :as state]
-   [mftickets-web.events :as events]))
+   [mftickets-web.state :as state]))
 
 (def body-base-class "router-dialog")
 

@@ -1,6 +1,5 @@
 (ns mftickets-web.components.template-form.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [cljs.spec.alpha :as spec]))
+  (:require [cljs.spec.alpha :as spec]))
 
 (defn on-input-change
   "Represents an input change. `metadata` is the input metadata. `new-value`

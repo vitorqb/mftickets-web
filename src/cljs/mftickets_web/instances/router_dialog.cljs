@@ -4,7 +4,6 @@
    [mftickets-web.components.dialog :as components.dialog]
    [mftickets-web.components.router-input :as components.router-input]
    [mftickets-web.state :as state]
-   [mftickets-web.events :as events]
    [mftickets-web.app.handlers :as handlers]))
 
 ;; !!!! TODO -> Give real options

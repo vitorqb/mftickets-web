@@ -1,7 +1,6 @@
 (ns mftickets-web.components.router-input.handlers-test
   (:require [mftickets-web.components.router-input.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.router-input.reducers :as reducers]))
 
 (deftest test-on-input-change

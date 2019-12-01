@@ -2,7 +2,6 @@
   (:require [mftickets-web.components.project-picker :as components.project-picker]
             [mftickets-web.components.view-project-page.queries :as queries]
             [mftickets-web.components.view-project-page.handlers :as handlers]
-            [mftickets-web.events :as events]
             [mftickets-web.components.project-form :as components.project-form]
             [com.rpl.specter :as s]
             [mftickets-web.components.project-form.inputs :as components.project-form.inputs]))

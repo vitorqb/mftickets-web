@@ -1,6 +1,5 @@
 (ns mftickets-web.components.select.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [cljs.core.async :as async]))
+  (:require [cljs.core.async :as async]))
 
 (defn on-change [{:select.messages/keys [on-select-change]} new-value]
   (-> new-value (js->clj :keywordize-keys true) on-select-change))

@@ -1,8 +1,6 @@
 (ns mftickets-web.app.handlers
   (:require
    [accountant.core :as accountant]
-   [mftickets-web.events :as events]
-   [mftickets-web.events.protocols :as events.protocols]
    [mftickets-web.app.reducers :as reducers]
    [cljs.core.async :as async]))
 

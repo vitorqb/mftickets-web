@@ -1,6 +1,5 @@
 (ns mftickets-web.components.project-form.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [cljs.spec.alpha :as spec]
+  (:require [cljs.spec.alpha :as spec]
             [com.rpl.specter :as s]))
 
 (defn on-input-change

@@ -1,7 +1,6 @@
 (ns mftickets-web.components.edit-project-page.handlers-test
   (:require [mftickets-web.components.edit-project-page.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]
             [mftickets-web.components.edit-project-page.reducers :as reducers]))
 
 (deftest test-before-edited-project-submit

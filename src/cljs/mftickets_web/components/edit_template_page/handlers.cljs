@@ -1,6 +1,5 @@
 (ns mftickets-web.components.edit-template-page.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [mftickets-web.components.edit-template-page.reducers :as reducers]))
+  (:require [mftickets-web.components.edit-template-page.reducers :as reducers]))
 
 (defn on-template-picked [{:keys [state]} template]
   (swap! state (comp (reducers/set-edited-template template)

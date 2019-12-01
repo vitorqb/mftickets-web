@@ -1,6 +1,5 @@
 (ns mftickets-web.components.templates-page.handlers
   (:require
-   [mftickets-web.events.protocols :as events.protocols]
    [mftickets-web.components.templates-page.reducers :as reducers]
    [cljs.core.async :as async]))
 

@@ -2,8 +2,7 @@
   (:require
    [mftickets-web.components.dialog.queries :as queries]
    [mftickets-web.components.dialog.reducers :as reducers]
-   [mftickets-web.components.dialog.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.dialog.handlers :as handlers]))
 
 (def base-class "dialog")
 (def base-disabled-modifier (str base-class "--disabled"))

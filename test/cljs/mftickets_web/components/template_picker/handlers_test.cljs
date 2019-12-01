@@ -1,7 +1,6 @@
 (ns mftickets-web.components.template-picker.handlers-test
   (:require [mftickets-web.components.template-picker.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-on-select-change
 

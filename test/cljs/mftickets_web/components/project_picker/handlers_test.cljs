@@ -1,7 +1,6 @@
 (ns mftickets-web.components.project-picker.handlers-test
   (:require [mftickets-web.components.project-picker.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-select-change
   (testing "Dispatches to on-picked-project-change after extracing value only"

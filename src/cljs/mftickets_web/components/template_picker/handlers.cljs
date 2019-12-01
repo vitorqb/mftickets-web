@@ -1,6 +1,5 @@
 (ns mftickets-web.components.template-picker.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [cljs.spec.alpha :as spec]))
+  (:require [cljs.spec.alpha :as spec]))
 
 (defn on-select-change
   [{:template-picker.messages/keys [on-template-picked]} picked-option]

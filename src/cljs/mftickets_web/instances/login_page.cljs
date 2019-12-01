@@ -2,8 +2,7 @@
   (:require
    [mftickets-web.components.login-page :as components.login-page]
    [mftickets-web.state :as state]
-   [mftickets-web.app.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.app.handlers :as handlers]))
 
 (defn login-page-instance
   [{:keys [app-state http] :as inject}]

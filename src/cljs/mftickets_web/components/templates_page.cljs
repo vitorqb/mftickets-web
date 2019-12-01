@@ -2,8 +2,7 @@
   (:require
    [mftickets-web.components.templates-page.queries :as queries]
    [mftickets-web.components.templates-page.reducers :as reducers]
-   [mftickets-web.components.templates-page.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.templates-page.handlers :as handlers]))
 
 (defn- init!
   "Handles initialization logic."

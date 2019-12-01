@@ -1,7 +1,6 @@
 (ns mftickets-web.components.input.handlers-test
   (:require [mftickets-web.components.input.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.events.protocols :as events.protocols]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
 (deftest test-on-key-up
 

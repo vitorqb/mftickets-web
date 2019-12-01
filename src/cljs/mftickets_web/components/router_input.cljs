@@ -5,8 +5,7 @@
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.router-input.queries :as queries]
    [mftickets-web.components.router-input.reducers :as reducers]
-   [mftickets-web.components.router-input.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.router-input.handlers :as handlers]))
 
 (def base-class "router-input")
 (def options-list-class (str base-class "__options-list"))

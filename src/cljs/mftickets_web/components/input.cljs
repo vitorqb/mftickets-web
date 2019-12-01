@@ -1,7 +1,6 @@
 (ns mftickets-web.components.input
   (:require
    [mftickets-web.components.input.handlers :as handlers]
-   [mftickets-web.events :as events]
    [reagent.core :as r]
    [cljs.spec.alpha :as spec]))
 
