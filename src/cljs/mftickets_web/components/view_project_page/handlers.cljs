@@ -1,6 +1,5 @@
 (ns mftickets-web.components.view-project-page.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [mftickets-web.components.view-project-page.reducers :as reducers]
+  (:require [mftickets-web.components.view-project-page.reducers :as reducers]
             [cljs.spec.alpha :as spec]
             [mftickets-web.components.view-project-page.queries :as queries]
             [cljs.core.async :as async]))
@@ -14,36 +13,23 @@
   (str "Are you sure you want to delete: " name "?"))
 
 ;; Events
-(defrecord PickedProjectChange [picked-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-picked-project picked-project)))
+(defn on-picked-project-change [{:keys [state]} picked-project]
+  (swap! state (reducers/set-picked-project picked-project)))
 
-(defrecord DeltePickedProject--perform--after [props response]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/after-delete-picked-project response))
-  (propagate! [_]
-    (let [{{:keys [refresh-app-metadata]} :events} props
-          _ (assert (fn? refresh-app-metadata))]
-      [(refresh-app-metadata)])))
+(defn- after-perform-delete-picked-project
+  [{:keys [state] :view-project-page.messages/keys [refresh-app-metadata]} response]
+  (swap! state (reducers/after-delete-picked-project response))
+  (refresh-app-metadata))
 
-(defrecord DeltePickedProject--perform [props project]
-  events.protocols/PEvent
-  (run-effects! [_]
-    (let [{{:keys [delete-project]} :http} props]
-      (async/go
-        [(->> project
-              delete-project
-              async/<!
-              (->DeltePickedProject--perform--after props))]))))
+(defn- perform-delete-picked-project
+  [{{:keys [delete-project]} :http :as props} project]
+  (async/go
+    (->> project delete-project async/<! (after-perform-delete-picked-project props))))
 
-(defrecord DeletePickedProject [props]
-  events.protocols/PEvent
-  (propagate! [_]
-    (let [{{:keys [WithConfirmation->]} :events :keys [state]} props
-          picked-project (queries/picked-project @state)
-          perform-event (->DeltePickedProject--perform props picked-project)
-          confirmation-prompt (on-delete-picked-project-prompt picked-project)
-          WithConfirmation-opts {:props props
-                                 :event perform-event
-                                 :prompt confirmation-prompt}]
-      [(WithConfirmation-> WithConfirmation-opts)])))
+(defn on-delete-picked-project
+  [{:keys [state] :view-project-page.messages/keys [with-confirmation] :as props}]
+  (let [picked-project (queries/picked-project @state)
+        perform-msg #(perform-delete-picked-project props picked-project)
+        confirmation-prompt (on-delete-picked-project-prompt picked-project)
+        with-confirmation-opts {:props props :message perform-msg :prompt confirmation-prompt}]
+    (with-confirmation with-confirmation-opts)))

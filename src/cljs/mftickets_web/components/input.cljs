@@ -1,8 +1,8 @@
 (ns mftickets-web.components.input
   (:require
    [mftickets-web.components.input.handlers :as handlers]
-   [mftickets-web.events :as events]
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [cljs.spec.alpha :as spec]))
 
 (def base-input-wrapper-class "input-wrapper")
 (def base-html-input-class "input-wrapper__input")
@@ -17,7 +17,8 @@
 
 (defn html-input
   "An input html component."
-  [{:input/keys [value disabled id on-key-up autofocus] :as props}]
+  [{:input/keys [value disabled id on-key-up autofocus]
+    :as props}]
   (r/create-class
    {:component-did-update
     #(when autofocus (.focus (r/dom-node %)))
@@ -26,8 +27,8 @@
     (fn [{:input/keys [value disabled id on-key-up] :as props}]
       [:input
        {:class base-html-input-class
-        :on-change #(->> % (handlers/->OnChange props) (events/react! props))
-        :on-key-up #(->> % (handlers/->OnKeyUp props) (events/react! props))
+        :on-change #(handlers/on-html-input-change props %)
+        :on-key-up #(handlers/on-key-up props %)
         :value (or value "")
         :disabled (or disabled false)}])}))
 

@@ -28,14 +28,12 @@
 (defn- project-form
   "A wrapper around project-form"
   [{:keys [state] :as props}]
-  (let [raw-project (queries/raw-project @state)
-        events {:EditedProjectChange-> handlers/->RawProjectChange
-                :Submit-> #(handlers/->CreateProjectSubmit props)}]
+  (let [raw-project (queries/raw-project @state)]
     [components.project-form/project-form
      {:project-form/inputs-metadata project-form-selected-inputs-metadata
       :project-form/edited-project raw-project
-      :events events
-      :parent-props props}]))
+      :project-form.messages/on-edited-project-change #(handlers/on-raw-project-change props %)
+      :project-form.messages/on-edited-project-submit #(handlers/on-create-project-submit props)}]))
 
 (defn create-project-page
   "A page component to create a new project."

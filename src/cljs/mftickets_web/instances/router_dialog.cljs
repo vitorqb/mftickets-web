@@ -4,7 +4,6 @@
    [mftickets-web.components.dialog :as components.dialog]
    [mftickets-web.components.router-input :as components.router-input]
    [mftickets-web.state :as state]
-   [mftickets-web.events :as events]
    [mftickets-web.app.handlers :as handlers]))
 
 ;; !!!! TODO -> Give real options
@@ -21,13 +20,13 @@
    {:label "Configurations [Options]" :href "/config"}])
 
 (defn router-dialog-instance
-  [{:keys [app-state http]}]
+  [{:keys [app-state http] :as inject}]
   [components.router-dialog/router-dialog
    {:router-dialog/options options
+    :router-dialog.messages/close-router-dialog #(handlers/close-router-dialog inject)
+    :router-dialog.messages/navigate #(handlers/navigate inject %)
     :state      (state/->FocusedAtom app-state [::state])
     :http       http
     :components {:dialog components.dialog/dialog
                  :router-input components.router-input/router-input}
-    :events     {:Navigate-> handlers/->Navigate
-                 :CloseRouterDialog-> handlers/->CloseRouterDialog}
     :parent-props {:state app-state}}])

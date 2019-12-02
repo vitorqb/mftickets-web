@@ -16,7 +16,6 @@
    [mftickets-web.http :as http]
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
-   [mftickets-web.events :as events]
    [mftickets-web.instances.view-template-page :as instances.view-template-page]
    [mftickets-web.instances.edit-template-page :as instances.edit-template-page]))
 
@@ -123,8 +122,7 @@
   (when-not (:token @app-state)
     (async/go
       (when-let [token (some-> ((http/get-token-from-cookies {})) async/<! :body :token :value)]
-        (let [props {:state app-state :http http}]
-          (events/react! props (app.handlers/->UpdateToken props token)))))))
+        (app.handlers/update-token injections token)))))
 
 (defn mount-root []
   (maybe-try-to-set-token-from-cookies!)

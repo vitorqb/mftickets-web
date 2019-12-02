@@ -4,9 +4,7 @@
    ["react-select" :default Select]
    ["react-select/async" :default AsyncSelect]
    [cljs.spec.alpha :as s]
-   [mftickets-web.components.select.handlers :as handlers]
-   [mftickets-web.events :as events]
-   [mftickets-web.events.specs :as events.specs]))
+   [mftickets-web.components.select.handlers :as handlers]))
 
 (def base-class "select")
 (def base-label-class "select__label")
@@ -24,8 +22,7 @@
 (s/def :select/options
   (s/coll-of :select/option))
 
-(s/def :select.events/Change->
-  fn?)
+(s/def :select.messages/on-select-change ifn?)
 
 (s/def :select/label-wrapper-class
   string?)
@@ -36,20 +33,15 @@
 (s/def :select/disabled
   boolean?)
 
-(s/def :select/events
-  (s/keys :req-un [:select.events/Change->]))
-
 (s/def :select/props
-  (s/keys :req-un [::events.specs/parent-props :select/events]
-          :req [:select/value :select/options]
+  (s/keys :req [:select/value :select/options :select.messages/on-select-change]
           :opt [:select/disabled]))
 
 (s/def :select.async/get-matching-options
   fn?)
 
 (s/def :select.async/props
-  (s/keys :req-un [::events.specs/parent-props :select/events]
-          :req [:select/value :select.async/get-matching-options]
+  (s/keys :req [:select/value :select.async/get-matching-options :select.messages/on-select-change]
           :opt [:select/label :select/label-wrapper-class :select/contents-wrapper-class]))
 
 ;; Component
@@ -63,8 +55,7 @@
 
 (defn select
   "A wrapper around ReactSelect."
-  [{:keys [events]
-    :select/keys [options value label-wrapper-class contents-wrapper-class disabled]
+  [{:select/keys [options value label-wrapper-class contents-wrapper-class disabled]
     :or {disabled false}
     :as props}]
 
@@ -76,7 +67,7 @@
     [(r/adapt-react-class Select)
      {:value value
       :options options
-      :on-change #(->> % (handlers/->Change props) (events/react! props))
+      :on-change #(handlers/on-change props %)
       :isDisabled disabled}]]])
 
 (defn async-select
@@ -89,5 +80,5 @@
 
   [(r/adapt-react-class AsyncSelect)
    {:value value
-    :load-options #(->> %& (apply handlers/->OnLoadOptions props) (events/react! props))
-    :on-change #(->> % (handlers/->Change props) (events/react! props))}])
+    :load-options #(handlers/on-load-options props %1 %2)
+    :on-change #(handlers/on-change props %)}])

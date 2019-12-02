@@ -1,38 +1,38 @@
 (ns mftickets-web.components.edit-project-page.handlers
-  (:require [mftickets-web.events.protocols :as events.protocols]
-            [mftickets-web.components.edit-project-page.reducers :as reducers]
+  (:require [mftickets-web.components.edit-project-page.reducers :as reducers]
             [cljs.core.async :as async]
             [mftickets-web.components.edit-project-page.queries :as queries]))
 
-(defrecord PickedProjectChange [new-picked-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/new-picked-project new-picked-project)))
+(defn on-picked-project-change [{:keys [state]} new-picked-project]
+  (swap! state (reducers/new-picked-project new-picked-project)))
 
-(defrecord EditedprojectChange [new-edited-project]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-edited-project new-edited-project)))
+(defn- before-edited-project-submit
+  [{:keys [state]}]
+  {:pre [(or (satisfies? IAtom state) (satisfies? ISwap state))]}
+  (swap! state (comp (reducers/set-loading? true) (reducers/set-edit-project-response nil))))
 
-(defrecord EditedProjectSubmit--before []
-  events.protocols/PEvent
-  (reduce! [_] (comp (reducers/set-loading? true)
-                     (reducers/set-edit-project-response nil))))
+(defn- after-edited-project-submit
+  [{:keys [state]
+    :edit-project-page.messages/keys [refresh-app-metadata]
+    {:keys [edit-project]} :http}
+   response]
 
-(defrecord EditedProjectSubmit--after [props edit-project-response]
-  events.protocols/PEvent
-  (reduce! [_] (comp (reducers/set-loading? false)
-                     (reducers/edit-project-response edit-project-response)))
-  (propagate! [_]
-    (let [refresh-app-metadata-> (-> props :events :refresh-app-metadata->)]
-      [(refresh-app-metadata->)])))
+  {:pre [(or (satisfies? IAtom state) (satisfies? ISwap state))
+         (ifn? refresh-app-metadata)]}
+  
+  (swap! state (comp (reducers/set-loading? false) (reducers/edit-project-response response)))
+  (refresh-app-metadata))
 
-(defrecord EditedProjectSubmit [props]
-  events.protocols/PEvent
-  (dispatch! [_] [(->EditedProjectSubmit--before)])
-  (run-effects! [_]
-    (let [edit-project (-> props :http :edit-project)]
-      (async/go
-        [(->> @(:state props)
-              queries/edited-project
-              edit-project
-              async/<!
-              (->EditedProjectSubmit--after props))]))))
+(defn on-edited-project-submit
+  [{:keys [state]
+    {:keys [edit-project]} :http
+    :as props}]
+  {:pre [(ifn? edit-project)]}
+  (before-edited-project-submit props)
+  (async/go
+    (->> @state queries/edited-project edit-project (after-edited-project-submit props))))
+
+(defn on-project-form-edited-project-change
+  "Handles messages from project form when the edited project changes."
+  [{:keys [state]} new-edited-project]
+  (swap! state (reducers/set-edited-project new-edited-project)))

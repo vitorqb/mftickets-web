@@ -9,12 +9,9 @@
 
 ;; Specs
 (s/def :project-picker/projects (s/nilable (s/coll-of any?)))
-
-(s/def :project-picker.events/Change-> fn?)
-(s/def :project-picker/events (s/keys :req-un [:project-picker.events/Change->]))
-
-(s/def :project-picker/props (s/keys :req [:project-picker/projects]
-                                     :req-un [:project-picker/events]))
+(s/def :project-picker.messages/on-picked-project-change ifn?)
+(s/def :project-picker/props (s/keys :req [:project-picker/projects
+                                           :project-picker.messages/on-picked-project-change]))
 
 ;; Helpers
 (defn- project->select-option
@@ -29,13 +26,13 @@
   [{:keys [events]
     :project-picker/keys [projects picked-project]
     :as props}]
+
   {:pre [(s/assert :project-picker/props props)]}
   
   (let [value (project->select-option picked-project)
         options (map project->select-option projects)
-        props* (merge
-                {:events {:Change-> #(handlers/->Change props %)}
-                 :parent-props props}
-                #:select{:value value :options options})]
+        props* {:select/value value
+                :select/options options
+                :select.messages/on-select-change #(handlers/on-select-change props %)}]
     [:div {:class [base-class]}
      [components.select/select props*]]))

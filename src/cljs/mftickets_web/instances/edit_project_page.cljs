@@ -7,11 +7,10 @@
 
 (defn edit-project-page-instance
   "An instance of the page to edit a project."
-  [{:keys [app-state http]}]
-  (let [refresh-app-metadata #(app.handlers/->FetchAppMetadataResponse {:http http})]
-    [components.edit-project-page/edit-project-page
-     {:state (state/->FocusedAtom app-state ::state)
-      :edit-project-page/projects (app.queries/projects @app-state)
-      :http http
-      :events {:refresh-app-metadata-> refresh-app-metadata}
-      :parent-props {:state app-state}}]))
+  [{:keys [app-state http] :as inject}]
+  [components.edit-project-page/edit-project-page
+   {:edit-project-page/projects (app.queries/projects @app-state)
+    :edit-project-page.messages/refresh-app-metadata
+    #(app.handlers/fetch-app-metadata-response inject)
+    :state (state/->FocusedAtom app-state ::state)
+    :http http}])

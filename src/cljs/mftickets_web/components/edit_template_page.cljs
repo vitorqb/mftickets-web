@@ -42,8 +42,7 @@
 
   (let [props {:template-picker/project-id project-id
                :template-picker/picked-template (queries/picked-template @state)
-               :parent-props props
-               :events {:ValueChange-> handlers/->PickedTemplateChange}
+               :template-picker.messages/on-template-picked #(handlers/on-template-picked props %)
                :state (state/->FocusedAtom state ::template-picker)
                :http http}]
 
@@ -56,8 +55,8 @@
     (let [props {:template-form/edited-template (queries/edited-template @state)
                  :template-form/original-template picked-template
                  :template-form/inputs-metadatas template-form-inputs
-                 :events {:EditedTemplateChange-> handlers/->EditedTemplateChange}
-                 :parent-props props}]
+                 :template-form.messages/on-edited-template-change
+                 #(handlers/on-edited-template-change props %)}]
       [components.template-form/template-form props])))
 
 (defn edit-template-page

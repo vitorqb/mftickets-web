@@ -5,9 +5,9 @@
 
 (defn config-page-instance
   "An instance of config page."
-  [{:keys [app-state]}]
+  [{:keys [app-state] :as inject}]
   [components.config-page/config-page
    {:config-page/projects (queries/projects @app-state)
     :config-page/active-project (queries/active-project @app-state)
-    :events {:UpdateCurrentProject-> handlers/->UpdateCurrentProject}
+    :config-page.messages/update-current-project #(handlers/update-current-project inject %)
     :parent-props {:state app-state}}])

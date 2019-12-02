@@ -2,13 +2,11 @@
   (:require
    [mftickets-web.components.login-page :as components.login-page]
    [mftickets-web.state :as state]
-   [mftickets-web.app.handlers :as handlers]
-   [mftickets-web.events :as events]))
+   [mftickets-web.app.handlers :as handlers]))
 
 (defn login-page-instance
-  [{:keys [app-state http]}]
+  [{:keys [app-state http] :as inject}]
   [components.login-page/login-page
-   {:state         (state/->FocusedAtom app-state [::state])
-    :http          http
-    :events        {:UpdateToken-> handlers/->UpdateToken}
-    :parent-props  {:state app-state}}])
+   {:login-page.messages/update-token #(handlers/update-token inject %)
+    :state         (state/->FocusedAtom app-state [::state])
+    :http          http}])

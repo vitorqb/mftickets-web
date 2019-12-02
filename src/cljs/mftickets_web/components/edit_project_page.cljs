@@ -19,14 +19,13 @@
     :as props}]
   (if-let [picked-project (queries/picked-project @state)]
     (let [edited-project (queries/edited-project @state)
-          state* (state/->FocusedAtom state [::project-form])
-          events* {:EditedProjectChange-> handlers/->EditedprojectChange
-                   :Submit-> #(handlers/->EditedProjectSubmit props)}
           props* {:project-form/original-project picked-project
                   :project-form/edited-project edited-project
-                  :state state*
-                  :parent-props props
-                  :events events*}]
+                  :project-form.messages/on-edited-project-change
+                  #(handlers/on-project-form-edited-project-change props %)
+                  :project-form.messages/on-edited-project-submit
+                  #(handlers/on-edited-project-submit props)
+                  :state (state/->FocusedAtom state [::project-form])}]
       [components.project-form/project-form props*])))
 
 (defn- project-picker
@@ -39,8 +38,8 @@
         projects* (or projects [])
         props* {:project-picker/projects projects*
                 :project-picker/picked-project picked-project
-                :events {:Change-> handlers/->PickedProjectChange}
-                :parent-props props}]
+                :project-picker.messages/on-picked-project-change
+                #(handlers/on-picked-project-change props %)}]
   
     [:div {:class [project-picker-wrapper-class]}
      [:span.featured-label-1 "Pick a project:"]

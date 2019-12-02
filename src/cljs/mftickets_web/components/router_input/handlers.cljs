@@ -1,30 +1,28 @@
 (ns mftickets-web.components.router-input.handlers
   (:require
    [mftickets-web.components.router-input.reducers :as reducers]
-   [mftickets-web.components.router-input.reducers :as queries]
-   [mftickets-web.events :as events]
-   [mftickets-web.events.protocols :as events.protocols]))
+   [mftickets-web.components.router-input.reducers :as queries]))
 
-(defrecord InputChange [new-value]
-  events.protocols/PEvent
-  (reduce! [_] (reducers/set-input-value new-value)))
+(defn on-input-change [{:keys [state]} new-value]
+  (swap! state (reducers/set-input-value new-value)))
 
-(defrecord InputKeyUp--arrows [props key]
-  events.protocols/PEvent
-  (reduce! [_]
-    (let [matching-options (:router-input/matching-options props)]
-      (reducers/select-from-key matching-options key))))
+(defn- on-arrow-input-key-up
+  [{:keys [state] :router-input/keys [matching-options]} key]
+  (swap! state (reducers/select-from-key matching-options key)))
 
-(defrecord InputKeyUp--enter [props key]
-  events.protocols/PEvent
-  (propagate! [_]
-    (when (= key "Enter")
-      (let [{:keys [Navigate-> CloseRouterDialog->]} (-> props :events)
-            selected-option (:router-input/selected-option props)]
-        [(-> selected-option :href Navigate->)
-         (CloseRouterDialog->)]))))
+(defn- on-enter-input-key-up*
+  [{:router-input.messages/keys [navigate close-router-dialog]
+    :router-input/keys [selected-option]}
+   key]
+  {:pre [(ifn? navigate) (ifn? close-router-dialog)]}
+  (when (= key "Enter")
+    [[navigate (-> selected-option :href)]
+     [close-router-dialog]]))
 
-(defrecord InputKeyUp [props key]
-  events.protocols/PEvent
-  (dispatch! [_] [(->InputKeyUp--arrows props key)
-                  (->InputKeyUp--enter props key)]))
+(defn- on-enter-input-key-up [props key]
+  (doseq [[fn & args] (on-enter-input-key-up* props key)]
+    (apply fn args)))
+
+(defn on-input-key-up [props key]
+  (on-arrow-input-key-up props key)
+  (on-enter-input-key-up props key))

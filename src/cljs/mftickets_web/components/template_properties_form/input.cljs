@@ -46,7 +46,7 @@
    :select/label-wrapper-class components.input/base-input-wrapper-label-class
 
    ;; !!!! TODO
-   :events {:Change-> js/console.log}})
+   :select.messages/on-select-change js/console.log})
 
 (def value-type
   {:factories.input/component #'components.input/input

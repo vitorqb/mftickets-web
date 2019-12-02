@@ -5,16 +5,15 @@
    [mftickets-web.components.login-page.reducers :as reducers]
    [mftickets-web.components.input :as components.input]
    [mftickets-web.components.form :as components.form]
-   [mftickets-web.components.message-box :as components.message-box]
-   [mftickets-web.events :as events]))
+   [mftickets-web.components.message-box :as components.message-box]))
 
 ;; Helpers
 (defn- get-form-submit-handler
   "Returns a handler for the form submit depending on current props."
   [{:keys [state] :as props}]
   (let [handler (if (queries/email-has-been-submited-sucessfully? @state)
-                  handlers/->KeySubmit
-                  handlers/->EmailSubmit)]
+                  handlers/on-key-submit
+                  handlers/on-email-submit)]
     (handler props)))
 
 ;; Components
@@ -25,8 +24,7 @@
    {:input/label "Email"
     :input/value (-> @state queries/email-input-state :value)
     :input/disabled (queries/email-has-been-submited-sucessfully? @state)
-    :events {:OnChange-> handlers/->EmailChange}
-    :parent-props props}])
+    :input.messages/on-change #(handlers/on-email-input-change props %)}])
 
 (defn- key-input
   "And input for the key."
@@ -35,7 +33,7 @@
     [components.input/input
      {:input/label "Key"
       :input/value (-> @state queries/key-input-state :value)
-      :events {:OnChange-> handlers/->KeyChange}
+      :input.messages/on-change #(handlers/on-key-input-change props %)
       :parent-props props}]))
 
 (defn- form
@@ -44,7 +42,7 @@
   [components.form/form
    {:is-loading? (-> @state queries/email-submission-current-state #{:ongoing} boolean)
     :button-text "Submit!"
-    :on-submit #(->> (get-form-submit-handler props) (events/react! props))}
+    :on-submit #(get-form-submit-handler props)}
    children])
 
 (defn- msg-box

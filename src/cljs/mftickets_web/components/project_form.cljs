@@ -5,7 +5,6 @@
    [mftickets-web.components.project-form.queries :as queries]
    [com.rpl.specter :as s]
    [mftickets-web.components.project-form.handlers :as handlers]
-   [mftickets-web.events :as events]
    [cljs.spec.alpha :as spec]
    [mftickets-web.components.project-form.inputs :as inputs]
    [mftickets-web.components.factories.input :as factories.input]))
@@ -13,23 +12,22 @@
 ;; Components
 (defn- render-input
   "Renders an input from the current props and input metadata."
-  [{:project-form/keys [edited-project] :as props}
-   {:project-form.input/keys [events-mapping] :as metadata}]
+  [{:project-form/keys [edited-project] :as props} metadata]
 
-  {:pre [(spec/assert :factories/input metadata)
-         (spec/assert :project-form.input/events-mapping events-mapping)]}
+  {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [InputChange #(handlers/->InputChange props metadata %)
-        metadata* (update metadata :events assoc (:InputChange events-mapping) InputChange)]
+  (let [on-input-change #(handlers/on-input-change props metadata %)
+        metadata* (assoc metadata :input.messages/on-change on-input-change)]
 
     (factories.input/input-factory props metadata* edited-project)))
 
 (defn- props->form-props
   "Prepares the props for the form component."
-  [{:project-form/keys [form-props] :as props}]
-  {:pre [(-> form-props (contains? :on-submit) not)]}
-  (let [on-submit #(events/react! props (handlers/->Submit props))]
-    (assoc form-props :on-submit on-submit)))
+  [{:project-form/keys [form-props]
+    :project-form.messages/keys [on-edited-project-submit]
+    :as props}]
+  {:pre [(fn? on-edited-project-submit)]}
+  (assoc form-props :on-submit on-edited-project-submit))
 
 (defn project-form
   "A form to create/edit/view a project."
