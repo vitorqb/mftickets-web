@@ -31,8 +31,13 @@
 
   (let [on-change #(handlers/on-template-section-input-change props metadata %)
         metadata* (cond-> metadata
-                    :always (assoc :input.messages/on-change on-change)
-                    disabled (assoc :factories.input/disabled? true))]
+                    ;; !!!! TODO -> Find a way to generalize
+                    :always
+                    (assoc :input.messages/on-change on-change
+                           :template-properties-form.messages/on-properties-change on-change)
+                    
+                    disabled
+                    (assoc :factories.input/disabled? true))]
     (factories.input/input-factory props metadata* section)))
 
 ;; Components

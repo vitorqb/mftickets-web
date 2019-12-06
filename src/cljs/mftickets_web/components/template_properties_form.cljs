@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-properties-form
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.factories.input :as factories.input]
-            [mftickets-web.components.template-properties-form.input :as input]))
+            [mftickets-web.components.template-properties-form.input :as input]
+            [mftickets-web.components.template-properties-form.handlers :as handlers]))
 
 ;; Css
 (def base-class "template-properties-form")
@@ -35,7 +36,7 @@
 (defn property-input
   "An input for a single template property."
   [{:template-properties-form/keys [inputs-metadatas disabled]
-    ::keys [property]
+    :template-properties-form.impl/keys [property]
     :or {inputs-metadatas [input/id input/name input/is-multiple input/value-type]}
     :as props}]
 
@@ -43,7 +44,10 @@
   
   [:div {:class property-input-class}
    (for [metadata inputs-metadatas
-         :let [metadata* (cond-> metadata disabled (assoc :factories.input/disabled? true))]]
+         :let [on-change #(handlers/on-template-property-change props metadata %)
+               metadata* (cond-> metadata
+                           :always (assoc :input.messages/on-change on-change)
+                           disabled (assoc :factories.input/disabled? true))]]
      (factories.input/input-factory props metadata* property))])
 
 (defn template-properties-form
@@ -56,6 +60,6 @@
    [:span {:class label-class} "Properties"]
    [:div {:class inputs-container-class}
     (for [{:keys [id] :as property} properties
-          :let [props* (assoc props ::property property)]]
+          :let [props* (assoc props :template-properties-form.impl/property property)]]
       ^{:key id}
       [property-input props*])]])
