@@ -43,10 +43,7 @@
    :select/options domain.select/boolean-options
    :select/label "Is Multiple?"
    :select/contents-wrapper-class components.input/base-html-input-class
-   :select/label-wrapper-class components.input/base-input-wrapper-label-class
-
-   ;; !!!! TODO
-   :select.messages/on-select-change js/console.log})
+   :select/label-wrapper-class components.input/base-input-wrapper-label-class})
 
 (def value-type
   {:factories.input/component #'components.input/input

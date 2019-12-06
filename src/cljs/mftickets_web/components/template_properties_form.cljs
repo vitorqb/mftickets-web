@@ -47,6 +47,7 @@
          :let [on-change #(handlers/on-template-property-change props metadata %)
                metadata* (cond-> metadata
                            :always (assoc :input.messages/on-change on-change)
+                           :always (assoc :select.messages/on-select-change on-change)
                            disabled (assoc :factories.input/disabled? true))]]
      (factories.input/input-factory props metadata* property))])
 
