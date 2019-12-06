@@ -11,13 +11,15 @@
   [refactor-nrepl "2.5.0-SNAPSHOT"]
   [cljs-http "0.1.46"]
   [binaryage/devtools "0.9.10"]
-  [com.rpl/specter "1.1.2"]]
+  [com.rpl/specter "1.1.2"]
+  [pjstadig/humane-test-output "0.10.0"]]
  
  :builds {:app {:target     :browser
                 :output-dir "resources/public/js"
                 :asset-path "/js"
                 :modules    {:app {:entries [mftickets-web.core]}}
-                :devtools   {:after-load mftickets-web.core/mount-root}}
+                :devtools   {:after-load mftickets-web.core/mount-root
+                             :preloads [pjstadig.humane-test-output]}}
           :test {:target     :karma
                  :output-to  "resources/public/test-build/js/karma-test-build.js"}}
 
