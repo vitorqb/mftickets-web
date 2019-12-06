@@ -12,8 +12,40 @@
     (is (nil? (queries/edited-template-submit-response state)))))
 
 (deftest test-after-edited-template-submit
-  (let [state {}
-        response {:status 200}
-        new-state (-> state ((sut/after-edited-template-submit response)))]
-    (is (false? (queries/loading? new-state)))
-    (is (= response (queries/edited-template-submit-response new-state)))))
+  (let [picked-template {:name "FOO"}
+        edited-template {:name "BAR"}
+        state (-> {}
+                  ((sut/set-picked-template picked-template))
+                  ((sut/set-edited-template edited-template)))]
+
+    (testing "On success:"
+      (let [response {:success true}
+            new-state ((sut/after-edited-template-submit response) state)]
+
+        (testing "Unsets loading"
+          (is (false? (queries/loading? new-state))))
+
+        (testing "Saves response"
+          (is (= response (queries/edited-template-submit-response new-state))))
+
+        (testing "Resets picked template"
+          (is (nil? (queries/picked-template new-state))))
+
+        (testing "Resets edited template"
+          (is (nil? (queries/edited-template new-state))))))
+
+    (testing "On error:"
+      (let [response {:success false}
+            new-state ((sut/after-edited-template-submit response) state)]
+
+        (testing "Unsets loading"
+          (is (false? (queries/loading? new-state))))
+
+        (testing "Saves response"
+          (is (= response (queries/edited-template-submit-response new-state))))
+
+        (testing "Do not reset picked template"
+          (is (= picked-template (queries/picked-template new-state))))
+
+        (testing "Do not Resets edited template"
+          (is (= edited-template (queries/edited-template new-state))))))))

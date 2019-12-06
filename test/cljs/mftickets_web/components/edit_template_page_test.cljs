@@ -4,7 +4,34 @@
             [mftickets-web.components.template-picker :as components.template-picker]
             [mftickets-web.components.edit-template-page.reducers :as reducers]
             [clojure.walk :as walk]
-            [mftickets-web.components.template-form :as components.template-form]))
+            [mftickets-web.components.template-form :as components.template-form]
+            [mftickets-web.components.message-box :as components.message-box]
+            [mftickets-web.components.edit-template-page.queries :as queries]))
+
+(deftest test-loading-wrapper
+
+  (testing "Nil if not loading"
+    (let [state (-> {} ((reducers/set-loading? false)) atom)]
+      (is (nil? (sut/loading-wrapper {:state state})))))
+
+  (testing "Renders if loading"
+    (let [state (-> {} ((reducers/set-loading? true)) atom)]
+      (is (= [:div {:class [sut/loading-wrapper-class]} "Loading..."]
+             (sut/loading-wrapper {:state state}))))))
+
+(deftest test-message-box
+
+  (testing "Nil if not user message"
+    (with-redefs [queries/user-message (constantly nil)]
+      (is (nil? (sut/message-box {:state (atom {})})))))
+
+  (testing "Renders message box if user message"
+    (let [message {:message "foo" :style :bar}]
+      (with-redefs [queries/user-message (constantly message)]
+        (let [props {:state (atom {})}
+              [r-component r-props] (sut/message-box props)]
+          (is (= r-component components.message-box/message-box))
+          (is (= r-props message)))))))
 
 (deftest test-template-picker
 

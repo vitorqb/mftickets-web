@@ -6,8 +6,6 @@
     
     &__project-picker-contents { @include picker-contents }
 
-    &__loading-wrapper {
-        @include loading-wrapper;
-    }
+    &__loading-wrapper { @include loading-wrapper; }
     
 }

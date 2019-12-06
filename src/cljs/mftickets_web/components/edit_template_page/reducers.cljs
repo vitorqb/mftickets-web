@@ -18,5 +18,7 @@
 
 (defn after-edited-template-submit
   [response]
-  (comp (set-edited-template-submit-response response)
-        (set-loading? false)))
+  (cond-> (comp (set-edited-template-submit-response response)
+                (set-loading? false))
+    (:success response) (comp (set-edited-template nil)
+                              (set-picked-template nil))))
