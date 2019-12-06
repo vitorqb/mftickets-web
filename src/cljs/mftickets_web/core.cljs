@@ -52,6 +52,7 @@
     :get-token http/get-token
     :ping http/ping
     :get-templates http/get-templates
+    :edit-template http/edit-template
     :get-matching-templates http/get-matching-templates
     :get-projects http/get-projects
     :get-app-metadata http/get-app-metadata

@@ -56,7 +56,9 @@
                  :template-form/original-template picked-template
                  :template-form/inputs-metadatas template-form-inputs
                  :template-form.messages/on-edited-template-change
-                 #(handlers/on-edited-template-change props %)}]
+                 #(handlers/on-edited-template-change props %)
+                 :template-form.messages/on-edited-template-submit
+                 #(handlers/on-edited-template-submit props)}]
       [components.template-form/template-form props])))
 
 (defn edit-template-page

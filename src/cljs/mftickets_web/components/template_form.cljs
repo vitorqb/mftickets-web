@@ -47,13 +47,15 @@
 (defn template-form
   "A form representing a template."
   [{:template-form/keys [inputs-metadatas edited-template]
+    :template-form.messages/keys [on-edited-template-submit]
     :or {inputs-metadatas [inputs/id inputs/name inputs/project-id inputs/creation-date
-                           inputs/sections]}
+                           inputs/sections]
+         on-edited-template-submit #(do nil)}
     :as props}]
 
   {:pre [(spec/assert :template-form/props props)]}
 
   (when edited-template
-    [components.form/form {}
+    [components.form/form {:on-submit #(on-edited-template-submit)}
      (for [input-metadata inputs-metadatas]
        (render-input props input-metadata))]))

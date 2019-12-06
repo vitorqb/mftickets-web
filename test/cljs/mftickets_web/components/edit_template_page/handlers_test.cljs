@@ -28,3 +28,20 @@
         e-state (-> @state ((reducers/set-edited-template new-template)))]
     (sut/on-edited-template-change {:state state} new-template)
     (is (= e-state @state))))
+
+(deftest test-before-edited-template-submit
+  (let [init-state {::foo 1}
+        state (atom init-state)
+        exp-state (-> init-state ((reducers/before-edited-template-submit)))
+        props {:state state}]
+    (is (= exp-state (sut/before-edited-template-submit props)))
+    (is (= exp-state @state))))
+
+(deftest test-after-edited-template-submit
+  (let [init-state {::foo 1}
+        state (atom init-state)
+        response {:status 200}
+        exp-state (-> init-state ((reducers/after-edited-template-submit response)))
+        props {:state state}]
+    (is (= exp-state (sut/after-edited-template-submit props response)))
+    (is (= exp-state @state))))
