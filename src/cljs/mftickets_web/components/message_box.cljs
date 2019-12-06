@@ -20,7 +20,7 @@
 (defn message-box
   "A components used to display a message for the user."
   [{:keys [message style] :or {style :error}}]
-  {:pre [(s/valid? :user-messages/message message)]}
+  {:pre [(s/assert :user-messages/message message)]}
 
   [:div {:class [message-box-base-class (style->modifier style)]}
    [:span {:class [message-box-message-class]}

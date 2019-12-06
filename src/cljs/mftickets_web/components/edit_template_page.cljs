@@ -6,7 +6,8 @@
             [mftickets-web.components.edit-template-page.queries :as queries]
             [mftickets-web.components.edit-template-page.reducers :as reducers]
             [mftickets-web.components.template-form :as components.template-form]
-            [mftickets-web.components.template-form.inputs :as components.template-form.inputs]))
+            [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
+            [mftickets-web.components.message-box :as components.message-box]))
 
 ;; Css
 (def base-class "edit-template-page")
@@ -39,6 +40,11 @@
   [{:keys [state]}]
   (when (queries/loading? @state)
     [:div {:class [loading-wrapper-class]} "Loading..."]))
+
+(defn- message-box
+  [{:keys [state] :as props}]
+  (when-let [message (queries/user-message @state)]
+    [components.message-box/message-box message]))
 
 (defn- template-picker
   "A wrapper around `template-picker` for the user to select a template to edit."
@@ -81,5 +87,5 @@
     [:span.featured-label-1 "Pick a template"]
     [:div {:class template-picker-contents-class}
      [template-picker props]]]
-
+   [message-box props]
    [template-form props]])
