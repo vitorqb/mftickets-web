@@ -4,6 +4,7 @@
    [mftickets-web.app.handlers :as app.handlers]
    [com.rpl.specter :as s]
    [cljs.spec.alpha :as spec]
+   [cljs.test :as t]
    [cljs.test-ns-requires]))
 
 (defn get-app-state [] mftickets-web.core/app-state)
