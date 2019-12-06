@@ -7,7 +7,8 @@
             [mftickets-web.components.edit-template-page.reducers :as reducers]
             [mftickets-web.components.template-form :as components.template-form]
             [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
-            [mftickets-web.components.message-box :as components.message-box]))
+            [mftickets-web.components.message-box :as components.message-box]
+            [mftickets-web.components.template-sections-form.input :as c.template-sections-form.input]))
 
 ;; Css
 (def base-class "edit-template-page")
@@ -33,7 +34,9 @@
    components.template-form.inputs/name
    (assoc components.template-form.inputs/project-id :input/disabled true)
    components.template-form.inputs/creation-date
-   (assoc components.template-form.inputs/sections :template-sections-form/disabled true)])
+   (assoc components.template-form.inputs/sections
+          :template-sections-form/inputs-metadatas
+          [c.template-sections-form.input/name])])
 
 ;; Components
 (defn- loading-wrapper

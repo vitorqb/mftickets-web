@@ -39,7 +39,9 @@
          (spec/assert :template-form/props props)]}
 
   (let [input-change #(handlers/on-input-change props metadata %)
-        metadata* (assoc metadata :input.messages/on-change input-change)]
+        metadata* (assoc metadata
+                         :input.messages/on-change input-change
+                         :template-sections-form.messages/on-section-change input-change)]
   
     (factories.input/input-factory props metadata* edited-template)))
 
