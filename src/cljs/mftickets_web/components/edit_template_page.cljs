@@ -8,7 +8,8 @@
             [mftickets-web.components.template-form :as components.template-form]
             [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
             [mftickets-web.components.message-box :as components.message-box]
-            [mftickets-web.components.template-sections-form.input :as c.template-sections-form.input]))
+            [mftickets-web.components.template-sections-form.input :as c.template-sections-form.input]
+            [mftickets-web.components.template-properties-form.input :as c.template-properties-form.input]))
 
 ;; Css
 (def base-class "edit-template-page")
@@ -36,7 +37,12 @@
    components.template-form.inputs/creation-date
    (assoc components.template-form.inputs/sections
           :template-sections-form/inputs-metadatas
-          [c.template-sections-form.input/name])])
+          [c.template-sections-form.input/id
+           c.template-sections-form.input/name
+           (assoc c.template-sections-form.input/properties
+                  :template-properties-form/inputs-metadatas
+                  [c.template-properties-form.input/id
+                   c.template-properties-form.input/name])])])
 
 ;; Components
 (defn- loading-wrapper
