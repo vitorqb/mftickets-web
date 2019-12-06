@@ -9,7 +9,7 @@ test-ns-requires:
 	echo '  THIS FILE IS CREATED AUTOMATICALLY AND SHOULD NOT BE EDITED.' >>"${tmpfile}"
 	echo '  See make test-ns-requires"' >>"${tmpfile}"
 	echo '  (:require' >>"${tmpfile}"
-	ag --no-group --no-filename -o 'mftickets.*test' test/cljs/mftickets_web | sed -n '/./ p' | sed -E 's/(.*)/[\1]/g' >>"${tmpfile}"
+	ag --no-group --no-filename -o 'mftickets.*test' test/cljs/mftickets_web | sed -n '/./ p' | sed -E 's/(.*)/[\1]/g' | sort >>"${tmpfile}"
 	echo '))' >>"${tmpfile}"
 	cp ${tmpfile} src/cljs/cljs/test_ns_requires.cljs
 	rm -rf ${tmpfile}
