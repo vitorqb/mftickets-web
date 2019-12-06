@@ -12,6 +12,7 @@
 (def base-class "edit-template-page")
 (def template-picker-wrapper-class (str base-class "__template-picker-wrapper"))
 (def template-picker-contents-class (str base-class "__template-picker-contents"))
+(def loading-wrapper-class (str base-class "__loading-wrapper"))
 
 ;; Specs
 (spec/def :edit-template-page/project-id (spec/or :nil nil? :int int?))
@@ -34,6 +35,11 @@
    (assoc components.template-form.inputs/sections :template-sections-form/disabled true)])
 
 ;; Components
+(defn- loading-wrapper
+  [{:keys [state]}]
+  (when (queries/loading? @state)
+    [:div {:class [loading-wrapper-class]} "Loading..."]))
+
 (defn- template-picker
   "A wrapper around `template-picker` for the user to select a template to edit."
   [{:keys [http state] :edit-template-page/keys [project-id] :as props}]
@@ -71,6 +77,7 @@
    [:h3.heading-tertiary "EDIT TEMPLATE"]
 
    [:div {:class template-picker-wrapper-class}
+    [loading-wrapper props]
     [:span.featured-label-1 "Pick a template"]
     [:div {:class template-picker-contents-class}
      [template-picker props]]]

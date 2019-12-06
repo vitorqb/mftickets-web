@@ -6,6 +6,17 @@
             [clojure.walk :as walk]
             [mftickets-web.components.template-form :as components.template-form]))
 
+(deftest test-loading-wrapper
+
+  (testing "Nil if not loading"
+    (let [state (-> {} ((reducers/set-loading? false)) atom)]
+      (is (nil? (sut/loading-wrapper {:state state})))))
+
+  (testing "Renders if loading"
+    (let [state (-> {} ((reducers/set-loading? true)) atom)]
+      (is (= [:div {:class [sut/loading-wrapper-class]} "Loading..."]
+           (sut/loading-wrapper {:state state}))))))
+
 (deftest test-template-picker
 
   (let [project-id 99
