@@ -5,7 +5,7 @@
 (deftest test-render-input
 
   (let [section {:id 1}
-        props {::sut/section section}
+        props {:template-sections-form.impl/section section}
         metadata {:factories.input/component ::div
                   :factories.input/id ::id
                   :factories.input/focus-value-fn :id
@@ -19,6 +19,9 @@
 
     (testing "Assocs the value to the props"
       (is (= 1 (:value r-props))))
+
+    (testing "Assocs :input.messages/on-change"
+      (is (ifn? (:input.messages/on-change r-props))))
 
     (testing "Passes all metadata as props"
       (is (every? (fn [[k v]] (= (get r-props k) v)) metadata)))))

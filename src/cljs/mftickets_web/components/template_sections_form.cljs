@@ -2,7 +2,8 @@
   (:require [mftickets-web.components.input :as components.input]
             [cljs.spec.alpha :as spec]
             [mftickets-web.components.template-sections-form.input :as input]
-            [mftickets-web.components.factories.input :as factories.input]))
+            [mftickets-web.components.factories.input :as factories.input]
+            [mftickets-web.components.template-sections-form.handlers :as handlers]))
 
 ;; Scss
 (def base-class "template-sections-form")
@@ -21,11 +22,17 @@
 ;; Helpers
 (defn- render-input
   "Renders an input from it's metadata."
-  [{::keys [section] :template-sections-form/keys [disabled] :as props} metadata]
+  [{:template-sections-form.impl/keys [section]
+    :template-sections-form/keys [disabled]
+    :as props}
+   metadata]
 
   {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [metadata* (cond-> metadata disabled (assoc :factories.input/disabled? true))]
+  (let [on-change #(handlers/on-template-section-input-change props metadata %)
+        metadata* (cond-> metadata
+                    :always (assoc :input.messages/on-change on-change)
+                    disabled (assoc :factories.input/disabled? true))]
     (factories.input/input-factory props metadata* section)))
 
 ;; Components
@@ -50,4 +57,4 @@
    [:div {:class inputs-container-class}
     (for [{:keys [id] :as section} sections]
       ^{:key id}
-      [section-input (assoc props ::section section)])]])
+      [section-input (assoc props :template-sections-form.impl/section section)])]])
