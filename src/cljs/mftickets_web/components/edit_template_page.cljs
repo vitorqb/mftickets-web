@@ -35,14 +35,7 @@
    components.template-form.inputs/name
    (assoc components.template-form.inputs/project-id :input/disabled true)
    components.template-form.inputs/creation-date
-   (assoc components.template-form.inputs/sections
-          :template-sections-form/inputs-metadatas
-          [c.template-sections-form.input/id
-           c.template-sections-form.input/name
-           (assoc c.template-sections-form.input/properties
-                  :template-properties-form/inputs-metadatas
-                  [c.template-properties-form.input/id
-                   c.template-properties-form.input/name])])])
+   components.template-form.inputs/sections])
 
 ;; Components
 (defn- loading-wrapper
