@@ -1,7 +1,8 @@
 (ns mftickets-web.http
   (:require
    [cljs-http.client :as http]
-   [cljs.core.async :as async]))
+   [cljs.core.async :as async]
+   [com.rpl.specter :as s]))
 
 (def base-request
   {:with-credentials? true
@@ -64,6 +65,19 @@
           request (-> base-request (wrap-auth token) (assoc :query-params params))]
 
       (http/get "/api/templates" request))))
+
+(defn edit-template
+  "Makes a PUT request for a template"
+  [{:keys [token]}]
+  (fn i-edit-template [{:keys [id] :as edited-template}]
+    (let [params (-> edited-template
+                     (select-keys [:id :name :creation-date :project-id :sections])
+                     (->> (s/transform [:sections s/ALL :properties s/ALL :value-type] keyword)))]
+      (http/post
+       (str "/api/templates/" id)
+       (-> base-request
+           (wrap-auth token)
+           (assoc :edn-params params))))))
 
 (defn get-matching-templates
   "Wrapper aroung get-templates that returns the list of templates on the first page of
