@@ -6,6 +6,7 @@
 [mftickets-web.app.handlers-test]
 [mftickets-web.app.queries-test]
 [mftickets-web.app.reducers-test]
+[mftickets-web.components.button-test]
 [mftickets-web.components.config-page-test]
 [mftickets-web.components.create-project-page.handlers-test]
 [mftickets-web.components.create-project-page.queries-test]

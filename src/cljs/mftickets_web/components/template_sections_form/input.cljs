@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-sections-form.input
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.input :as components.input]
-            [mftickets-web.components.template-properties-form :as components.template-properties-form])
+            [mftickets-web.components.template-properties-form :as components.template-properties-form]
+            [mftickets-web.components.template-sections-form.actions-buttons :as actions-buttons])
   (:refer-clojure :exclude [name]))
 
 ;; Metadata
@@ -27,6 +28,15 @@
    :factories.input/update-value-fn #(assoc %1 :name %2)
 
    :input/label "Name"})
+
+(def actions-buttons
+  {:factories.input/component #'actions-buttons/template-section-form-action-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)
+
+   :factories.input/id :actions-buttons
+   :factories.input/focus-value-fn #(do nil)
+   :factories.input/update-value-fn #(do nil)})
 
 (def properties
   {:factories.input/component #'components.template-properties-form/template-properties-form

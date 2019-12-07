@@ -10,14 +10,22 @@
    sections))
 
 (defn on-template-section-input-change
-  [{:template-sections-form.messages/keys [on-section-change]
+  [{:template-sections-form.messages/keys [on-sections-change]
     :template-sections-form.impl/keys [section]
     :template-sections-form/keys [sections]}
    {:factories.input/keys [update-value-fn]}
    new-value]
 
-  {:pre [(ifn? on-section-change) (ifn? update-value-fn)]}
+  {:pre [(ifn? on-sections-change) (ifn? update-value-fn)]}
 
   (-> sections
       (update-section section #(update-value-fn % new-value))
-      (on-section-change)))
+      (on-sections-change)))
+
+(defn on-template-section-remove
+  [{:template-sections-form.messages/keys [on-sections-change]
+    :template-sections-form.impl/keys [section]
+    :template-sections-form/keys [sections]}]
+  (->> sections
+       (remove #(= (:id %) (:id section)))
+       on-sections-change))

@@ -41,7 +41,7 @@
   (let [input-change #(handlers/on-input-change props metadata %)
         metadata* (assoc metadata
                          :input.messages/on-change input-change
-                         :template-sections-form.messages/on-section-change input-change)]
+                         :template-sections-form.messages/on-sections-change input-change)]
   
     (factories.input/input-factory props metadata* edited-template)))
 

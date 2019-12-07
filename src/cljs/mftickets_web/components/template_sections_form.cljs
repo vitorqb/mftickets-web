@@ -33,8 +33,12 @@
         metadata* (cond-> metadata
                     ;; !!!! TODO -> Find a way to generalize
                     :always
-                    (assoc :input.messages/on-change on-change
-                           :template-properties-form.messages/on-properties-change on-change)
+                    (assoc :input.messages/on-change
+                           on-change
+                           :template-properties-form.messages/on-properties-change
+                           on-change
+                           :template-section-form.action-buttons.messages/on-remove-section
+                           #(handlers/on-template-section-remove props))
                     
                     disabled
                     (assoc :factories.input/disabled? true))]

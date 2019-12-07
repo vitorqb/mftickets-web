@@ -30,12 +30,20 @@
    :opt-un [:edit-template-page/events]))
 
 ;; Helpers
+(def template-sections-form-inputs
+  [c.template-sections-form.input/actions-buttons
+   c.template-sections-form.input/id
+   c.template-sections-form.input/name
+   c.template-sections-form.input/properties])
+
 (def template-form-inputs
   [components.template-form.inputs/id
    components.template-form.inputs/name
    (assoc components.template-form.inputs/project-id :input/disabled true)
    components.template-form.inputs/creation-date
-   components.template-form.inputs/sections])
+   (assoc components.template-form.inputs/sections
+          :template-sections-form/inputs-metadatas
+          template-sections-form-inputs)])
 
 ;; Components
 (defn- loading-wrapper

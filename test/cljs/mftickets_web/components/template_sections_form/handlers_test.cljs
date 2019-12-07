@@ -12,11 +12,11 @@
 
 (deftest test-on-template-section-input-change
 
-  (let [on-section-change (fn [x] [::section-change x])
+  (let [on-sections-change (fn [x] [::section-change x])
         section {:id 1 :name "FOO"}
         other-section {:id 2 :name "BAZ"}
         new-name "BAR"
-        props {:template-sections-form.messages/on-section-change on-section-change
+        props {:template-sections-form.messages/on-sections-change on-sections-change
                :template-sections-form/sections [section other-section]
                :template-sections-form.impl/section section}
         update-value-fn #(assoc %1 :name %2)
@@ -24,3 +24,14 @@
 
     (is (= [::section-change [(assoc section :name new-name) other-section]]
            (sut/on-template-section-input-change props metadata new-name)))))
+
+(deftest test-on-template-section-remove
+
+  (let [section {:id 1 :name "foo"}
+        sections [section]
+        on-sections-change (fn [x] [::section-change x])
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form.impl/section section
+               :template-sections-form/sections sections}]
+    (is (= [::section-change []]
+           (sut/on-template-section-remove props)))))
