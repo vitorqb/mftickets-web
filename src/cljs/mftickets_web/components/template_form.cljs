@@ -39,9 +39,14 @@
          (spec/assert :template-form/props props)]}
 
   (let [input-change #(handlers/on-input-change props metadata %)
+        ;; !!!! TODO - Find a better way
         metadata* (assoc metadata
-                         :input.messages/on-change input-change
-                         :template-sections-form.messages/on-sections-change input-change)]
+                         :input.messages/on-change
+                         input-change
+                         :template-sections-form.messages/on-sections-change
+                         input-change
+                         :template-form.sections-actions-buttons.messages/on-add-template-section
+                         #(handlers/on-add-template-section props))]
   
     (factories.input/input-factory props metadata* edited-template)))
 

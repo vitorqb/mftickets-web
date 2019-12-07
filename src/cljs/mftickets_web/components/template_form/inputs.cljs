@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-form.inputs
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.input :as components.input]
-            [mftickets-web.components.template-sections-form :as components.template-sections-form])
+            [mftickets-web.components.template-sections-form :as components.template-sections-form]
+            [mftickets-web.components.template-form.sections-actions-buttons :as sections-actions-buttons])
   (:refer-clojure :exclude [name]))
 
 ;; Metadata
@@ -54,6 +55,14 @@
    :input/id :creation-date
    :input/label "Creation Date"
    :input/disabled true})
+
+(def sections-actions-buttons
+  {:factories.input/component #'sections-actions-buttons/template-form-sections-actions-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/id :sections-actions-buttons
+   :factories.input/focus-value-fn #(do nil)
+   :factories.input/update-value-fn #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)})
 
 (def sections
   {:factories.input/component #'components.template-sections-form/template-sections-form

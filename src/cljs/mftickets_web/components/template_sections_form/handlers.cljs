@@ -1,5 +1,6 @@
 (ns mftickets-web.components.template-sections-form.handlers
-  (:require [com.rpl.specter :as s]))
+  (:require [com.rpl.specter :as s]
+            [mftickets-web.domain.template-section :as domain.template-section]))
 
 (defn- update-section
   "Updates a specific section from a seq of sections using update-fn"
@@ -27,5 +28,6 @@
     :template-sections-form.impl/keys [section]
     :template-sections-form/keys [sections]}]
   (->> sections
-       (remove #(= (:id %) (:id section)))
+       (remove #(= (domain.template-section/get-id %)
+                   (domain.template-section/get-id section)))
        on-sections-change))

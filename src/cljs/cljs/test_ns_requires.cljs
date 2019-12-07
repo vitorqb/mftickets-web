@@ -49,6 +49,7 @@
 [mftickets-web.components.select-test]
 [mftickets-web.components.table-test]
 [mftickets-web.components.template-form.handlers-test]
+[mftickets-web.components.template-form.sections-actions-buttons-test]
 [mftickets-web.components.template-form-test]
 [mftickets-web.components.template-picker.handlers-test]
 [mftickets-web.components.template-picker-test]

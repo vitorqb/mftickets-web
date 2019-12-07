@@ -3,7 +3,8 @@
             [cljs.spec.alpha :as spec]
             [mftickets-web.components.template-sections-form.input :as input]
             [mftickets-web.components.factories.input :as factories.input]
-            [mftickets-web.components.template-sections-form.handlers :as handlers]))
+            [mftickets-web.components.template-sections-form.handlers :as handlers]
+            [mftickets-web.domain.template-section :as template-section]))
 
 ;; Scss
 (def base-class "template-sections-form")
@@ -64,6 +65,7 @@
   [:div {:class base-class}
    [:span {:class label-class} "Sections"]
    [:div {:class inputs-container-class}
-    (for [{:keys [id] :as section} sections]
+    (for [section sections
+          :let [id (template-section/get-id section)]]
       ^{:key id}
       [section-input (assoc props :template-sections-form.impl/section section)])]])

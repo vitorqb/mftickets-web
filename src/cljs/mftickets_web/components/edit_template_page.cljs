@@ -41,6 +41,7 @@
    components.template-form.inputs/name
    (assoc components.template-form.inputs/project-id :input/disabled true)
    components.template-form.inputs/creation-date
+   components.template-form.inputs/sections-actions-buttons
    (assoc components.template-form.inputs/sections
           :template-sections-form/inputs-metadatas
           template-sections-form-inputs)])
