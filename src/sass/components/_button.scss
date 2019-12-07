@@ -1,0 +1,18 @@
+.button {
+
+    &__button {
+        cursor: pointer;
+        display: inline-block;
+        color: #ffff;
+        border: 1px solid #000000;
+        background-color: #444444;
+        border-radius: 2px;
+        padding: 0px 5px 0px 5px;
+
+        &--danger {
+            border-color: #ac2925;
+            background-color: #c9302c;
+        }
+    }
+    
+}

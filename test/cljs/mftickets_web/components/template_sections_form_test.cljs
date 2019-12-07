@@ -23,5 +23,8 @@
     (testing "Assocs :input.messages/on-change"
       (is (ifn? (:input.messages/on-change r-props))))
 
+    (testing "Assocs :template-section-form.action-buttons.messages/on-remove-section"
+      (is (ifn? (:template-section-form.action-buttons.messages/on-remove-section r-props))))
+
     (testing "Passes all metadata as props"
       (is (every? (fn [[k v]] (= (get r-props k) v)) metadata)))))
