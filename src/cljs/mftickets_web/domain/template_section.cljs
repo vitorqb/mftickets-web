@@ -10,6 +10,11 @@
     (::temp-id section)
     (:id section)))
 
+(defn same-id?
+  "Returns true if two template sections have the same id, considering temporary ids."
+  [section1 section2]
+  (= (get-id section1) (get-id section2)))
+
 (defn gen-empty-template-section
   [{:keys [template-id]}]
   {:id nil
