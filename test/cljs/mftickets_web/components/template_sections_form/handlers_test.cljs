@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-sections-form.handlers-test
   (:require [mftickets-web.components.template-sections-form.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [com.rpl.specter :as s]))
+            [com.rpl.specter :as s]
+            [mftickets-web.domain.template-section :as domain.template-section]))
 
 (deftest test-update-section
   (let [sections [{:id 1 :name "FOO"} {:id 2 :name "BAR"}]
@@ -27,11 +28,23 @@
 
 (deftest test-on-template-section-remove
 
-  (let [section {:id 1 :name "foo"}
-        sections [section]
-        on-sections-change (fn [x] [::section-change x])
-        props {:template-sections-form.messages/on-sections-change on-sections-change
-               :template-sections-form.impl/section section
-               :template-sections-form/sections sections}]
-    (is (= [::section-change []]
-           (sut/on-template-section-remove props)))))
+  (testing "Base"
+    
+    (let [section {:id 1 :name "foo"}
+          sections [section]
+          on-sections-change (fn [x] [::section-change x])
+          props {:template-sections-form.messages/on-sections-change on-sections-change
+                 :template-sections-form.impl/section section
+                 :template-sections-form/sections sections}]
+      (is (= [::section-change []]
+             (sut/on-template-section-remove props)))))
+
+  (testing "With recently created sections"
+    (let [section1 (domain.template-section/gen-empty-template-section {:template-id 1})
+          section2 (domain.template-section/gen-empty-template-section {:template-id 1})
+          sections [section1 section2]
+          on-sections-change identity
+          props {:template-sections-form.messages/on-sections-change on-sections-change
+                 :template-sections-form.impl/section section2
+                 :template-sections-form/sections sections}]
+      (is (= [section1] (sut/on-template-section-remove props))))))

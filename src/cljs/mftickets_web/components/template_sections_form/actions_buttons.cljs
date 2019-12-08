@@ -5,6 +5,9 @@
 
 (defn- remove-button
   [{:template-section-form.action-buttons.messages/keys [on-remove-section]}]
+
+  {:pre [(ifn? on-remove-section)]}
+  
   (let [props {:button/label "Remove"
                :button/style :button/danger
                :button.messages/on-click on-remove-section}]
