@@ -5,11 +5,26 @@
             [mftickets-web.domain.template-section :as domain.template-section]))
 
 (deftest test-update-section
-  (let [sections [{:id 1 :name "FOO"} {:id 2 :name "BAR"}]
-        section {:id 1}
-        update-fn #(assoc % :name "Hello World")]
-    (is (= [{:id 1 :name "Hello World"} {:id 2 :name "BAR"}]
-           (sut/update-section sections section update-fn)))))
+
+  (testing "Base"
+    (let [sections [{:id 1 :name "FOO"} {:id 2 :name "BAR"}]
+          section {:id 1}
+          update-fn #(assoc % :name "Hello World")]
+      (is (= [{:id 1 :name "Hello World"} {:id 2 :name "BAR"}]
+             (sut/update-section sections section update-fn)))))
+
+  (testing "Using recently created sections"
+    (let [section1 {:id 1 :name "FOO"}
+          section2 {::domain.template-section/temp-id 1
+                    ::domain.template-section/is-new? true
+                    :name ""}
+          section3 {::domain.template-section/temp-id 2
+                    ::domain.template-section/is-new? true
+                    :name ""}
+          sections [section1 section2 section3]
+          update-fn #(assoc % :name "Foo")]
+      (is (= [section1 section2 (update-fn section3)]
+             (sut/update-section sections section3 update-fn))))))
 
 (deftest test-on-template-section-input-change
 

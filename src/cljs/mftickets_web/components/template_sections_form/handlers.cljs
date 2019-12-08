@@ -6,7 +6,7 @@
   "Updates a specific section from a seq of sections using update-fn"
   [sections section update-fn]
   (s/transform
-   [(s/filterer #(= (:id %) (:id section))) s/FIRST]
+   [(s/filterer #(domain.template-section/same-id? section %)) s/FIRST]
    update-fn
    sections))
 
@@ -28,6 +28,5 @@
     :template-sections-form.impl/keys [section]
     :template-sections-form/keys [sections]}]
   (->> sections
-       (remove #(= (domain.template-section/get-id %)
-                   (domain.template-section/get-id section)))
+       (remove #(domain.template-section/same-id? section %))
        on-sections-change))
