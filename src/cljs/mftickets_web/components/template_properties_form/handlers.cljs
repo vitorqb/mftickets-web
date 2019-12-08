@@ -15,3 +15,11 @@
                      #(update-value-fn % new-value)
                      properties)]
     (on-properties-change properties*)))
+
+(defn on-remove-template-property
+  [{:template-properties-form.impl/keys [property]
+    :template-properties-form/keys [properties]
+    :template-properties-form.messages/keys [on-properties-change]}]
+  (->> properties
+       (s/setval [(s/filterer [:id #(= % (:id property))]) s/ALL] s/NONE)
+       on-properties-change))

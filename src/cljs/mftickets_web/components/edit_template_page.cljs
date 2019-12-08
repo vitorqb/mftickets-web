@@ -30,11 +30,19 @@
    :opt-un [:edit-template-page/events]))
 
 ;; Helpers
+(def template-properties-form-inputs
+  [c.template-properties-form.input/actions-buttons
+   c.template-properties-form.input/id
+   c.template-properties-form.input/name
+   c.template-properties-form.input/is-multiple
+   c.template-properties-form.input/value-type])
+
 (def template-sections-form-inputs
   [c.template-sections-form.input/actions-buttons
    c.template-sections-form.input/id
    c.template-sections-form.input/name
-   c.template-sections-form.input/properties])
+   (assoc c.template-sections-form.input/properties
+          :template-properties-form/inputs-metadatas template-properties-form-inputs)])
 
 (def template-form-inputs
   [components.template-form.inputs/id
