@@ -2,7 +2,8 @@
   (:require [mftickets-web.components.input :as components.input]
             [mftickets-web.components.select :as components.select]
             [mftickets-web.domain.boolean :as domain.boolean]
-            [mftickets-web.domain.select :as domain.select])
+            [mftickets-web.domain.select :as domain.select]
+            [mftickets-web.components.template-properties-form.actions-buttons :as actions-buttons])
   (:refer-clojure :exclude [name]))
 
 (def id
@@ -55,3 +56,12 @@
    :factories.input/update-value-fn #(assoc %1 :value-type %2)
 
    :input/label "Type"})
+
+(def actions-buttons
+  {:factories.input/component #'actions-buttons/template-properties-form-actions-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)
+
+   :factories.input/id :actions-buttons
+   :factories.input/focus-value-fn #(do nil)
+   :factories.input/update-value-fn #(do nil)})

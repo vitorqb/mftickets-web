@@ -53,6 +53,7 @@
 [mftickets-web.components.template-form-test]
 [mftickets-web.components.template-picker.handlers-test]
 [mftickets-web.components.template-picker-test]
+[mftickets-web.components.template-properties-form.actions-buttons-test]
 [mftickets-web.components.template-properties-form.handlers-test]
 [mftickets-web.components.template-sections-form.handlers-test]
 [mftickets-web.components.template-sections-form-test]
@@ -68,6 +69,7 @@
 [mftickets-web.domain.matcher-test]
 [mftickets-web.domain.selector-test]
 [mftickets-web.domain.select-test]
+[mftickets-web.domain.template-section-test]
 [mftickets-web.http-test]
 [mftickets-web.state-test]
 ))
