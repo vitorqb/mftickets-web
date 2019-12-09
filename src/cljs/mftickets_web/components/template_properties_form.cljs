@@ -2,7 +2,8 @@
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.factories.input :as factories.input]
             [mftickets-web.components.template-properties-form.input :as input]
-            [mftickets-web.components.template-properties-form.handlers :as handlers]))
+            [mftickets-web.components.template-properties-form.handlers :as handlers]
+            [mftickets-web.domain.template-property :as domain.template-property]))
 
 ;; Css
 (def base-class "template-properties-form")
@@ -11,7 +12,7 @@
 (def property-input-class (str base-class "__property-input"))
 
 ;; Specs
-(spec/def :template-properties-form.property/id int?)
+(spec/def :template-properties-form.property/id (spec/or :nil nil? :int int?))
 (spec/def :template-properties-form.property/name string?)
 (spec/def :template-properties-form.property/is-multiple boolean?)
 (spec/def :template-properties-form.property/value-type string?)
@@ -62,7 +63,8 @@
   [:div {:class base-class}
    [:span {:class label-class} "Properties"]
    [:div {:class inputs-container-class}
-    (for [{:keys [id] :as property} properties
-          :let [props* (assoc props :template-properties-form.impl/property property)]]
+    (for [property properties
+          :let [props* (assoc props :template-properties-form.impl/property property)
+                id (domain.template-property/get-id property)]]
       ^{:key id}
       [property-input props*])]])

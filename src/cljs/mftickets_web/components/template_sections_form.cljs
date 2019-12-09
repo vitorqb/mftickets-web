@@ -38,8 +38,10 @@
                            on-change
                            :template-properties-form.messages/on-properties-change
                            on-change
-                           :template-section-form.action-buttons.messages/on-remove-section
-                           #(handlers/on-template-section-remove props))
+                           :template-sections-form.action-buttons.messages/on-remove-section
+                           #(handlers/on-template-section-remove props)
+                           :template-sections-form.action-buttons.messages/on-add-property
+                           #(handlers/on-add-template-property props))
                     
                     disabled
                     (assoc :factories.input/disabled? true))]

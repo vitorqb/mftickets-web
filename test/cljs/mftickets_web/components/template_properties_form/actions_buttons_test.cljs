@@ -20,3 +20,4 @@
 
     (testing "Passes callback"
       (is (= on-remove-property (:button.messages/on-click r-props))))))
+
