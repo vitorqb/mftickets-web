@@ -2,7 +2,8 @@
   (:require [mftickets-web.components.template-sections-form.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [com.rpl.specter :as s]
-            [mftickets-web.domain.template-section :as domain.template-section]))
+            [mftickets-web.domain.template-section :as domain.template-section]
+            [mftickets-web.domain.template-property :as domain.template-property]))
 
 (deftest test-update-section
 
@@ -63,3 +64,20 @@
                  :template-sections-form.impl/section section2
                  :template-sections-form/sections sections}]
       (is (= [section1] (sut/on-template-section-remove props))))))
+
+(deftest test-on-add-template-property
+  (let [on-sections-change (fn [x] [::sections-change x])
+        property1 {:id 1}
+        property2 {:id 2}
+        property3 (domain.template-property/gen-empty-template-property {:template-section-id 3})
+        section1 {:id 3 :properties [property1 property2]}
+        new-section1 (assoc section1 :properties [property3 property1 property2])
+        section2 {:id 4 :properties []}
+        sections [section1 section2]
+        new-sections [new-section1 section2]
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form/sections sections
+               :template-sections-form.impl/section section1}]
+    (with-redefs (domain.template-property/gen-empty-template-property (constantly property3))
+      (is (= [::sections-change new-sections]
+             (sut/on-add-template-property props))))))

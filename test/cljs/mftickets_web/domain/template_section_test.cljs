@@ -9,7 +9,6 @@
       (is (= {:id nil
               :name ""
               :template-id template-id
-              :is-multiple false
               :properties []
               ::sut/is-new? true
               ::sut/temp-id temp-id}

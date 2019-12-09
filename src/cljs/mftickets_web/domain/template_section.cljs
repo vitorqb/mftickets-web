@@ -20,7 +20,6 @@
   {:id nil
    :name ""
    :template-id template-id
-   :is-multiple false
    :properties []
    ::is-new? true
    ::temp-id (gen-temp-id)})
