@@ -4,25 +4,13 @@
    [mftickets-web.components.dialog :as components.dialog]
    [mftickets-web.components.router-input :as components.router-input]
    [mftickets-web.state :as state]
-   [mftickets-web.app.handlers :as handlers]))
-
-;; !!!! TODO -> Give real options
-(def options
-  [{:label "Templates" :href "/templates"}
-   {:label "Templates - View [Templates]" :href "/templates/view"}
-   {:label "Templates - Edit [Templates]" :href "/templates/edit"}
-   {:label "Projects" :href "/projects"}
-   {:label "Projects - Edit [Projects]" :href "/projects/edit"}
-   {:label "Projects - Create [Projects]" :href "/projects/create"}
-   {:label "Projects - View [Projects]" :href "/projects/view"}
-   {:label "About" :href "/about"}
-   {:label "Home" :href "/"}
-   {:label "Configurations [Options]" :href "/config"}])
+   [mftickets-web.app.handlers :as handlers]
+   [mftickets-web.routing :as routing]))
 
 (defn router-dialog-instance
-  [{:keys [app-state http] :as inject}]
+  [{:keys [app-state http router] :as inject}]
   [components.router-dialog/router-dialog
-   {:router-dialog/options options
+   {:router-dialog/options (routing/router->user-routing-opts router)
     :router-dialog.messages/close-router-dialog #(handlers/close-router-dialog inject)
     :router-dialog.messages/navigate #(handlers/navigate inject %)
     :state      (state/->FocusedAtom app-state [::state])

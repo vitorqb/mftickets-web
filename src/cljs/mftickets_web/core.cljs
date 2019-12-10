@@ -17,32 +17,11 @@
    [mftickets-web.app.handlers :as app.handlers]
    [mftickets-web.app.queries :as app.queries]
    [mftickets-web.instances.view-template-page :as instances.view-template-page]
-   [mftickets-web.instances.edit-template-page :as instances.edit-template-page]))
+   [mftickets-web.instances.edit-template-page :as instances.edit-template-page]
+   [mftickets-web.app.reducers :as reducers]))
 
 ;; -------------------------
-;; Routes
-
-(def router
-  (reitit/router
-   [["/" :index]
-    ["/about" :about]
-    ["/templates" :templates]
-    ["/templates/view" :view-templates]
-    ["/templates/edit" :edit-templates]
-    ["/projects" :projects]
-    ["/projects/edit" :edit-projects]
-    ["/projects/create" :create-projects]
-    ["/projects/view" :view-projects]
-    ["/config" :config-page]]))
-
-(defn path-for [route & [params]]
-  (if params
-    (:path (reitit/match-by-name router route params))
-    (:path (reitit/match-by-name router route))))
-
-(path-for :about)
-;; -------------------------
-;; Page components
+;; Page config
 (defonce app-state
   (atom {}))
 
@@ -61,55 +40,59 @@
     :delete-project http/delete-project}
    app-state))
 
-(def injections
-  {:app-state app-state :http http})
+(def router
+  (reitit.frontend/router
+   [["/"
+     {:name :index
+      :label "Index"
+      :component (fn [_] [:div.main [:div "You are logged in!"]])}]
 
-(defn home-page [] [:div.main [:div "You are logged in!"]])
+    ["/about"
+     {:name :about
+      :label "About"
+      :component (fn [_] [:span.main [:h1 "About mftickets-web"]])}]
 
-(defn about-page []
-  (fn [] [:span.main
-          [:h1 "About mftickets-web"]]))
+    ["/templates"
+     {:name :templates
+      :label "List Templates [List]"
+      :component instances.templates-page/templates-page-instance}]
 
-(defn templates-page []
-  [instances.templates-page/templates-page-instance injections])
+    ["/templates/view"
+     {:name :view-templates
+      :label "View Templates [View]"
+      :component instances.view-template-page/view-template-page-instance}]
 
-(defn view-template-page []
-  [instances.view-template-page/view-template-page-instance injections])
+    ["/templates/edit"
+     {:name :edit-templates
+      :label "Edit Templates [Edit]"
+      :component instances.edit-template-page/edit-template-page-instance}]
 
-(defn edit-template-page []
-  [instances.edit-template-page/edit-template-page-instance injections])
+    ["/projects"
+     {:name :projects
+      :label "List Projects [List]"
+      :component instances.projects-page/projects-page-instance}]
 
-(defn projects-page []
-  [instances.projects-page/projects-page-instance injections])
+    ["/projects/edit"
+     {:name :edit-project
+      :label "Edit Projects [Edit]"
+      :component instances.edit-project-page/edit-project-page-instance}]
 
-(defn edit-project-page []
-  [instances.edit-project-page/edit-project-page-instance injections])
+    ["/projects/create"
+     {:name :create-project
+      :label "Create Projects [Create]"
+      :component instances.create-project-page/create-project-page-instance}]
 
-(defn create-project-page []
-  [instances.create-project-page/create-project-page-instance injections])
+    ["/projects/view"
+     {:name :view-project
+      :label "View Projects [View]"
+      :component instances.view-project-page/view-project-page-instance}]
 
-(defn view-project-page []
-  [instances.view-project-page/view-project-page-instance injections])
+    ["/config"
+     {:name :config-page
+      :label "Configurations"
+      :component instances.config-page/config-page-instance}]]))
 
-(defn config-page []
-  [instances.config-page/config-page-instance injections])
-
-;; -------------------------
-;; Routing
-(defn page-for
-  "Translate routes -> page components"
-  [route]
-  (case route
-    :index #'home-page
-    :about #'about-page
-    :templates #'templates-page
-    :view-templates #'view-template-page
-    :edit-templates #'edit-template-page
-    :projects #'projects-page
-    :edit-projects #'edit-project-page
-    :create-projects #'create-project-page
-    :view-projects #'view-project-page
-    :config-page #'config-page))
+(def injections {:app-state app-state :http http :router router})
 
 ;; -------------------------
 ;; Page mounting component
@@ -134,14 +117,10 @@
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
-      (let [match (reitit/match-by-path router path)
-            current-page (:name (:data  match))
-            route-params (:path-params match)]
+      (let [match (reitit/match-by-path router path)]
         (reagent/after-render clerk/after-render!)
-        (session/put! :route {:current-page (page-for current-page)
-                              :route-params route-params})
-        (clerk/navigate-page! path)
-        ))
+        (swap! app-state (reducers/set-current-routing-match match))
+        (clerk/navigate-page! path)))
     :path-exists?
     (fn [path]
       (boolean (reitit/match-by-path router path)))})
