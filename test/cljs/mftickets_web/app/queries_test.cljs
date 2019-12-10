@@ -49,3 +49,8 @@
           state (-> {} ((reducers/set-app-metadata-response {:success true
                                                              :body {:projects projects}})))]
       (is (= (first projects) (sut/active-project state))))))
+
+(deftest test-current-routing-match
+  (let [current-match {:path "foo"}
+        state (-> {} ((reducers/set-current-routing-match current-match)))]
+    (is (= current-match (sut/current-routing-match state)))))

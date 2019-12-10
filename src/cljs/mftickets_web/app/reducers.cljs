@@ -33,3 +33,4 @@
   #(assoc % :token new-token))
 
 (defn set-active-project-id [x] #(assoc % :active-project-id x))
+(defn set-current-routing-match [x] #(assoc % :current-routing-match x))

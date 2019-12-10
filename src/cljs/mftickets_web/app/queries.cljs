@@ -22,3 +22,8 @@
     (if (nil? active-project-id*)
       (first projects*)
       (s/select-first [s/ALL #(= (:id %) active-project-id*)] projects*))))
+
+(defn current-routing-match
+  "The current routing match, as a reitit match."
+  [x]
+  (:current-routing-match x))

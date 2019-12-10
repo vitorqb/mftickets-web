@@ -73,5 +73,6 @@
 [mftickets-web.domain.template-property-test]
 [mftickets-web.domain.template-section-test]
 [mftickets-web.http-test]
+[mftickets-web.routing-test]
 [mftickets-web.state-test]
 ))

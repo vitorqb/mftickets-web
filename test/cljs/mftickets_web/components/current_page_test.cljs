@@ -14,7 +14,8 @@
     (let [instances {:header [:header#header]
                      :router-dialog [:div#router-dialog]
                      :page [:div#page]}
-          props #:current-page{:logged-in? true :instances instances}
+          injections {::foo 1}
+          props #:current-page{:logged-in? true :instances instances :injections injections}
           current-page (sut/current-page props)]
 
       (testing "Renders header"
@@ -24,5 +25,5 @@
         (is (= (:router-dialog instances) (get current-page 1))))
 
       (testing "Renders page"
-        (is (= [(:page instances)] (get current-page 3)))))))
+        (is (= [(:page instances) injections] (get current-page 3)))))))
 
