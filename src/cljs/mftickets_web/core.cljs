@@ -18,6 +18,7 @@
    [mftickets-web.app.queries :as app.queries]
    [mftickets-web.instances.view-template-page :as instances.view-template-page]
    [mftickets-web.instances.edit-template-page :as instances.edit-template-page]
+   [mftickets-web.instances.create-template-page :as instances.create-template-page]
    [mftickets-web.app.reducers :as reducers]))
 
 ;; -------------------------
@@ -32,6 +33,7 @@
     :ping http/ping
     :get-templates http/get-templates
     :edit-template http/edit-template
+    :create-template http/create-template
     :get-matching-templates http/get-matching-templates
     :get-projects http/get-projects
     :get-app-metadata http/get-app-metadata
@@ -66,6 +68,11 @@
      {:name :edit-templates
       :label "Edit Templates [Edit]"
       :component instances.edit-template-page/edit-template-page-instance}]
+
+    ["/templates/create"
+     {:name :create-templates
+      :label "Create Templates [Create]"
+      :component instances.create-template-page/create-template-page-instance}]
 
     ["/projects"
      {:name :projects
