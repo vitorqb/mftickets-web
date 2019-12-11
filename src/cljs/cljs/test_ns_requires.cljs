@@ -11,6 +11,9 @@
 [mftickets-web.components.create-project-page.handlers-test]
 [mftickets-web.components.create-project-page.queries-test]
 [mftickets-web.components.create-project-page-test]
+[mftickets-web.components.create-template-page.handlers-test]
+[mftickets-web.components.create-template-page.queries-test]
+[mftickets-web.components.create-template-page-test]
 [mftickets-web.components.current-page-test]
 [mftickets-web.components.dialog-test]
 [mftickets-web.components.edit-project-page.handlers-test]
@@ -73,6 +76,7 @@
 [mftickets-web.domain.template-property-test]
 [mftickets-web.domain.template-section-test]
 [mftickets-web.http-test]
+[mftickets-web.http.translate-test]
 [mftickets-web.routing-test]
 [mftickets-web.state-test]
 ))

@@ -10,7 +10,7 @@
 
 ;; Specs
 (spec/def :template-form.template/id
-  int?)
+  (spec/or :nil nil? :int int?))
 
 (spec/def :template-form.template/name
   string?)
