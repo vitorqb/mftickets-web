@@ -14,7 +14,7 @@
 (def form-wrapper-submit-button-class
   (str form-wrapper-base-class "__submit-button"))
 
-(def submit-button-styles #{:default :danger})
+(def submit-button-styles #{:default :danger :none})
 (spec/def ::submit-button-styles submit-button-styles)
 
 (def form-wrapper-submit-button-container-class
@@ -29,6 +29,7 @@
   (let [base [form-wrapper-submit-button-class]
         modifiers (case style
                     :danger [(str form-wrapper-submit-button-class "--danger")]
+                    :none ["u-display-none"]
                     :default nil)]
     (concat base modifiers)))
 
