@@ -2,6 +2,10 @@
 // Partials (files starting with _) can be inclued using @import:
 // (import path can include _ but it is not needed)
 
+// Global imports
+@import 'typography';
+@import 'utils';
+
 // Import mixings
 @import 'mixins/loading';
 @import 'mixins/project-page';
@@ -9,7 +13,6 @@
 @import 'mixins/input';
 
 // import components
-@import 'typography';
 @import 'components/input-wrapper';
 @import 'components/form';
 @import 'components/message-box';
@@ -30,6 +33,8 @@
 @import 'components/template-properties-form';
 @import 'components/button';
 @import 'components/create-template-page';
+@import 'components/templates-page';
+@import 'components/table-controllers';
 
 // You can use any sass features, like variables, for instance:
 $font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;

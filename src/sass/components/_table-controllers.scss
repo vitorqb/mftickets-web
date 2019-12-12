@@ -1,0 +1,7 @@
+.table-controllers {
+
+    &__label { @include input-label };
+
+    &__content { @include input-content };
+    
+}
