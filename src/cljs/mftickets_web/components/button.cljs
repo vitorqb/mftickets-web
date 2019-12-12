@@ -24,7 +24,7 @@
   
   [:div {:class base-class}
    [:div {:class (get-button-css-class props)
-          :tabindex 0
+          :tabIndex 0
           :on-click (fn [&_] (on-click))
           :on-key-up #(when (-> % .-key (= "Enter")) (on-click))}
     label]])

@@ -6,7 +6,8 @@
    [cljs.spec.alpha :as s]
    [mftickets-web.components.edit-project-page.queries :as queries]
    [mftickets-web.components.edit-project-page.handlers :as handlers]
-   [mftickets-web.components.message-box :as components.message-box]))
+   [mftickets-web.components.message-box :as components.message-box]
+   [mftickets-web.components.factories.loading-wrapper :as c.factories.loading-wrapper :refer-macros [def-loading-wrapper]]))
 
 (def base-class "edit-project-page")
 (def project-picker-wrapper-class (str base-class "__project-picker-wrapper"))
@@ -46,11 +47,7 @@
      [:div {:class [project-picker-contents-class]}
       [components.project-picker/project-picker props*]]]))
 
-(defn- loading-wrapper
-  "A wrapper for when we are loading..."
-  [{:keys [state]}]
-  (when (queries/loading? @state)
-    [:div {:class [loading-wrapper-class]} "Loading..."]))
+(def-loading-wrapper loading-wrapper queries/loading? loading-wrapper-class)
 
 (defn- message-box
   "A wrapper around message-box displaying a message for the user."

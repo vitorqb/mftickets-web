@@ -9,7 +9,8 @@
             [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
             [mftickets-web.components.message-box :as components.message-box]
             [mftickets-web.components.template-sections-form.input :as c.template-sections-form.input]
-            [mftickets-web.components.template-properties-form.input :as c.template-properties-form.input]))
+            [mftickets-web.components.template-properties-form.input :as c.template-properties-form.input]
+            [mftickets-web.components.factories.loading-wrapper :as c.factories.loading-wrapper :refer-macros [def-loading-wrapper]]))
 
 ;; Css
 (def base-class "edit-template-page")
@@ -55,10 +56,7 @@
           template-sections-form-inputs)])
 
 ;; Components
-(defn- loading-wrapper
-  [{:keys [state]}]
-  (when (queries/loading? @state)
-    [:div {:class [loading-wrapper-class]} "Loading..."]))
+(def-loading-wrapper loading-wrapper queries/loading? loading-wrapper-class)
 
 (defn- message-box
   [{:keys [state] :as props}]

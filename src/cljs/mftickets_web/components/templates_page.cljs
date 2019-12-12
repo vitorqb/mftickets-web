@@ -4,7 +4,8 @@
    [mftickets-web.components.templates-page.reducers :as reducers]
    [mftickets-web.components.templates-page.handlers :as handlers]
    [mftickets-web.components.table-controllers.core :as components.table-controllers]
-   [mftickets-web.state :as state]))
+   [mftickets-web.state :as state]
+   [mftickets-web.components.factories.loading-wrapper :as c.factories.loading-wrapper :refer-macros [def-loading-wrapper]]))
 
 ;; Css
 (def ^:private base-class "templates-page")
@@ -25,9 +26,7 @@
    {:table/key :creation-date :table/header "Creation Date"}])
 
 ;; Components
-(defn- loading-wrapper [{:keys [state]}]
-  (when (queries/is-loading? @state)
-    [:div {:class loading-wrapper-class} "Loading..."]))
+(def-loading-wrapper loading-wrapper queries/is-loading? loading-wrapper-class)
 
 (defn- templates-table
   "A table with the templates information."
