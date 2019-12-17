@@ -48,7 +48,7 @@
                          :template-form.sections-actions-buttons.messages/on-add-template-section
                          #(handlers/on-add-template-section props))]
   
-    (factories.input/input-factory props metadata* edited-template)))
+    (factories.input/input-factory metadata* edited-template)))
 
 ;; Components
 (defn template-form

@@ -12,13 +12,11 @@
     :as props}]
   (let [router-input  (:router-input components)
         -state        (state/->FocusedAtom state [::router-input])
-        -parent-props props
         -props        (assoc props
                              :router-input/options options
                              :router-input.messages/close-router-dialog close-router-dialog
                              :router-input.messages/navigate navigate
-                             :state -state
-                             :parent-props -parent-props)]
+                             :state -state)]
     [router-input -props]))
 
 (defn- body

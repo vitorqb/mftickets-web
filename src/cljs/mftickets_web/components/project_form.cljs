@@ -19,7 +19,7 @@
   (let [on-input-change #(handlers/on-input-change props metadata %)
         metadata* (assoc metadata :input.messages/on-change on-input-change)]
 
-    (factories.input/input-factory props metadata* edited-project)))
+    (factories.input/input-factory metadata* edited-project)))
 
 (defn- props->form-props
   "Prepares the props for the form component."

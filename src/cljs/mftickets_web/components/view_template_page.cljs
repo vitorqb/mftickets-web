@@ -32,7 +32,6 @@
   [components.template-picker/template-picker
    {:http http
     :state (state/->FocusedAtom state ::template-picker)
-    :parent-props props
     :template-picker/project-id project-id
     :template-picker/picked-template (queries/picked-template @state)
     :template-picker.messages/on-template-picked #(handlers/on-picked-template-change props %)}])

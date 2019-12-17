@@ -16,5 +16,4 @@
     :state      (state/->FocusedAtom app-state [::state])
     :http       http
     :components {:dialog components.dialog/dialog
-                 :router-input components.router-input/router-input}
-    :parent-props {:state app-state}}])
+                 :router-input components.router-input/router-input}}])

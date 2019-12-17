@@ -7,8 +7,7 @@
         options [value]
         label "foo"
         label-wrapper-class "bar"
-        props {:parent-props {}
-               :events {:Change-> #(do)}
+        props {:events {:Change-> #(do)}
                :select/value value
                :select/options options
                :select/label label

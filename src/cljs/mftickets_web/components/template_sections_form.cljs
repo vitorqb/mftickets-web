@@ -45,7 +45,7 @@
                     
                     disabled
                     (assoc :factories.input/disabled? true))]
-    (factories.input/input-factory props metadata* section)))
+    (factories.input/input-factory metadata* section)))
 
 ;; Components
 (defn- section-input
