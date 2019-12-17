@@ -26,7 +26,6 @@
   "Creates a new input component from parent props and input metadata.
 
   Accepts:
-  - `parent-props`: The parent props.
   - `metadata`: Metadata for the input being created.
   - `parent-value`: The current value being displayed.
   
@@ -42,8 +41,7 @@
        user input and updates it.
   - `factories.input/assoc-value-to-props-fn`: A function that accepts a props that will be
        passed to the `component` and assocs the focused value to it."
-  [parent-props
-   {:factories.input/keys [component id focus-value-fn assoc-value-to-props-fn assoc-disabled?
+  [{:factories.input/keys [component id focus-value-fn assoc-value-to-props-fn assoc-disabled?
                            disabled?]
     :or {disabled? nil}
     :as metadata}
@@ -54,7 +52,6 @@
 
   (let [value (focus-value-fn parent-value)
         props (cond-> metadata
-                :always (assoc :parent-props parent-props)
                 :always (assoc-value-to-props-fn value)
                 (not (nil? disabled?)) (assoc-disabled? disabled?))]
 

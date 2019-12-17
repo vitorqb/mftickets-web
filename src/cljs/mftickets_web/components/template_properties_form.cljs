@@ -52,7 +52,7 @@
                            :always (assoc :select.messages/on-select-change on-change)
                            :always (assoc :template-properties-form.actions-buttons.messages/on-remove-property on-remove)
                            disabled (assoc :factories.input/disabled? true))]]
-     (factories.input/input-factory props metadata* property))])
+     (factories.input/input-factory metadata* property))])
 
 (defn template-properties-form
   "A form to render template properties."

@@ -17,11 +17,9 @@
   (testing "Renders an async-select if project"
     (let [http {:get-matching-templates (constantly (async/go []))}
           state (atom {})
-          parent-props {}
           project-id 1
           props {:http http
                  :state state
-                 :parent-props parent-props
                  :template-picker/project-id project-id}]
       (is (= (first (sut/async-select props))
              components.select/async-select)))))

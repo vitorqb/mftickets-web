@@ -14,5 +14,4 @@
     :view-project-page.messages/refresh-app-metadata
     #(app.handlers/fetch-app-metadata-response injections)
     :state (state/->FocusedAtom app-state [::state])
-    :parent-props {:state app-state}
     :http http}])

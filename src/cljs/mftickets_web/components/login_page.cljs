@@ -33,8 +33,7 @@
     [components.input/input
      {:input/label "Key"
       :input/value (-> @state queries/key-input-state :value)
-      :input.messages/on-change #(handlers/on-key-input-change props %)
-      :parent-props props}]))
+      :input.messages/on-change #(handlers/on-key-input-change props %)}]))
 
 (defn- form
   "A form for the email and key inputs."

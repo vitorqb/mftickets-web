@@ -55,8 +55,7 @@
   (if-not project-id
     [no-project-selected-message-box]
     (let [picked-option (some-> picked-template template->select-option)
-          props* {:parent-props props
-                  :select/value picked-option
+          props* {:select/value picked-option
                   :select.async/get-matching-options (get-matching-options props)
                   :select.messages/on-select-change #(handlers/on-select-change props %)}]
       [components.select/async-select props*])))
