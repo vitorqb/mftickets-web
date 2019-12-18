@@ -1,5 +1,6 @@
 (ns mftickets-web.components.template-properties-form.actions-buttons
-  (:require [mftickets-web.components.button :as components.button]))
+  (:require [mftickets-web.components.button :as components.button]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Css
 (def ^:private base-class "template-properties-form-actions-buttons")
@@ -18,3 +19,8 @@
 (defn template-properties-form-actions-buttons [props]
   [:div {:class base-class}
    [remove-button props]])
+
+(defmethod factories.input/input-factory-opts ::template-properties-form-actions-buttons [_]
+  {:factories.input/component template-properties-form-actions-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)})

@@ -4,20 +4,23 @@
 
 (deftest test-input-factory
 
-  (let [metadata {:factories.input/component ::component
-                  :factories.input/assoc-disabled? #(assoc %1 ::disabled %2)
+  (let [component-opts {:factories.input/component ::component
+                        :factories.input/assoc-disabled? #(assoc %1 ::disabled %2)
+                        :factories.input/assoc-value-to-props-fn #(assoc %1 ::value %2)}
+        metadata {:factories.input/component-kw ::component-kw
                   :factories.input/disabled? true
-                  :factories.input/id 999
+                  :factories.input/id :aaa
                   :factories.input/focus-value-fn ::foo
-                  :factories.input/update-value-fn #(assoc %1 ::foo %2)
-                  :factories.input/assoc-value-to-props-fn #(assoc %1 ::value %2)}
+                  :factories.input/update-value-fn #(assoc %1 ::foo %2)}
         parent-value {::foo 888}]
+
+    (defmethod sut/input-factory-opts ::component-kw [_] component-opts)
 
     (testing "Returns component"
       (is (= ::component (-> (sut/input-factory metadata parent-value) first))))
 
     (testing "Component has key equal id in metadata"
-      (is (= 999 (-> (sut/input-factory metadata parent-value) meta :key))))
+      (is (= :aaa (-> (sut/input-factory metadata parent-value) meta :key))))
 
     (testing "Value is assoc"
       (is (= 888

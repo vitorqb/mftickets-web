@@ -2,28 +2,34 @@
   (:require [mftickets-web.components.template-form :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [mftickets-web.components.template-form.inputs :as inputs]
-            [mftickets-web.components.form :as components.form]))
+            [mftickets-web.components.form :as components.form]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 (deftest test-render-input
 
-  (let [edited-template {:name "Foo"}
-        props {:template-form/edited-template edited-template}
-        metadata {:factories.input/component ::component
-                  :factories.input/id ::id
-                  :factories.input/focus-value-fn :name
-                  :factories.input/update-value-fn #(assoc %1 :name %2)
-                  :factories.input/assoc-value-to-props-fn #(assoc %1 :value %2)}
-        result (sut/render-input props metadata)
-        [r-component r-props] result]
+  (let [component-opts {:factories.input/component ::component
+                        :factories.input/assoc-disabled? #(assoc %1 ::disabled %2)
+                        :factories.input/assoc-value-to-props-fn #(assoc %1 :value %2)}]
+    
+    (defmethod factories.input/input-factory-opts ::foo [_] component-opts)
 
-    (testing "Renders the component"
-      (is (= ::component r-component)))
+    (let [edited-template {:name "Foo"}
+          props {:template-form/edited-template edited-template}
+          metadata {:factories.input/component-kw ::foo
+                    :factories.input/id ::id
+                    :factories.input/focus-value-fn :name
+                    :factories.input/update-value-fn #(assoc %1 :name %2)}
+          result (sut/render-input props metadata)
+          [r-component r-props] result]
 
-    (testing "Assocs the value to the props"
-      (is (= "Foo" (:value r-props))))
+      (testing "Renders the component"
+        (is (= ::component r-component)))
 
-    (testing "Passes all metadata as props"
-      (is (every? (fn [[k v]] (= (get r-props k) v)) metadata)))))
+      (testing "Assocs the value to the props"
+        (is (= "Foo" (:value r-props))))
+
+      (testing "Passes all metadata as props"
+        (is (every? (fn [[k v]] (= (get r-props k) v)) metadata))))))
 
 (deftest test-template-form
 

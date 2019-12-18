@@ -5,10 +5,8 @@
 
 ;; Metadata
 (def id
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
-
+  {:factories.input/component-kw ::components.input/input
+   
    :factories.input/id :id
    :factories.input/focus-value-fn :id
    :factories.input/update-value-fn #(assoc %1 :id %2)
@@ -18,9 +16,7 @@
    :input/disabled true})
 
 (def name
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
 
    :factories.input/id :name
    :factories.input/focus-value-fn :name
@@ -30,9 +26,7 @@
    :input/label "Name"})
 
 (def description
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
 
    :factories.input/id :description
    :factories.input/focus-value-fn :description

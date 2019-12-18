@@ -1,5 +1,6 @@
 (ns mftickets-web.components.template-sections-form.actions-buttons
-  (:require [mftickets-web.components.button :as components.button]))
+  (:require [mftickets-web.components.button :as components.button]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Scss
 (def base-class "template-section-form-action-buttons")
@@ -36,3 +37,8 @@
   [:div {:class base-class}
    [remove-button props]
    [add-property-button props]])
+
+(defmethod factories.input/input-factory-opts ::template-section-form-action-buttons [_]
+  {:factories.input/component template-section-form-action-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)})
