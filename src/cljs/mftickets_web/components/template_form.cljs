@@ -33,7 +33,7 @@
 (defn- render-input
   "Renders an input given the for props and input metadta."
   [{:template-form/keys [edited-template] :as props}
-   {:factories.input/keys [events-mapping] :as metadata}]
+   metadata]
 
   {:pre [(spec/assert :factories/input metadata)
          (spec/assert :template-form/props props)]}

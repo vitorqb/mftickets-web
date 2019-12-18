@@ -7,9 +7,7 @@
 
 ;; Metadata
 (def id
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
    
    :factories.input/id :id
    :factories.input/focus-value-fn :id
@@ -20,9 +18,7 @@
    :input/disabled true})
 
 (def name
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
 
    :factories.input/id :name
    :factories.input/focus-value-fn :name
@@ -32,9 +28,7 @@
    :input/label "Name"})
 
 (def project-id
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
 
    :factories.input/id :project-id
    :factories.input/focus-value-fn :project-id
@@ -44,9 +38,7 @@
    :input/label "Project Id"})
 
 (def creation-date
-  {:factories.input/component #'components.input/input
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
-   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)
+  {:factories.input/component-kw ::components.input/input
 
    :factories.input/id :creation-date
    :factories.input/focus-value-fn :creation-date
@@ -57,18 +49,13 @@
    :input/disabled true})
 
 (def sections-actions-buttons
-  {:factories.input/component #'sections-actions-buttons/template-form-sections-actions-buttons
-   :factories.input/assoc-disabled? #(do %1)
+  {:factories.input/component-kw ::sections-actions-buttons/template-form-sections-actions-buttons
    :factories.input/id :sections-actions-buttons
    :factories.input/focus-value-fn #(do nil)
-   :factories.input/update-value-fn #(do %1)
-   :factories.input/assoc-value-to-props-fn #(do %1)})
+   :factories.input/update-value-fn #(do %1)})
 
 (def sections
-  {:factories.input/component #'components.template-sections-form/template-sections-form
-   :factories.input/assoc-value-to-props-fn #(assoc %1 :template-sections-form/sections %2)
-   :factories.input/assoc-disabled? #(assoc %1 :template-sections-form/disabled %2)
-   
+  {:factories.input/component-kw ::components.template-sections-form/template-sections-form
    :factories.input/id :sections
    :factories.input/focus-value-fn :sections
    :factories.input/update-value-fn #(assoc %1 :sections %2)})

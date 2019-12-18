@@ -4,7 +4,8 @@
    ["react-select" :default Select]
    ["react-select/async" :default AsyncSelect]
    [cljs.spec.alpha :as s]
-   [mftickets-web.components.select.handlers :as handlers]))
+   [mftickets-web.components.select.handlers :as handlers]
+   [mftickets-web.components.factories.input :as factories.input]))
 
 (def base-class "select")
 (def base-label-class "select__label")
@@ -69,6 +70,11 @@
       :options options
       :on-change #(handlers/on-change props %)
       :isDisabled disabled}]]])
+
+(defmethod factories.input/input-factory-opts ::select [_]
+  {:factories.input/component select
+   :factories.input/assoc-disabled? #(assoc %1 :select/disabled %2)
+   :factories.input/assoc-value-to-props-fn #(assoc %1 :select/value %2)})
 
 (defn async-select
   "A wrapper around ReactSelect Async."

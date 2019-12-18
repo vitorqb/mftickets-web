@@ -2,7 +2,8 @@
   (:require
    [mftickets-web.components.input.handlers :as handlers]
    [reagent.core :as r]
-   [cljs.spec.alpha :as spec]))
+   [cljs.spec.alpha :as spec]
+   [mftickets-web.components.factories.input :as factories.input]))
 
 (def base-input-wrapper-class "input-wrapper")
 (def base-html-input-class "input-wrapper__input")
@@ -38,3 +39,8 @@
   [:div {:class base-input-wrapper-class}
    [label-span label]
    [html-input props]])
+
+(defmethod factories.input/input-factory-opts ::input [_]
+  {:factories.input/component input
+   :factories.input/assoc-value-to-props-fn #(assoc %1 :input/value %2)
+   :factories.input/assoc-disabled? #(assoc %1 :input/disabled %2)})

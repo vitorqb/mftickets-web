@@ -1,32 +1,38 @@
 (ns mftickets-web.components.project-form-test
   (:require [mftickets-web.components.project-form :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.components.input :as components.input]))
+            [mftickets-web.components.input :as components.input]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 (deftest test-render-input
 
-  (let [edited-project {:id 1 :name "Foo"}
-        props {:project-form/edited-project edited-project}
-        metadata {:factories.input/component :div
-                  :factories.input/id 1
-                  :factories.input/focus-value-fn (constantly ::foo)
-                  :factories.input/update-value-fn (constantly ::bar)
-                  :factories.input/assoc-value-to-props-fn #(assoc %1 ::boz %2)
-                  :div/disabled true}
-        result (sut/render-input props metadata)
-        [result-component result-props] result]
+  (let [component-opts {:factories.input/component :div
+                        :factories.input/assoc-value-to-props-fn #(assoc %1 ::boz %2)
+                        :factories.input/assoc-disabled? #(assoc %1 ::disabled %2)}]
 
-    (testing "Returns components"
-      (is (= result-component :div)))
+    (defmethod factories.input/input-factory-opts ::foo [_] component-opts)
 
-    (testing "New props are superset of old props"
-      (is (every? (fn [[k v]] (= v (get result-props k))) metadata)))
+    (let [edited-project {:id 1 :name "Foo"}
+          props {:project-form/edited-project edited-project}
+          metadata {:factories.input/component-kw ::foo
+                    :factories.input/id 1
+                    :factories.input/focus-value-fn (constantly ::foo)
+                    :factories.input/update-value-fn (constantly ::bar)
+                    :div/disabled true}
+          result (sut/render-input props metadata)
+          [result-component result-props] result]
 
-    (testing "On change message is assoced."
-      (is (fn? (:input.messages/on-change result-props))))
+      (testing "Returns components"
+        (is (= result-component :div)))
 
-    (testing "Value is assoced"
-      (is (= ::foo (::boz result-props))))))
+      (testing "New props are superset of old props"
+        (is (every? (fn [[k v]] (= v (get result-props k))) metadata)))
+
+      (testing "On change message is assoced."
+        (is (fn? (:input.messages/on-change result-props))))
+
+      (testing "Value is assoced"
+        (is (= ::foo (::boz result-props)))))))
 
 (deftest test-props->form-props
 

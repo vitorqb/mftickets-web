@@ -4,7 +4,8 @@
             [mftickets-web.components.template-sections-form.input :as input]
             [mftickets-web.components.factories.input :as factories.input]
             [mftickets-web.components.template-sections-form.handlers :as handlers]
-            [mftickets-web.domain.template-section :as template-section]))
+            [mftickets-web.domain.template-section :as template-section]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Scss
 (def base-class "template-sections-form")
@@ -71,3 +72,8 @@
           :let [id (template-section/get-id section)]]
       ^{:key id}
       [section-input (assoc props :template-sections-form.impl/section section)])]])
+
+(defmethod factories.input/input-factory-opts ::template-sections-form [_]
+  {:factories.input/component template-sections-form
+   :factories.input/assoc-value-to-props-fn #(assoc %1 :template-sections-form/sections %2)
+   :factories.input/assoc-disabled? #(assoc %1 :template-sections-form/disabled %2)})

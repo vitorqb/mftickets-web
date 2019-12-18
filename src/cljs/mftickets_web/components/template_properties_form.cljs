@@ -3,7 +3,8 @@
             [mftickets-web.components.factories.input :as factories.input]
             [mftickets-web.components.template-properties-form.input :as input]
             [mftickets-web.components.template-properties-form.handlers :as handlers]
-            [mftickets-web.domain.template-property :as domain.template-property]))
+            [mftickets-web.domain.template-property :as domain.template-property]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Css
 (def base-class "template-properties-form")
@@ -68,3 +69,8 @@
                 id (domain.template-property/get-id property)]]
       ^{:key id}
       [property-input props*])]])
+
+(defmethod factories.input/input-factory-opts ::template-properties-form [_]
+  {:factories.input/component template-properties-form
+   :factories.input/assoc-disabled? #(assoc %1 :template-properties-form/disabled %2)
+   :factories.input/assoc-value-to-props-fn #(assoc %1 :template-properties-form/properties %2)})

@@ -1,5 +1,6 @@
 (ns mftickets-web.components.template-form.sections-actions-buttons
-  (:require [mftickets-web.components.button :as components.button]))
+  (:require [mftickets-web.components.button :as components.button]
+            [mftickets-web.components.factories.input :as factories.input]))
 
 ;; Globals
 (def ^:private add-section-label "Add Section")
@@ -20,3 +21,8 @@
   [props]
   [:div {:class [base-class]}
    [add-button props]])
+
+(defmethod factories.input/input-factory-opts ::template-form-sections-actions-buttons [_]
+  {:factories.input/component template-form-sections-actions-buttons
+   :factories.input/assoc-disabled? #(do %1)
+   :factories.input/assoc-value-to-props-fn #(do %1)})
