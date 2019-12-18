@@ -16,7 +16,10 @@
           metadata {:factories.input/component-kw ::component
                     :factories.input/id ::id
                     :factories.input/focus-value-fn :id
-                    :factories.input/update-value-fn #(assoc %1 :id %2)}
+                    :factories.input/update-value-fn #(assoc %1 :id %2)
+                    :factories.input/messages
+                    {:input.messages/on-change
+                     :template-sections-form.handlers/on-template-section-input-change}}
           result (sut/render-input props metadata)
           [r-component r-props] result]
 
@@ -26,11 +29,5 @@
       (testing "Assocs the value to the props"
         (is (= 1 (:value r-props))))
 
-      (testing "Assocs :input.messages/on-change"
-        (is (ifn? (:input.messages/on-change r-props))))
-
-      (testing "Assocs :template-sections-form.action-buttons.messages/on-remove-section"
-        (is (ifn? (:template-sections-form.action-buttons.messages/on-remove-section r-props))))
-
-      (testing "Passes all metadata as props"
-        (is (every? (fn [[k v]] (= (get r-props k) v)) metadata))))))
+      (testing "Assocs messages from :factories.input/messages"
+        (is (ifn? (:input.messages/on-change r-props)))))))

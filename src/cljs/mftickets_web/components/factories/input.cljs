@@ -1,7 +1,8 @@
 (ns mftickets-web.components.factories.input
   "Factories for inputs, providing a common API for constructing child components
   that are used to display part of the parent's object."
-  (:require [cljs.spec.alpha :as spec]))
+  (:require [cljs.spec.alpha :as spec]
+            [com.rpl.specter :as s]))
 
 ;; Specs
 (spec/def :factories.input/component ifn?)
@@ -12,10 +13,14 @@
 (spec/def :factories.input/focus-value-fn ifn?)
 (spec/def :factories.input/update-value-fn ifn?)
 (spec/def :factories.input/assoc-value-to-props-fn ifn?)
+(spec/def :factories.input/handlers (spec/map-of keyword? ifn?))
+(spec/def :factories.input/messages (spec/map-of keyword? keyword?))
 
 (spec/def :factories/input
   (spec/and
    (spec/keys
+    :opt [:factories.input/handlers
+          :factories.input/messages]
     :req [:factories.input/component-kw
           :factories.input/id
           :factories.input/focus-value-fn
@@ -31,6 +36,24 @@
   - `factories.input/assoc-value-to-props-fn`: A function that accepts a props that will be
        passed to the `component` and assocs the focused value to it."
   (fn [component-kw] component-kw))
+
+;; Helpers
+(defn- assoc-messages
+  "Given `factories.input/handlers` and `factories.input/messages` maps, assocs to the
+  props the right handler for each message."
+  [{:factories.input/keys [handlers messages] :as metadata}]
+  (reduce
+   (fn [metadata* [message-kw handler-kw]]
+     (if-let [handler (get handlers handler-kw)]
+       (assoc metadata* message-kw handler)
+       (js/console.warn (str "NO HANDLER FOR KEY " handler-kw))))
+   metadata
+   messages))
+
+(defn- dissoc-metadata
+  "Dissocs from m all keys that are used for metadata (factories.input)"
+  [m]
+  (s/setval [s/MAP-KEYS #(= (namespace %) "factories.input")] s/NONE m))
 
 ;; Factories
 (defn input-factory
@@ -48,9 +71,13 @@
   - `factories.input/focus-value-fn`: A function that focus on an specific part of the parent
        value that will be passed to the child component.
   - `factories.input/update-value-fn`: A function accepting the old parent value and the new
-       user input and updates it."
+       user input and updates it.
+  - `factories.input/handlers`: A map of handler-kw -> handler-fn, with functions responsible
+       to handle all known messages for the component.
+  - `factories.input/messages`: A map of message-kw -> handler-kw, mapping the input's expected
+       message to the parent known handlers in `handlers`."
   [{:factories.input/keys [component-kw component id focus-value-fn assoc-value-to-props-fn
-                           assoc-disabled? disabled?]
+                           assoc-disabled? disabled? handlers messages]
     :or {disabled? nil}
     :as metadata}
    parent-value]
@@ -71,7 +98,9 @@
         props
         (cond-> metadata
           :always (assoc-value-to-props-fn value)
-          (not (nil? disabled?)) (assoc-disabled? disabled?))]
+          :always assoc-messages
+          (not (nil? disabled?)) (assoc-disabled? disabled?)
+          :always (dissoc-metadata))]
 
     ^{:key id}
     [component props]))

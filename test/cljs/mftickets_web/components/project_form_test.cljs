@@ -18,15 +18,14 @@
                     :factories.input/id 1
                     :factories.input/focus-value-fn (constantly ::foo)
                     :factories.input/update-value-fn (constantly ::bar)
+                    :factories.input/messages
+                    {:input.messages/on-change :project-form.handlers/on-input-change}
                     :div/disabled true}
           result (sut/render-input props metadata)
           [result-component result-props] result]
 
       (testing "Returns components"
         (is (= result-component :div)))
-
-      (testing "New props are superset of old props"
-        (is (every? (fn [[k v]] (= v (get result-props k))) metadata)))
 
       (testing "On change message is assoced."
         (is (fn? (:input.messages/on-change result-props))))

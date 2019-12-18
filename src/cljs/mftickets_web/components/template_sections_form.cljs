@@ -31,21 +31,16 @@
 
   {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [on-change #(handlers/on-template-section-input-change props metadata %)
+  (let [handlers {:template-sections-form.handlers/on-template-section-input-change
+                  #(handlers/on-template-section-input-change props metadata %)
+                  :template-sections-form.handlers/on-template-section-remove
+                  #(handlers/on-template-section-remove props)
+                  :template-sections-form.handlers/on-add-template-property
+                  #(handlers/on-add-template-property props)}
         metadata* (cond-> metadata
-                    ;; !!!! TODO -> Find a way to generalize
-                    :always
-                    (assoc :input.messages/on-change
-                           on-change
-                           :template-properties-form.messages/on-properties-change
-                           on-change
-                           :template-sections-form.action-buttons.messages/on-remove-section
-                           #(handlers/on-template-section-remove props)
-                           :template-sections-form.action-buttons.messages/on-add-property
-                           #(handlers/on-add-template-property props))
-                    
-                    disabled
-                    (assoc :factories.input/disabled? true))]
+                    :always (assoc :factories.input/handlers handlers)
+                    disabled (assoc :factories.input/disabled? true))]
+    
     (factories.input/input-factory metadata* section)))
 
 ;; Components

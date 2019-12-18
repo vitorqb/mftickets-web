@@ -11,6 +11,8 @@
    :factories.input/id :id
    :factories.input/focus-value-fn :id
    :factories.input/update-value-fn #(assoc %1 :id %2)
+   :factories.input/messages
+   {:input.messages/on-change :template-properties-form.handlers/on-change}
 
    :input/label "Id"
    :input/disabled true})
@@ -20,6 +22,8 @@
    :factories.input/id :name
    :factories.input/focus-value-fn :name
    :factories.input/update-value-fn #(assoc %1 :name %2)
+   :factories.input/messages
+   {:input.messages/on-change :template-properties-form.handlers/on-change}
    
    :input/label "Name"})
 
@@ -31,6 +35,8 @@
                                       (->> is-multiple-option
                                            domain.select/option->boolean
                                            (assoc property :is-multiple)))
+   :factories.input/messages
+   {:select.messages/on-select-change :template-properties-form.handlers/on-change}
 
    :select/options domain.select/boolean-options
    :select/label "Is Multiple?"
@@ -42,6 +48,8 @@
    :factories.input/id :value-type
    :factories.input/focus-value-fn :value-type
    :factories.input/update-value-fn #(assoc %1 :value-type %2)
+   :factories.input/messages
+   {:input.messages/on-change :template-properties-form.handlers/on-change}
 
    :input/label "Type"})
 
@@ -49,4 +57,7 @@
   {:factories.input/component-kw ::actions-buttons/template-properties-form-actions-buttons
    :factories.input/id :actions-buttons
    :factories.input/focus-value-fn #(do nil)
-   :factories.input/update-value-fn #(do nil)})
+   :factories.input/update-value-fn #(do nil)
+   :factories.input/messages
+   {:template-properties-form.actions-buttons.messages/on-remove-property
+    :template-properties-form.handlers/on-remove}})

@@ -16,8 +16,9 @@
 
   {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [on-input-change #(handlers/on-input-change props metadata %)
-        metadata* (assoc metadata :input.messages/on-change on-input-change)]
+  (let [handlers {:project-form.handlers/on-input-change
+                  #(handlers/on-input-change props metadata %)}
+        metadata* (assoc metadata :factories.input/handlers handlers)]
 
     (factories.input/input-factory metadata* edited-project)))
 
