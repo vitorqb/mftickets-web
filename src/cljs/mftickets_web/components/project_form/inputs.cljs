@@ -10,6 +10,8 @@
    :factories.input/id :id
    :factories.input/focus-value-fn :id
    :factories.input/update-value-fn #(assoc %1 :id %2)
+   :factories.input/messages
+   {:input.messages/on-change :project-form.handlers/on-input-change}
 
    :input/id :id
    :input/label "Id"
@@ -21,7 +23,9 @@
    :factories.input/id :name
    :factories.input/focus-value-fn :name
    :factories.input/update-value-fn #(assoc %1 :name %2)
-
+   :factories.input/messages
+   {:input.messages/on-change :project-form.handlers/on-input-change}
+   
    :input/id :name
    :input/label "Name"})
 
@@ -31,6 +35,8 @@
    :factories.input/id :description
    :factories.input/focus-value-fn :description
    :factories.input/update-value-fn #(assoc %1 :description %2)
-
+   :factories.input/messages
+   {:input.messages/on-change :project-form.handlers/on-input-change}
+   
    :input/id :description
    :input/label "Description"})

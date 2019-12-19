@@ -48,10 +48,10 @@
    (for [metadata inputs-metadatas
          :let [on-change #(handlers/on-template-property-change props metadata %)
                on-remove #(handlers/on-remove-template-property props)
+               handlers {:template-properties-form.handlers/on-change on-change
+                         :template-properties-form.handlers/on-remove on-remove}
                metadata* (cond-> metadata
-                           :always (assoc :input.messages/on-change on-change)
-                           :always (assoc :select.messages/on-select-change on-change)
-                           :always (assoc :template-properties-form.actions-buttons.messages/on-remove-property on-remove)
+                           :always (assoc :factories.input/handlers handlers)
                            disabled (assoc :factories.input/disabled? true))]]
      (factories.input/input-factory metadata* property))])
 

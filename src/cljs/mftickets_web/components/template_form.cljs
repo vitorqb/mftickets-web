@@ -38,15 +38,15 @@
   {:pre [(spec/assert :factories/input metadata)
          (spec/assert :template-form/props props)]}
 
-  (let [input-change #(handlers/on-input-change props metadata %)
-        ;; !!!! TODO - Find a better way
-        metadata* (assoc metadata
-                         :input.messages/on-change
-                         input-change
-                         :template-sections-form.messages/on-sections-change
-                         input-change
-                         :template-form.sections-actions-buttons.messages/on-add-template-section
-                         #(handlers/on-add-template-section props))]
+  (let [handlers
+        {:template-form.handlers/on-input-change
+         #(handlers/on-input-change props metadata %)
+         
+         :template-form.handlers/on-add-template-section
+         #(handlers/on-add-template-section props)}
+
+        metadata*
+        (assoc metadata :factories.input/handlers handlers)]
   
     (factories.input/input-factory metadata* edited-template)))
 

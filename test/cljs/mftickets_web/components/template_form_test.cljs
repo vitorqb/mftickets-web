@@ -26,10 +26,7 @@
         (is (= ::component r-component)))
 
       (testing "Assocs the value to the props"
-        (is (= "Foo" (:value r-props))))
-
-      (testing "Passes all metadata as props"
-        (is (every? (fn [[k v]] (= (get r-props k) v)) metadata))))))
+        (is (= "Foo" (:value r-props)))))))
 
 (deftest test-template-form
 
