@@ -16,3 +16,5 @@
   {:pre [((set boolean-options) x)] :post [(boolean? %)]}
   (:value x))
 
+(defn keyword->option [k] {:label (name k) :value (subs (str k) 1)})
+(defn option->keyword [x] (:value x))

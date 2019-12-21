@@ -5,6 +5,10 @@
 
 (defn create-template-page-instance [{:keys [app-state http]}]
   [components.create-template-page/create-template-page
-   {:create-template-page/current-project (queries/active-project @app-state)
-    :state (state/->FocusedAtom app-state [::state])
-    :http http}])
+   (let [app-state* @app-state
+         current-project (queries/active-project app-state*)
+         properties-types (queries/properties-types app-state*)]
+     {:create-template-page/current-project current-project
+      :create-template-page/properties-types properties-types
+      :state (state/->FocusedAtom app-state [::state])
+      :http http})])

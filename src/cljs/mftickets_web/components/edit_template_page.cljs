@@ -20,6 +20,7 @@
 
 ;; Specs
 (spec/def :edit-template-page/project-id (spec/or :nil nil? :int int?))
+(spec/def :edit-template-page/property-types (spec/nilable (spec/coll-of keyword?)))
 
 (spec/def :edit-template-page.events/EditedTemplateChange-> fn?)
 (spec/def :edit-template-page/events
@@ -79,11 +80,12 @@
 
 (defn- template-form
   "A wrapper around `template-form` for the user to edit the template."
-  [{:keys [state] :as props}]
+  [{:keys [state] :edit-template-page/keys [property-types] :as props}]
   (if-let [picked-template (queries/picked-template @state)]
     (let [props {:template-form/edited-template (queries/edited-template @state)
                  :template-form/original-template picked-template
                  :template-form/inputs-metadatas template-form-inputs
+                 :template-form/properties-types property-types
                  :template-form.messages/on-edited-template-change
                  #(handlers/on-edited-template-change props %)
                  :template-form.messages/on-edited-template-submit

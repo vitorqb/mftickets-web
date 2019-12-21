@@ -21,7 +21,8 @@
   (s/nilable :select/option))
 
 (s/def :select/options
-  (s/coll-of :select/option))
+  (s/or :dynamic #(instance? factories.input/DynamicMetadata %)
+        :static (s/coll-of :select/option)))
 
 (s/def :select.messages/on-select-change ifn?)
 

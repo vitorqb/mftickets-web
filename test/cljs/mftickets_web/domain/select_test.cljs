@@ -5,3 +5,6 @@
 (deftest test-boolean->option
   (is (= {:value true :label "True"} (sut/boolean->option true)))
   (is (= {:value false :label "False"} (sut/boolean->option false))))
+
+(deftest test-keyword->option->keyword
+  (is (= ::foo (-> ::foo sut/keyword->option sut/option->keyword))))

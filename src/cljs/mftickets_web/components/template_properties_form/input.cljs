@@ -3,7 +3,8 @@
             [mftickets-web.components.select :as components.select]
             [mftickets-web.domain.boolean :as domain.boolean]
             [mftickets-web.domain.select :as domain.select]
-            [mftickets-web.components.template-properties-form.actions-buttons :as actions-buttons])
+            [mftickets-web.components.template-properties-form.actions-buttons :as actions-buttons]
+            [mftickets-web.components.factories.input :as factories.input])
   (:refer-clojure :exclude [name]))
 
 (def id
@@ -44,14 +45,19 @@
    :select/label-wrapper-class components.input/base-input-wrapper-label-class})
 
 (def value-type
-  {:factories.input/component-kw ::components.input/input
+  {:factories.input/component-kw ::components.select/select
    :factories.input/id :value-type
-   :factories.input/focus-value-fn :value-type
-   :factories.input/update-value-fn #(assoc %1 :value-type %2)
+   :factories.input/focus-value-fn #(-> % :value-type domain.select/keyword->option)
+   :factories.input/update-value-fn #(assoc %1 :value-type (domain.select/option->keyword %2))
    :factories.input/messages
-   {:input.messages/on-change :template-properties-form.handlers/on-change}
+   {:select.messages/on-select-change :template-properties-form.handlers/on-change}
 
-   :input/label "Type"})
+   :select/options
+   (factories.input/->DynamicMetadata
+    #(map domain.select/keyword->option (:template-properties-form/properties-types %)))
+   :select/label "Value Type"
+   :select/contents-wrapper-class components.input/base-html-input-class
+   :select/label-wrapper-class components.input/base-input-wrapper-label-class})
 
 (def actions-buttons
   {:factories.input/component-kw ::actions-buttons/template-properties-form-actions-buttons

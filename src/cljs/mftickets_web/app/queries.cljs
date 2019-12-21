@@ -12,6 +12,11 @@
   [x]
   (some-> x get-app-metadata :projects))
 
+(defn properties-types
+  "Reads the template property types from the app metadata"
+  [x]
+  (some->> x get-app-metadata :template.properties.types (map keyword)))
+
 (defn- active-project-id [x] (:active-project-id x))
 
 (defn active-project
