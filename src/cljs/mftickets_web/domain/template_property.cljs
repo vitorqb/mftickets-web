@@ -19,6 +19,6 @@
    :name ""
    :template-section-id template-section-id
    :is-multiple false
-   :value-type "section.property.value.types/text"
+   :value-type :section.property.value.types/text
    ::is-new? true
    ::new-obj-id (gen-new-property-id)})

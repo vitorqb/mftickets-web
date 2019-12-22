@@ -16,7 +16,7 @@
 (spec/def :template-properties-form.property/id (spec/or :nil nil? :int int?))
 (spec/def :template-properties-form.property/name string?)
 (spec/def :template-properties-form.property/is-multiple boolean?)
-(spec/def :template-properties-form.property/value-type string?)
+(spec/def :template-properties-form.property/value-type keyword?)
 
 (spec/def :template-properties-form/property
   (spec/keys
