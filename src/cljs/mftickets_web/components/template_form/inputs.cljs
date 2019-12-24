@@ -2,7 +2,8 @@
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.input :as components.input]
             [mftickets-web.components.template-sections-form :as components.template-sections-form]
-            [mftickets-web.components.template-form.sections-actions-buttons :as sections-actions-buttons])
+            [mftickets-web.components.template-form.sections-actions-buttons :as sections-actions-buttons]
+            [mftickets-web.components.factories.input :as factories.input])
   (:refer-clojure :exclude [name]))
 
 ;; Metadata
@@ -72,4 +73,7 @@
    :factories.input/update-value-fn #(assoc %1 :sections %2)
    :factories.input/messages
    {:template-sections-form.messages/on-sections-change
-    :template-form.handlers/on-input-change}})
+    :template-form.handlers/on-input-change}
+
+   :template-sections-form/properties-types
+   (factories.input/->DynamicMetadata :template-form/properties-types)})

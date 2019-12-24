@@ -37,8 +37,10 @@
                   #(handlers/on-template-section-remove props)
                   :template-sections-form.handlers/on-add-template-property
                   #(handlers/on-add-template-property props)}
+        context (select-keys props [:template-sections-form/properties-types])
         metadata* (cond-> metadata
                     :always (assoc :factories.input/handlers handlers)
+                    :always (assoc :factories.input/parent-context context)
                     disabled (assoc :factories.input/disabled? true))]
     
     (factories.input/input-factory metadata* section)))

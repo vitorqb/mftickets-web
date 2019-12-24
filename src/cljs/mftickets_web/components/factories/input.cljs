@@ -15,6 +15,7 @@
 (spec/def :factories.input/assoc-value-to-props-fn ifn?)
 (spec/def :factories.input/handlers (spec/map-of keyword? ifn?))
 (spec/def :factories.input/messages (spec/map-of keyword? keyword?))
+(spec/def :factories.input/parent-context (spec/nilable map?))
 
 (spec/def :factories/input
   (spec/and
@@ -25,6 +26,13 @@
           :factories.input/id
           :factories.input/focus-value-fn
           :factories.input/update-value-fn])))
+
+;; Types
+(deftype DynamicMetadata [metadata-fn]
+  ;; DynamicMetadata represents a metadata that needs to be calculated depending on the
+  ;; parent's context.
+  IFn
+  (-invoke [_ parent-context] (metadata-fn parent-context)))
 
 ;; Multimethods
 (defmulti input-factory-opts
@@ -55,6 +63,11 @@
   [m]
   (s/setval [s/MAP-KEYS #(= (namespace %) "factories.input")] s/NONE m))
 
+(defn- calculate-all-dynamic-metadata
+  "Given a map of metadata, calculates all dynamic metadata."
+  [metadata parent-context]
+  (s/transform [s/MAP-VALS #(instance? DynamicMetadata %)] #(%1 parent-context) metadata))
+
 ;; Factories
 (defn input-factory
   "Creates a new input component from parent props and input metadata.
@@ -75,9 +88,11 @@
   - `factories.input/handlers`: A map of handler-kw -> handler-fn, with functions responsible
        to handle all known messages for the component.
   - `factories.input/messages`: A map of message-kw -> handler-kw, mapping the input's expected
-       message to the parent known handlers in `handlers`."
+       message to the parent known handlers in `handlers`.
+  - `factories.input/parent-context`: A map available for dynamic metadata. Each dynaic metadata
+       has a `metadata-fn` which will receive the `parent-context` to produce the metadata."
   [{:factories.input/keys [component-kw component id focus-value-fn assoc-value-to-props-fn
-                           assoc-disabled? disabled? handlers messages]
+                           assoc-disabled? disabled? handlers messages parent-context]
     :or {disabled? nil}
     :as metadata}
    parent-value]
@@ -97,6 +112,7 @@
 
         props
         (cond-> metadata
+          :always (calculate-all-dynamic-metadata parent-context)
           :always (assoc-value-to-props-fn value)
           :always assoc-messages
           (not (nil? disabled?)) (assoc-disabled? disabled?)

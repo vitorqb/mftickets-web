@@ -63,9 +63,10 @@
                    name-like (assoc :name-like name-like)
                    page-number (assoc :pageNumber page-number)
                    page-size (assoc :pageSize page-size))
-          request (-> base-request (wrap-auth token) (assoc :query-params params))]
+          request (-> base-request (wrap-auth token) (assoc :query-params params))
+          response (http/get "/api/templates" request)]
 
-      (http/get "/api/templates" request))))
+      (async/map translate/parse-paged-be-templates [response]))))
 
 (defn edit-template
   "Makes a POST request for editing a template"

@@ -16,7 +16,7 @@
 (spec/def :template-properties-form.property/id (spec/or :nil nil? :int int?))
 (spec/def :template-properties-form.property/name string?)
 (spec/def :template-properties-form.property/is-multiple boolean?)
-(spec/def :template-properties-form.property/value-type string?)
+(spec/def :template-properties-form.property/value-type keyword?)
 
 (spec/def :template-properties-form/property
   (spec/keys
@@ -50,8 +50,10 @@
                on-remove #(handlers/on-remove-template-property props)
                handlers {:template-properties-form.handlers/on-change on-change
                          :template-properties-form.handlers/on-remove on-remove}
+               context (select-keys props [:template-properties-form/properties-types])
                metadata* (cond-> metadata
                            :always (assoc :factories.input/handlers handlers)
+                           :always (assoc :factories.input/parent-context context)
                            disabled (assoc :factories.input/disabled? true))]]
      (factories.input/input-factory metadata* property))])
 

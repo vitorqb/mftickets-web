@@ -5,8 +5,10 @@
             [mftickets-web.components.select :as components.select]))
 
 (deftest test-template->select-option
-  (let [name "foo" template {:id 1 :name name}]
-    (is (= {:label name :value template} (sut/template->select-option template)))))
+
+  (testing "Base"
+    (let [name "foo" template {:id 1 :name name}]
+      (is (= {:label name :value template} (sut/template->select-option template))))))
 
 (deftest test-async-select
 

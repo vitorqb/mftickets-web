@@ -38,11 +38,12 @@
 
 (defn template-form
   "A wrapper around `template-form` for the user to see a template."
-  [{:keys [state]}]
+  [{:keys [state] :view-template-page/keys [properties-types]}]
   (let [template (queries/picked-template @state)
         props* {:template-form/original-template template
                 :template-form/edited-template template
-                :template-form/inputs-metadatas template-form-inputs}]
+                :template-form/inputs-metadatas template-form-inputs
+                :template-form/properties-types properties-types}]
     [components.template-form/template-form props*]))
 
 (defn view-template-page

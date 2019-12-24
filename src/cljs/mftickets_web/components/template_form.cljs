@@ -2,7 +2,6 @@
   (:require [cljs.spec.alpha :as spec]
             [mftickets-web.components.form :as components.form]
             [mftickets-web.components.input :as components.input]
-            [mftickets-web.components.template-sections-form :as components.template-sections-form]
             [com.rpl.specter :as s]
             [mftickets-web.components.template-form.inputs :as inputs]
             [mftickets-web.components.factories.input :as factories.input]
@@ -24,14 +23,17 @@
 
 (spec/def :template-form/original-template :template-form/edited-template)
 
+(spec/def :template-form/properties-types (spec/nilable (spec/coll-of keyword?)))
+
 (spec/def :template-form/props
   (spec/keys :req [:template-form/original-template
-                   :template-form/edited-template]
+                   :template-form/edited-template
+                   :template-form/properties-types]
              :opt [:template-form.messages/on-edited-template-change]))
 
 ;; Helpers
 (defn- render-input
-  "Renders an input given the for props and input metadta."
+  "Renders an input given the props and input metadata."
   [{:template-form/keys [edited-template] :as props}
    metadata]
 
@@ -45,8 +47,13 @@
          :template-form.handlers/on-add-template-section
          #(handlers/on-add-template-section props)}
 
+        context
+        (select-keys props [:template-form/properties-types])
+
         metadata*
-        (assoc metadata :factories.input/handlers handlers)]
+        (-> metadata
+            (assoc :factories.input/handlers handlers)
+            (assoc :factories.input/parent-context context))]
   
     (factories.input/input-factory metadata* edited-template)))
 

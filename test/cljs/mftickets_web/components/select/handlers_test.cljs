@@ -10,3 +10,11 @@
           new-value {:name "foo" :id 1}]
       (is (= [::on-select-change new-value]
              (sut/on-change props new-value))))))
+
+(deftest test-after-load-options
+
+  (testing "passes matching-options to callback"
+    (let [value {:foo 1}
+          callback identity
+          result (sut/after-load-options [value] callback)]
+      (is (= [value] (js->clj result :keywordize-keys true))))))

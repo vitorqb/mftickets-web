@@ -22,6 +22,18 @@
                                                            :body {:projects projects}})))]
     (is (= projects (sut/projects state)))))
 
+(deftest test-properties-types
+
+  (testing "Nil"
+    (is (nil? (sut/properties-types {}))))
+
+  (testing "Not nil"
+    (let [types ["domain.templates.properties/date"]
+          response {:success true :body {:template.properties.types types}}
+          state (-> {} ((reducers/set-app-metadata-response response)))]
+      (is (= [:domain.templates.properties/date]
+             (sut/properties-types state))))))
+
 (deftest test-active-project
 
   (testing "When no project and no active, nil"

@@ -19,6 +19,7 @@
 (spec/def :create-template-page/current-project
   (spec/keys
    :req-un [:create-template-page.current-project/id]))
+(spec/def :create-template-page/properties-types (spec/nilable (spec/coll-of keyword?)))
 
 ;; Helpers
 (def template-properties-form-inputs
@@ -53,9 +54,10 @@
     [components.message-box/message-box {:style style :message message}]))
 
 (defn- template-form
-  [{:create-template-page/keys [current-project] :keys [state] :as props}]
+  [{:create-template-page/keys [current-project properties-types] :keys [state] :as props}]
 
   {:pre [(spec/assert :create-template-page/current-project current-project)
+         (spec/assert :create-template-page/properties-types properties-types)
          (spec/assert :mftickets-web.specs/state state)]}
   
   (let [edited-template (queries/edited-template @state props)
@@ -67,6 +69,9 @@
 
                 :template-form/inputs-metadatas
                 template-form-inputs
+
+                :template-form/properties-types
+                properties-types
 
                 :template-form.messages/on-edited-template-change
                 #(handlers/on-new-template-change props %)

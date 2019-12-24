@@ -1,6 +1,7 @@
 (ns mftickets-web.domain.select
   "Helper namespace for handling options for the Select component."
-  (:require [cljs.spec.alpha :as spec]))
+  (:require [cljs.spec.alpha :as spec]
+            [mftickets-web.domain.kw :as domain.kw]))
 
 (def boolean-options [{:value true :label "True"} {:value false :label "False"}])
 
@@ -16,3 +17,5 @@
   {:pre [((set boolean-options) x)] :post [(boolean? %)]}
   (:value x))
 
+(defn keyword->option [k] {:label (domain.kw/kw->str k) :value (domain.kw/kw->str k)})
+(defn option->keyword [x] (-> x :value domain.kw/str->kw))
