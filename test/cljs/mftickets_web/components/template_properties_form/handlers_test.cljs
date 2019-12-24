@@ -28,3 +28,45 @@
         result (sut/on-remove-template-property props)]
 
     (is (= [::on-properties-change [property1 property3]] result))))
+
+(deftest test-on-move-template-property-back
+
+  (let [property1 {:id 1}
+        property2 {:id 2}
+        property3 {:id 3}
+        properties [property1 property2 property3]
+        props {:template-properties-form.messages/on-properties-change identity}]
+
+    (testing "If on first position, keep it."
+      (let [props*
+            (assoc props
+                   :template-properties-form.impl/property property1
+                   :template-properties-form/properties [property1 property2 property3])]
+        (is (= properties (sut/on-move-template-property-back props*)))))
+
+    (testing "If on second position, move it up."
+      (let [props*
+            (assoc props
+                   :template-properties-form.impl/property property2
+                   :template-properties-form/properties [property1 property2 property3])]
+        (is (= [property2 property1 property3] (sut/on-move-template-property-back props*)))))
+
+    (testing "If on third position, move it up."
+      (let [props*
+            (assoc props
+                   :template-properties-form.impl/property property3
+                   :template-properties-form/properties [property1 property2 property3])]
+        (is (= [property1 property3 property2] (sut/on-move-template-property-back props*)))))))
+
+(deftest test-on-move-template-property-forward
+
+  (let [property1 {:id 1}
+        property2 {:id 2}
+        property3 {:id 3}
+        properties [property1 property2 property3]
+        props {:template-properties-form.messages/on-properties-change identity
+               :template-properties-form.impl/property property1
+               :template-properties-form/properties properties}]
+
+    (testing "Base"
+      (is (= [property2 property1 property3] (sut/on-move-template-property-forward props))))))

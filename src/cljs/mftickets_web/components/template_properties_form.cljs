@@ -34,7 +34,36 @@
   (spec/keys
    :req [:template-properties-form/properties]))
 
+(spec/def :template-properties-form.handlers/on-change ifn?)
+(spec/def :template-properties-form.handlers/on-remove ifn?)
+(spec/def :template-properties-form.handlers/on-move-back ifn?)
+(spec/def :template-properties-form.handlers/on-move-forward ifn?)
+(spec/def :template-properties-form/handlers
+  (spec/keys
+   :req [:template-properties-form.handlers/on-change
+         :template-properties-form.handlers/on-remove
+         :template-properties-form.handlers/on-move-back
+         :template-properties-form.handlers/on-move-forward]))
+
 ;; Components
+(defn- property-input-handlers
+  "Map of known handlers for property inputs."
+  [props metadata]
+
+  {:post [(spec/assert :template-properties-form/handlers %)]}
+
+  {:template-properties-form.handlers/on-change
+   #(handlers/on-template-property-change props metadata %)
+
+   :template-properties-form.handlers/on-remove
+   #(handlers/on-remove-template-property props)
+
+   :template-properties-form.handlers/on-move-back
+   #(handlers/on-move-template-property-back props)
+
+   :template-properties-form.handlers/on-move-forward
+   #(handlers/on-move-template-property-forward props)})
+
 (defn property-input
   "An input for a single template property."
   [{:template-properties-form/keys [inputs-metadatas disabled]
@@ -46,15 +75,18 @@
   
   [:div {:class property-input-class}
    (for [metadata inputs-metadatas
-         :let [on-change #(handlers/on-template-property-change props metadata %)
-               on-remove #(handlers/on-remove-template-property props)
-               handlers {:template-properties-form.handlers/on-change on-change
-                         :template-properties-form.handlers/on-remove on-remove}
-               context (select-keys props [:template-properties-form/properties-types])
-               metadata* (cond-> metadata
-                           :always (assoc :factories.input/handlers handlers)
-                           :always (assoc :factories.input/parent-context context)
-                           disabled (assoc :factories.input/disabled? true))]]
+         :let [handlers
+               (property-input-handlers props metadata)
+               
+               context
+               (select-keys props [:template-properties-form/properties-types])
+
+               metadata*
+               (cond-> metadata
+                 :always (assoc :factories.input/handlers handlers)
+                 :always (assoc :factories.input/parent-context context)
+                 disabled (assoc :factories.input/disabled? true))]]
+     
      (factories.input/input-factory metadata* property))])
 
 (defn template-properties-form
