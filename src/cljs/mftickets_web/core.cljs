@@ -119,7 +119,7 @@
   (maybe-try-to-set-token-from-cookies!)
   (reagent/render [current-page] (.getElementById js/document "app")))
 
-(defn init! []
+(defn ^:export init! []
   (clerk/initialize!)
   (accountant/configure-navigation!
    {:nav-handler
