@@ -66,4 +66,10 @@
    :factories.input/update-value-fn #(do nil)
    :factories.input/messages
    {:template-properties-form.actions-buttons.messages/on-remove-property
-    :template-properties-form.handlers/on-remove}})
+    :template-properties-form.handlers/on-remove
+
+    :template-properties-form.actions-buttons.messages/on-move-property-back
+    :template-properties-form.handlers/on-move-back
+
+    :template-properties-form.actions-buttons.messages/on-move-property-forward
+    :template-properties-form.handlers/on-move-forward}})

@@ -80,6 +80,7 @@
 [mftickets-web.domain.matcher-test]
 [mftickets-web.domain.selector-test]
 [mftickets-web.domain.select-test]
+[mftickets-web.domain.sequences-test]
 [mftickets-web.domain.template-property-test]
 [mftickets-web.domain.template-section-test]
 [mftickets-web.domain.template-test]
