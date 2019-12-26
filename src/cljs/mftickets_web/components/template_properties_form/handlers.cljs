@@ -15,6 +15,7 @@
   (->> properties
        (s/transform [(s/filterer #(domain.template-property/same-id? % property)) s/FIRST]
                     #(update-value-fn % new-value))
+       domain.sequences/update-order
        on-properties-change))
 
 (defn on-remove-template-property
@@ -30,11 +31,17 @@
     :template-properties-form/keys [properties]
     :template-properties-form.messages/keys [on-properties-change]}]
   (on-properties-change
-   (into [] (domain.sequences/move-back #(= (:id %) (:id property)) properties))))
+   (->> properties
+        (domain.sequences/move-back #(= (:id %) (:id property)))
+        domain.sequences/update-order
+        (into []))))
 
 (defn on-move-template-property-forward
   [{:template-properties-form.impl/keys [property]
     :template-properties-form/keys [properties]
     :template-properties-form.messages/keys [on-properties-change]}]
   (on-properties-change
-   (into [] (domain.sequences/move-forward #(= (:id %) (:id property)) properties))))
+   (->> properties
+        (domain.sequences/move-forward #(= (:id %) (:id property)))
+        domain.sequences/update-order
+        (into []))))

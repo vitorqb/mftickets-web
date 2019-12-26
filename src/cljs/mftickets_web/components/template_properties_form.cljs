@@ -98,7 +98,7 @@
   [:div {:class base-class}
    [:span {:class label-class} "Properties"]
    [:div {:class inputs-container-class}
-    (for [property properties
+    (for [property (sort-by :order properties)
           :let [props* (assoc props :template-properties-form.impl/property property)
                 id (domain.template-property/get-id property)]]
       ^{:key id}

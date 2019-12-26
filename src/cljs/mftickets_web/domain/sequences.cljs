@@ -33,3 +33,9 @@
 
       :else
       (recur (concat done [el]) todo))))
+
+(defn update-order
+  "Updates the `order` keys for all maps in a sequence"
+  [coll]
+  (when coll
+    (map (fn [x i] (assoc x :order i)) coll (range))))
