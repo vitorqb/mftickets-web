@@ -1,11 +1,12 @@
 (ns mftickets-web.components.template-properties-form.handlers-test
   (:require [mftickets-web.components.template-properties-form.handlers :as sut]
-            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
+            [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
+            [mftickets-web.domain.sequences :as domain.sequences]))
 
 (deftest test-on-template-property-change
   (let [on-properties-change (fn [x] [::change x])
-        property {:id 2 :name "BAR"}
-        other-property {:id 1 :name "FOO"}
+        property {:id 2 :name "BAR" :order 1}
+        other-property {:id 1 :name "FOO" :order 0}
         properties [other-property property]
         update-value-fn #(assoc %1 :name %2)
         props {:template-properties-form.messages/on-properties-change on-properties-change
@@ -42,21 +43,24 @@
             (assoc props
                    :template-properties-form.impl/property property1
                    :template-properties-form/properties [property1 property2 property3])]
-        (is (= properties (sut/on-move-template-property-back props*)))))
+        (is (= (domain.sequences/update-order properties)
+               (sut/on-move-template-property-back props*)))))
 
     (testing "If on second position, move it up."
       (let [props*
             (assoc props
                    :template-properties-form.impl/property property2
                    :template-properties-form/properties [property1 property2 property3])]
-        (is (= [property2 property1 property3] (sut/on-move-template-property-back props*)))))
+        (is (= (domain.sequences/update-order [property2 property1 property3])
+               (sut/on-move-template-property-back props*)))))
 
     (testing "If on third position, move it up."
       (let [props*
             (assoc props
                    :template-properties-form.impl/property property3
                    :template-properties-form/properties [property1 property2 property3])]
-        (is (= [property1 property3 property2] (sut/on-move-template-property-back props*)))))))
+        (is (= (domain.sequences/update-order [property1 property3 property2])
+               (sut/on-move-template-property-back props*)))))))
 
 (deftest test-on-move-template-property-forward
 
@@ -69,4 +73,5 @@
                :template-properties-form/properties properties}]
 
     (testing "Base"
-      (is (= [property2 property1 property3] (sut/on-move-template-property-forward props))))))
+      (is (= (domain.sequences/update-order [property2 property1 property3])
+             (sut/on-move-template-property-forward props))))))

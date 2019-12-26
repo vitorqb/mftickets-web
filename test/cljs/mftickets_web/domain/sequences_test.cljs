@@ -69,3 +69,11 @@
         (testing "Middle element"
           (let [pred #{2}]
             (is (= '(1 3 2) (sut/move-forward pred seq)))))))))
+
+(deftest test-update-order
+
+  (testing "Empty"
+    (is (nil? (sut/update-order nil))))
+
+  (testing "Two long"
+    (is (= [{:id 1 :order 0} {:id 2 :order 1}] (sut/update-order [{:id 1} {:id 2}])))))
