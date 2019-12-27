@@ -1,6 +1,7 @@
 (ns mftickets-web.components.template-form.handlers
   (:require [cljs.spec.alpha :as spec]
-            [mftickets-web.domain.template-section :as domain.template-section]))
+            [mftickets-web.domain.template-section :as domain.template-section]
+            [mftickets-web.domain.template :as domain.template]))
 
 ;; Handlers
 (defn on-input-change
@@ -18,6 +19,7 @@
   [{:template-form.messages/keys [on-edited-template-change]
     :template-form/keys [edited-template]}]
   (let [empty-section-args {:template-id (:id edited-template)}
-        empty-section (domain.template-section/gen-empty-template-section empty-section-args)
-        new-edited-template (update edited-template :sections #(concat [empty-section] %))]
-    (on-edited-template-change new-edited-template)))
+        empty-section (domain.template-section/gen-empty-template-section empty-section-args)]
+    (-> edited-template
+        (domain.template/prepend-section empty-section)
+        on-edited-template-change)))

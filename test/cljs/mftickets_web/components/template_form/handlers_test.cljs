@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-form.handlers-test
   (:require [mftickets-web.components.template-form.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.domain.template-section :as domain.template-section]))
+            [mftickets-web.domain.template-section :as domain.template-section]
+            [mftickets-web.domain.sequences :as domain.sequences]))
 
 (deftest test-on-input-change
   (let [edited-template {:id 999 :name "Foo"}
@@ -22,7 +23,8 @@
             edited-template {:id 999
                              :sections [old-section]
                              :template-id template-id}
-            exp-new-edited-template (assoc edited-template :sections [new-section old-section])
+            exp-sections (domain.sequences/update-order [new-section old-section])
+            exp-new-edited-template (assoc edited-template :sections exp-sections)
             on-edited-template-change (fn [x] [::template-change x])
             props {:template-form.messages/on-edited-template-change on-edited-template-change
                    :template-form/edited-template edited-template}
