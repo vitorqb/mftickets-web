@@ -31,3 +31,17 @@
 
       (testing "Assocs messages from :factories.input/messages"
         (is (ifn? (:input.messages/on-change r-props)))))))
+
+(deftest template-sections-form
+
+  (testing "Renders ordered by :order"
+    (let [section1 {:id 1 :order 1}
+          section2 {:id 2 :order 0}
+          sections [section1 section2]
+          props {:template-sections-form/sections sections}
+          result (sut/template-sections-form props)
+          rendered-sections (get-in result [3 2])
+          exp-section-input
+          #(do [sut/section-input (assoc props :template-sections-form.impl/section %)])]
+      (is (= [(exp-section-input section2) (exp-section-input section1)]
+             rendered-sections)))))

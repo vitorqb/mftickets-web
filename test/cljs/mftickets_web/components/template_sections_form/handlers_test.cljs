@@ -3,29 +3,8 @@
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
             [com.rpl.specter :as s]
             [mftickets-web.domain.template-section :as domain.template-section]
-            [mftickets-web.domain.template-property :as domain.template-property]))
-
-(deftest test-update-section
-
-  (testing "Base"
-    (let [sections [{:id 1 :name "FOO"} {:id 2 :name "BAR"}]
-          section {:id 1}
-          update-fn #(assoc % :name "Hello World")]
-      (is (= [{:id 1 :name "Hello World"} {:id 2 :name "BAR"}]
-             (sut/update-section sections section update-fn)))))
-
-  (testing "Using recently created sections"
-    (let [section1 {:id 1 :name "FOO"}
-          section2 {::domain.template-section/temp-id 1
-                    ::domain.template-section/is-new? true
-                    :name ""}
-          section3 {::domain.template-section/temp-id 2
-                    ::domain.template-section/is-new? true
-                    :name ""}
-          sections [section1 section2 section3]
-          update-fn #(assoc % :name "Foo")]
-      (is (= [section1 section2 (update-fn section3)]
-             (sut/update-section sections section3 update-fn))))))
+            [mftickets-web.domain.template-property :as domain.template-property]
+            [mftickets-web.domain.sequences :as domain.sequences]))
 
 (deftest test-on-template-section-input-change
 
@@ -65,19 +44,42 @@
                  :template-sections-form/sections sections}]
       (is (= [section1] (sut/on-template-section-remove props))))))
 
+(deftest test-on-template-section-move-back
+  (let [on-sections-change identity
+        sections [{:id 0} {:id 1} {:id 2}]
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form.impl/section {:id 1}
+               :template-sections-form/sections sections}]
+    (is (= [{:id 1 :order 0} {:id 0 :order 1} {:id 2 :order 2}]
+           (sut/on-template-section-move-back props)))))
+
+(deftest test-on-template-section-move-forward
+  (let [on-sections-change identity
+        sections [{:id 0} {:id 1} {:id 2}]
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form.impl/section {:id 1}
+               :template-sections-form/sections sections}]
+    (is (= [{:id 0 :order 0} {:id 2 :order 1} {:id 1 :order 2}]
+           (sut/on-template-section-move-forward props)))))
+
 (deftest test-on-add-template-property
   (let [on-sections-change (fn [x] [::sections-change x])
-        property1 {:id 1}
-        property2 {:id 2}
+        property1 {:id 1 :order 0}
+        property2 {:id 2 :order 1}
         property3 (domain.template-property/gen-empty-template-property {:template-section-id 3})
-        section1 {:id 3 :properties [property1 property2]}
-        new-section1 (assoc section1 :properties [property3 property1 property2])
+        properties [property1 property2]
+        section1 {:id 3 :properties properties}
+        new-properties [property3 property1 property2]
+        new-section1 (assoc section1 :properties new-properties)
         section2 {:id 4 :properties []}
         sections [section1 section2]
         new-sections [new-section1 section2]
+        exp-new-sections (domain.template-section/update-properties-order-from-coll
+                          new-sections
+                          new-section1)
         props {:template-sections-form.messages/on-sections-change on-sections-change
                :template-sections-form/sections sections
                :template-sections-form.impl/section section1}]
     (with-redefs (domain.template-property/gen-empty-template-property (constantly property3))
-      (is (= [::sections-change new-sections]
+      (is (= [::sections-change exp-new-sections]
              (sut/on-add-template-property props))))))

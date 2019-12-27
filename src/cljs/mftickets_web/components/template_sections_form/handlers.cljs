@@ -1,15 +1,8 @@
 (ns mftickets-web.components.template-sections-form.handlers
   (:require [com.rpl.specter :as s]
             [mftickets-web.domain.template-section :as domain.template-section]
-            [mftickets-web.domain.template-property :as domain.template-property]))
-
-(defn- update-section
-  "Updates a specific section from a seq of sections using update-fn"
-  [sections section update-fn]
-  (s/transform
-   [(s/filterer #(domain.template-section/same-id? section %)) s/FIRST]
-   update-fn
-   sections))
+            [mftickets-web.domain.template-property :as domain.template-property]
+            [mftickets-web.domain.sequences :as domain.sequences]))
 
 (defn on-template-section-input-change
   [{:template-sections-form.messages/keys [on-sections-change]
@@ -21,7 +14,7 @@
   {:pre [(ifn? on-sections-change) (ifn? update-value-fn)]}
 
   (-> sections
-      (update-section section #(update-value-fn % new-value))
+      (domain.template-section/update-section-in-coll section #(update-value-fn % new-value))
       (on-sections-change)))
 
 (defn on-template-section-remove
@@ -32,13 +25,31 @@
        (remove #(domain.template-section/same-id? section %))
        on-sections-change))
 
+(defn on-template-section-move-back
+  [{:template-sections-form.messages/keys [on-sections-change]
+    :template-sections-form.impl/keys [section]
+    :template-sections-form/keys [sections]}]
+  (->> sections
+       (domain.sequences/move-back #(domain.template-section/same-id? % section))
+       domain.sequences/update-order
+       on-sections-change))
+
+(defn on-template-section-move-forward
+  [{:template-sections-form.messages/keys [on-sections-change]
+    :template-sections-form.impl/keys [section]
+    :template-sections-form/keys [sections]}]
+  (->> sections
+       (domain.sequences/move-forward #(domain.template-section/same-id? % section))
+       domain.sequences/update-order
+       on-sections-change))
+
 (defn on-add-template-property
   [{:template-sections-form.messages/keys [on-sections-change]
     :template-sections-form/keys [sections]
     :template-sections-form.impl/keys [section]}]
   (let [new-property-args {:template-section-id (:id section)}
         new-property (domain.template-property/gen-empty-template-property new-property-args)]
-    (->> sections
-         (s/transform [(s/filterer #(domain.template-section/same-id? % section)) s/FIRST :properties]
-                      #(concat [new-property] %))
-         on-sections-change)))
+    (-> sections
+        (domain.template-section/prepend-property-to-coll section new-property)
+        (domain.template-section/update-properties-order-from-coll section)
+        on-sections-change)))
