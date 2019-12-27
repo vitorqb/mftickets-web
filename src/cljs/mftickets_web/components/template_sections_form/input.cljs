@@ -38,7 +38,13 @@
     :template-sections-form.handlers/on-add-template-property
     
     :template-sections-form.action-buttons.messages/on-remove-section
-    :template-sections-form.handlers/on-template-section-remove}})
+    :template-sections-form.handlers/on-template-section-remove
+
+    :template-sections-form.action-buttons.messages/on-move-section-back
+    :template-sections-form.handlers/on-template-section-move-back
+
+    :template-sections-form.action-buttons.messages/on-move-section-forward
+    :template-sections-form.handlers/on-template-section-move-forward}})
 
 (def properties
   {:factories.input/component-kw ::components.template-properties-form/template-properties-form

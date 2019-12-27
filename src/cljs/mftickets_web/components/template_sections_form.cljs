@@ -21,7 +21,41 @@
   (spec/keys
    :req [:template-sections-form/sections]))
 
+(spec/def :template-sections-form.handlers/on-template-section-input-change ifn?)
+(spec/def :template-sections-form.handlers/on-template-section-remove ifn?)
+(spec/def :template-sections-form.handlers/on-add-template-property ifn?)
+(spec/def :template-sections-form.handlers/on-template-section-move-back ifn?)
+(spec/def :template-sections-form.handlers/on-template-section-move-forward ifn?)
+(spec/def :template-sections-form/handlers
+  (spec/keys
+   :req [:template-sections-form.handlers/on-template-section-input-change
+         :template-sections-form.handlers/on-template-section-remove
+         :template-sections-form.handlers/on-add-template-property
+         :template-sections-form.handlers/on-template-section-move-back
+         :template-sections-form.handlers/on-template-section-move-forward]))
+
 ;; Helpers
+(defn- render-input-handlers
+  "Handlers for known messages from a rendered input."
+  [props metadata]
+
+  {:post [(spec/assert :template-sections-form/handlers %)]}
+  
+  {:template-sections-form.handlers/on-template-section-input-change
+   #(handlers/on-template-section-input-change props metadata %)
+
+   :template-sections-form.handlers/on-template-section-remove
+   #(handlers/on-template-section-remove props)
+
+   :template-sections-form.handlers/on-add-template-property
+   #(handlers/on-add-template-property props)
+
+   :template-sections-form.handlers/on-template-section-move-back
+   #(handlers/on-template-section-move-back props)
+
+   :template-sections-form.handlers/on-template-section-move-forward
+   #(handlers/on-template-section-move-forward props)})
+
 (defn- render-input
   "Renders an input from it's metadata."
   [{:template-sections-form.impl/keys [section]
@@ -31,12 +65,7 @@
 
   {:pre [(spec/assert :factories/input metadata)]}
 
-  (let [handlers {:template-sections-form.handlers/on-template-section-input-change
-                  #(handlers/on-template-section-input-change props metadata %)
-                  :template-sections-form.handlers/on-template-section-remove
-                  #(handlers/on-template-section-remove props)
-                  :template-sections-form.handlers/on-add-template-property
-                  #(handlers/on-add-template-property props)}
+  (let [handlers (render-input-handlers props metadata)
         context (select-keys props [:template-sections-form/properties-types])
         metadata* (cond-> metadata
                     :always (assoc :factories.input/handlers handlers)
@@ -65,7 +94,7 @@
   [:div {:class base-class}
    [:span {:class label-class} "Sections"]
    [:div {:class inputs-container-class}
-    (for [section sections
+    (for [section (sort-by :order sections)
           :let [id (template-section/get-id section)]]
       ^{:key id}
       [section-input (assoc props :template-sections-form.impl/section section)])]])

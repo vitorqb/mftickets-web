@@ -1,7 +1,8 @@
 (ns mftickets-web.components.template-sections-form.handlers
   (:require [com.rpl.specter :as s]
             [mftickets-web.domain.template-section :as domain.template-section]
-            [mftickets-web.domain.template-property :as domain.template-property]))
+            [mftickets-web.domain.template-property :as domain.template-property]
+            [mftickets-web.domain.sequences :as domain.sequences]))
 
 (defn on-template-section-input-change
   [{:template-sections-form.messages/keys [on-sections-change]
@@ -22,6 +23,24 @@
     :template-sections-form/keys [sections]}]
   (->> sections
        (remove #(domain.template-section/same-id? section %))
+       on-sections-change))
+
+(defn on-template-section-move-back
+  [{:template-sections-form.messages/keys [on-sections-change]
+    :template-sections-form.impl/keys [section]
+    :template-sections-form/keys [sections]}]
+  (->> sections
+       (domain.sequences/move-back #(domain.template-section/same-id? % section))
+       domain.sequences/update-order
+       on-sections-change))
+
+(defn on-template-section-move-forward
+  [{:template-sections-form.messages/keys [on-sections-change]
+    :template-sections-form.impl/keys [section]
+    :template-sections-form/keys [sections]}]
+  (->> sections
+       (domain.sequences/move-forward #(domain.template-section/same-id? % section))
+       domain.sequences/update-order
        on-sections-change))
 
 (defn on-add-template-property

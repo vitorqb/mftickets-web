@@ -44,6 +44,24 @@
                  :template-sections-form/sections sections}]
       (is (= [section1] (sut/on-template-section-remove props))))))
 
+(deftest test-on-template-section-move-back
+  (let [on-sections-change identity
+        sections [{:id 0} {:id 1} {:id 2}]
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form.impl/section {:id 1}
+               :template-sections-form/sections sections}]
+    (is (= [{:id 1 :order 0} {:id 0 :order 1} {:id 2 :order 2}]
+           (sut/on-template-section-move-back props)))))
+
+(deftest test-on-template-section-move-forward
+  (let [on-sections-change identity
+        sections [{:id 0} {:id 1} {:id 2}]
+        props {:template-sections-form.messages/on-sections-change on-sections-change
+               :template-sections-form.impl/section {:id 1}
+               :template-sections-form/sections sections}]
+    (is (= [{:id 0 :order 0} {:id 2 :order 1} {:id 1 :order 2}]
+           (sut/on-template-section-move-forward props)))))
+
 (deftest test-on-add-template-property
   (let [on-sections-change (fn [x] [::sections-change x])
         property1 {:id 1 :order 0}
