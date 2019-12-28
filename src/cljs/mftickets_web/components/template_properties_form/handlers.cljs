@@ -32,7 +32,7 @@
     :template-properties-form.messages/keys [on-properties-change]}]
   (on-properties-change
    (->> properties
-        (domain.sequences/move-back #(= (:id %) (:id property)))
+        (domain.sequences/move-back #(domain.template-property/same-id? % property))
         domain.sequences/update-order
         (into []))))
 
@@ -42,6 +42,6 @@
     :template-properties-form.messages/keys [on-properties-change]}]
   (on-properties-change
    (->> properties
-        (domain.sequences/move-forward #(= (:id %) (:id property)))
+        (domain.sequences/move-forward #(domain.template-property/same-id? % property))
         domain.sequences/update-order
         (into []))))

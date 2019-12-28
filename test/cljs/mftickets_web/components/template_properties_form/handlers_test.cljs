@@ -1,7 +1,9 @@
 (ns mftickets-web.components.template-properties-form.handlers-test
   (:require [mftickets-web.components.template-properties-form.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]
-            [mftickets-web.domain.sequences :as domain.sequences]))
+            [mftickets-web.domain.sequences :as domain.sequences]
+            [clojure.set]
+            [mftickets-web.domain.template-property :as domain.template-property]))
 
 (deftest test-on-template-property-change
   (let [on-properties-change (fn [x] [::change x])
@@ -63,15 +65,25 @@
                (sut/on-move-template-property-back props*)))))))
 
 (deftest test-on-move-template-property-forward
-
-  (let [property1 {:id 1}
-        property2 {:id 2}
-        property3 {:id 3}
-        properties [property1 property2 property3]
-        props {:template-properties-form.messages/on-properties-change identity
-               :template-properties-form.impl/property property1
-               :template-properties-form/properties properties}]
-
-    (testing "Base"
+  
+  (testing "Base"
+    (let [property1 {:id 1}
+          property2 {:id 2}
+          property3 {:id 3}
+          properties [property1 property2 property3]
+          props {:template-properties-form.messages/on-properties-change identity
+                 :template-properties-form.impl/property property1
+                 :template-properties-form/properties properties}]
       (is (= (domain.sequences/update-order [property2 property1 property3])
+             (sut/on-move-template-property-forward props)))))
+
+  (testing "Newly created properties"
+    (let [property1 {::domain.template-property/new-obj-id 1}
+          property2 {::domain.template-property/new-obj-id 2}
+          property3 {::domain.template-property/new-obj-id 3}
+          properties [property1 property2 property3]
+          props {:template-properties-form.messages/on-properties-change identity
+                 :template-properties-form.impl/property property2
+                 :template-properties-form/properties properties}]
+      (is (= (domain.sequences/update-order [property1 property3 property2])
              (sut/on-move-template-property-forward props))))))
