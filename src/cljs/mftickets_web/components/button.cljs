@@ -1,8 +1,13 @@
 (ns mftickets-web.components.button
-  "A simple button component.")
+  "A simple button component."
+  (:require [cljs.spec.alpha :as spec]))
 
 ;; Globals
 (def ^:private known-styles #{:button/danger})
+
+;; Specs
+(spec/def :button/style (spec/nilable known-styles))
+(spec/def :button/label (spec/nilable string?))
 
 ;; Css
 (def ^:private base-class "button")

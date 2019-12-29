@@ -71,6 +71,7 @@
 [mftickets-web.components.view-project-page.queries-test]
 [mftickets-web.components.view-project-page.reducers-test]
 [mftickets-web.components.view-project-page-test]
+[mftickets-web.components.view-template-page.handlers-test]
 [mftickets-web.components.view-template-page.queries-test]
 [mftickets-web.core-test]
 [mftickets-web.domain.boolean-test]

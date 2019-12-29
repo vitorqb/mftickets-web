@@ -34,6 +34,7 @@
     :get-templates http/get-templates
     :edit-template http/edit-template
     :create-template http/create-template
+    :delete-template http/delete-template
     :get-matching-templates http/get-matching-templates
     :get-projects http/get-projects
     :get-app-metadata http/get-app-metadata
