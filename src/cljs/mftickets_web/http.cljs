@@ -91,6 +91,14 @@
            (assoc :edn-params params)
            (assoc :query-params {:project-id (:project-id params)}))))))
 
+(defn delete-template
+  "Makes a DELETE request for deleting a template"
+  [{:keys [token]}]
+  (fn i-delete-template [{:keys [id]}]
+    (http/delete
+     (str "/api/templates/" id)
+     (-> base-request (wrap-auth token)))))
+
 (defn get-matching-templates
   "Wrapper aroung get-templates that returns the list of templates on the first page of
   the `get-templates` response."

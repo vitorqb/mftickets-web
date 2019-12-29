@@ -24,7 +24,7 @@
 (defn- submit-button-style->class
   "Maps submit-button-styles -> array of css class."
   [style]
-  {:pre [(spec/valid? ::submit-button-styles style)]
+  {:pre [(do (spec/valid? ::submit-button-styles style) 1)]
    :post [(spec/valid? (spec/nilable (spec/coll-of string?)) %)]}
   (let [base [form-wrapper-submit-button-class]
         modifiers (case style
@@ -59,7 +59,7 @@
   [{:keys [button-text button-style]
     :or {button-style :default
          button-text "Submit!"}}]
-  {:pre [(spec/valid? ::submit-button-styles button-style)]}
+  {:pre [(do (spec/valid? ::submit-button-styles button-style) 1)]}
 
   [:div {:class [form-wrapper-submit-button-container-class]}
    [:input {:class (submit-button-style->class button-style)

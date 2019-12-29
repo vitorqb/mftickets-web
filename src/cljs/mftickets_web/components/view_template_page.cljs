@@ -38,12 +38,16 @@
 
 (defn template-form
   "A wrapper around `template-form` for the user to see a template."
-  [{:keys [state] :view-template-page/keys [properties-types]}]
+  [{:keys [state] :view-template-page/keys [properties-types] :as props}]
   (let [template (queries/picked-template @state)
         props* {:template-form/original-template template
                 :template-form/edited-template template
                 :template-form/inputs-metadatas template-form-inputs
-                :template-form/properties-types properties-types}]
+                :template-form/properties-types properties-types
+                :template-form/submit-button-style :danger
+                :template-form/submit-button-label "Delete!"
+                :template-form.messages/on-edited-template-submit
+                #(handlers/on-delete-template props)}]
     [components.template-form/template-form props*]))
 
 (defn view-template-page
