@@ -42,7 +42,25 @@
           response {:success true}]
       (is (nil? (queries/delete-template-response @state)))
       (sut/after-delete-template props response)
-      (is (= response (queries/delete-template-response @state))))))
+      (is (= response (queries/delete-template-response @state)))))
+
+  (testing "If not success, does not change picked template"
+    (let [picked-template {:id 2}
+          state (-> {} ((reducers/on-picked-template picked-template)) atom)
+          props {:state state}
+          response {:success false}]
+      (is (= picked-template (queries/picked-template @state)))
+      (sut/after-delete-template props response)
+      (is (= picked-template (queries/picked-template @state)))))
+
+  (testing "If success, cleans picked template"
+    (let [picked-template {:id 2}
+          state (-> {} ((reducers/on-picked-template picked-template)) atom)
+          props {:state state}
+          response {:success true}]
+      (is (= picked-template (queries/picked-template @state)))
+      (sut/after-delete-template props response)
+      (is (nil? (queries/picked-template @state))))))
 
 (deftest test-on-delete-template
 

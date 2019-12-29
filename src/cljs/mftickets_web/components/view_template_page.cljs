@@ -6,12 +6,14 @@
             [mftickets-web.components.view-template-page.queries :as queries]
             [mftickets-web.components.template-form :as components.template-form]
             [mftickets-web.components.template-form.inputs :as components.template-form.inputs]
-            [mftickets-web.specs]))
+            [mftickets-web.specs]
+            [mftickets-web.components.factories.loading-wrapper :as c.factories.loading-wrapper :refer-macros [def-loading-wrapper]]))
 
 ;; Css
 (def base-class "template-page")
 (def template-picker-wrapper-class (str base-class "__template-picker-wrapper"))
 (def template-picker-contents-class (str base-class "__template-picker-contents"))
+(def loading-wrapper-class (str base-class "__loading-wrapper"))
 
 ;; Specs
 (spec/def :view-template-page/props
@@ -50,11 +52,14 @@
                 #(handlers/on-delete-template props)}]
     [components.template-form/template-form props*]))
 
+(def-loading-wrapper loading-wrapper queries/is-loading? loading-wrapper-class)
+
 (defn view-template-page
   [props]
   {:pre [(spec/assert :view-template-page/props props)]}
 
   [:div {:class base-class}
+   [loading-wrapper props]
 
    [:h3.heading-tertiary "VIEW TEMPLATE"]
 

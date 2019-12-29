@@ -30,7 +30,7 @@
         modifiers (case style
                     :danger [(str form-wrapper-submit-button-class "--danger")]
                     :none ["u-display-none"]
-                    :default nil)]
+                    (:default nil) nil)]
     (concat base modifiers)))
 
 (defn- on-submit-handler
@@ -60,7 +60,7 @@
     :or {button-style :default
          button-text "Submit!"}}]
   {:pre [(do (spec/valid? ::submit-button-styles button-style) 1)]}
-
+  
   [:div {:class [form-wrapper-submit-button-container-class]}
    [:input {:class (submit-button-style->class button-style)
             :type "submit"

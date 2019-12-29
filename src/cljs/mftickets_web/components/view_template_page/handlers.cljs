@@ -18,8 +18,9 @@
                      (reducers/set-is-loading? true))))
 
 (defn after-delete-template [{:keys [state]} response]
-  (swap! state (comp (reducers/set-delete-template-response response)
-                     (reducers/set-is-loading? false))))
+  (swap! state (cond-> (comp (reducers/set-delete-template-response response)
+                             (reducers/set-is-loading? false))
+                 (:success response) (comp (reducers/on-picked-template nil)))))
 
 (defn perform-delete-template
   "Performs the deletion of the current template."
