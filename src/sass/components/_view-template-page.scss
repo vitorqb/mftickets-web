@@ -3,5 +3,7 @@
     &__template-picker-wrapper { @include picker-wrapper }
 
     &__template-picker-contents { @include picker-contents }
-    
+
+    &__loading-wrapper { @include loading-wrapper; }
+
 }
