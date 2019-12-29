@@ -47,7 +47,7 @@
    {:input/value (queries/input-value @state)
     :input/autofocus true
     :input.messages/on-change #(handlers/on-input-change props %)
-    :input.messages/on-key-up #(handlers/on-input-key-up props %)}])
+    :input.messages/on-key-down #(handlers/on-input-key-down props %)}])
 
 (defn- option-el
   "An element representing an option inside an options list."

@@ -10,7 +10,7 @@
     (sut/on-input-change {:state state} new-value)
     (is (= e-new-state @state))))
 
-(deftest on-arrow-input-key-up
+(deftest on-arrow-input-key-down
 
   (testing "Reducers state using select-from-key"
     (let [state (atom {})
@@ -18,10 +18,10 @@
           props {:state state :router-input/matching-options matching-options}
           key "ArrowDown"
           e-state (-> @state ((reducers/select-from-key matching-options key)))]
-      (sut/on-arrow-input-key-up props key)
+      (sut/on-arrow-input-key-down props key)
       (is (= @state e-state)))))
 
-(deftest on-enter-input-key-up
+(deftest on-enter-input-key-down
 
   (let [navigate ::navigate
         close-router-dialog ::close-router-dialog
@@ -31,8 +31,8 @@
                :router-input/selected-option selected-option}]
 
     (testing "No effects when key is not enter"
-      (is (nil? (sut/on-enter-input-key-up* props "NOT ENTER"))))
+      (is (nil? (sut/on-enter-input-key-down* props "NOT ENTER"))))
 
     (testing "Calls navigate and close router dialog if it is enter"
       (is (= [[navigate "foo"] [close-router-dialog]]
-             (sut/on-enter-input-key-up* props "Enter"))))))
+             (sut/on-enter-input-key-down* props "Enter"))))))
