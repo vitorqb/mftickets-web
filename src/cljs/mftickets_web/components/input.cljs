@@ -18,18 +18,18 @@
 
 (defn html-input
   "An input html component."
-  [{:input/keys [value disabled id on-key-up autofocus]
+  [{:input/keys [value disabled id on-key-down autofocus]
     :as props}]
   (r/create-class
    {:component-did-update
     #(when autofocus (.focus (r/dom-node %)))
     
     :reagent-render
-    (fn [{:input/keys [value disabled id on-key-up] :as props}]
+    (fn [{:input/keys [value disabled id on-key-down] :as props}]
       [:input
        {:class base-html-input-class
         :on-change #(handlers/on-html-input-change props %)
-        :on-key-up #(handlers/on-key-up props %)
+        :on-key-down #(handlers/on-key-down props %)
         :value (or value "")
         :disabled (or disabled false)}])}))
 

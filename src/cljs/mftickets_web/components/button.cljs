@@ -31,5 +31,5 @@
    [:div {:class (get-button-css-class props)
           :tabIndex 0
           :on-click (fn [&_] (on-click))
-          :on-key-up #(when (-> % .-key (= "Enter")) (on-click))}
+          :on-key-down #(when (-> % .-key (= "Enter")) (on-click))}
     label]])

@@ -2,17 +2,17 @@
   (:require [mftickets-web.components.input.handlers :as sut]
             [cljs.test :refer-macros [is are deftest testing async use-fixtures]]))
 
-(deftest test-on-key-up
+(deftest test-on-key-down
 
   (let [event (clj->js {:key "KEY"})]
 
     (testing "With handler defined"
-      (let [on-key-up (fn [x] [::on-key-up x])
-            props {:input.messages/on-key-up on-key-up}]
-        (is (= [::on-key-up "KEY"] (sut/on-key-up props event)))))
+      (let [on-key-down (fn [x] [::on-key-down x])
+            props {:input.messages/on-key-down on-key-down}]
+        (is (= [::on-key-down "KEY"] (sut/on-key-down props event)))))
 
     (testing "No handler"
-      (is (nil? (sut/on-key-up {} event))))))
+      (is (nil? (sut/on-key-down {} event))))))
 
 (deftest test-on-html-input-change
 

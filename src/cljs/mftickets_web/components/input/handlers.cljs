@@ -1,9 +1,9 @@
 (ns mftickets-web.components.input.handlers)
 
-(defn on-key-up
-  [{:input.messages/keys [on-key-up]} event]
-  {:pre [(or (nil? on-key-up) (fn? on-key-up))]}
-  (when on-key-up (-> event .-key on-key-up)))
+(defn on-key-down
+  [{:input.messages/keys [on-key-down]} event]
+  {:pre [(or (nil? on-key-down) (fn? on-key-down))]}
+  (when on-key-down (-> event .-key on-key-down)))
 
 (defn on-html-input-change
   [{:input.messages/keys [on-change]} event]
