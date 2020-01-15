@@ -4,7 +4,7 @@
   },
   "devDependencies": {
     "node-sass": "^4.13.0",
-    "shadow-cljs": "^2.8.68",
+    "shadow-cljs": "^2.8.83",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cljs-test": "^0.1.0"
